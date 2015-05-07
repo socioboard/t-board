@@ -16,5 +16,5 @@ Features:
 
 >**Copy Follower:**Search any user by typing username and press plus button to follow him. ![](http://i.imgur.com/CGaY02X.png)
 
-
+>**Tweet schedule:** You can schedule your message to post on future date.![](http://i.imgur.com/aZRFXig.png)
     
