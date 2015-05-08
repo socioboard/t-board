@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/timeline_navtile" >
+
+        <TextView
+            android:id="@+id/textViewAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/profile_pic"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:text="@string/testaccount"
+            android:textColor="@color/SteelBlue"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/button1Remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/profile_pic"
+            android:layout_below="@+id/profile_pic"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="45dp"
+            android:layout_toLeftOf="@+id/view1"
+            android:paddingBottom="10dp"
+            android:text="Remove"
+            android:textColor="@color/White" />
+
+        <Button
+            android:id="@+id/button2Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button1Remove"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/view1"
+            android:text="Cancel"
+            android:textColor="@color/White" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_alignTop="@+id/button1Remove"
+            android:layout_centerHorizontal="true" />
+
+        <com.socioboard.t_board_pro.ui.AccountImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="26dp"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/account_image"
+            app:maskDrawable="@drawable/circle_mask" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button2Cancel"
+            android:layout_marginTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </RelativeLayout>
+
+</RelativeLayout>

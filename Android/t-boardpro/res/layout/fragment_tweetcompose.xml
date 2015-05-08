@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/Silver" >
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/composer_middle_normal"
+            android:gravity="start"
+            android:hint="@string/tweethint"
+            android:lines="4"
+            android:maxLength="140"
+            android:padding="5dp"
+            android:textColor="@color/black" >
+        </EditText>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/relativeLayout1"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_blue_matte"
+        android:paddingBottom="10dp"
+        android:text="@string/tweet"
+        android:textColor="@color/White" />
+
+</RelativeLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_frame_normal" >
+
+        <com.socioboard.t_board_pro.ui.AccountImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/account_image"
+            app:maskDrawable="@drawable/circle_mask" />
+
+        <TextView
+            android:id="@+id/usersName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/profile_pic"
+             android:textColor="@color/SteelBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tweetView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/usersName"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:paddingBottom="10dp"
+             android:textSize="12sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

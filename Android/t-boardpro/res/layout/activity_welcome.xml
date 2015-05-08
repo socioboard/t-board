@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_view" >
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="42dp"
+        android:text="@string/hello_world"
+        android:textColor="@color/White"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/welcome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:src="@drawable/twitter_sign_in" />
+
+</RelativeLayout>

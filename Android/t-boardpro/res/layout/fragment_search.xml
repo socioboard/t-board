@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rel"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/card" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/abc_ab_stacked_transparent_light_holo" >
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/searchView1"
+            android:layout_marginTop="2dp" />
+
+        <SearchView
+            android:id="@+id/searchView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="3dp"
+            android:padding="3dp" >
+        </SearchView>
+    </RelativeLayout>
+
+</RelativeLayout>
