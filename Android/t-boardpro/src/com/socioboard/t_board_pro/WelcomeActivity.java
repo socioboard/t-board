@@ -1,5 +1,7 @@
 package com.socioboard.t_board_pro;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -10,6 +12,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,37 +25,75 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.socioboard.t_board_pro.adapters.Viewpageradapter;
 import com.socioboard.t_board_pro.twitterapi.TwitterAccessTokenPost;
 import com.socioboard.t_board_pro.twitterapi.TwitterSignIn;
+import com.socioboard.t_board_pro.util.IntroViewPagerModel;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ModelUserDatas;
-import com.socioboard.t_board_pro.util.TwtboardproLocalData;
+import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.tboardpro.R;
+import com.viewpagerindicator.PageIndicator;
 
 public class WelcomeActivity extends Activity {
 
 	ImageView loginButton;
 
-	TwtboardproLocalData twiterManyLocalData;
+	TboardproLocalData twiterManyLocalData;
 	public String requestAccessToken, requestAccessSecret;
 	boolean callBackConfirm = false;
 	Dialog webDialog;
 	WebView webView;
 	ProgressDialog progressDialog;
+	PageIndicator indicator;
+	Viewpageradapter viewpageradapter;
+	ArrayList<IntroViewPagerModel> arrayList = new ArrayList<IntroViewPagerModel>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_welcome);
+
 		progressDialog = new ProgressDialog(WelcomeActivity.this);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCancelable(false);
-		setContentView(R.layout.activity_welcome);
 
-		loginButton = (ImageView) findViewById(R.id.login_button);
+		ViewPager pager = (ViewPager) findViewById(R.id.pager);
 
-		twiterManyLocalData = new TwtboardproLocalData(getApplicationContext());
+		indicator = (PageIndicator) findViewById(R.id.indicator);
+
+		loginButton = (ImageView) findViewById(R.id.loginbtn);
+
+		IntroViewPagerModel model = new IntroViewPagerModel();
+		model.setDrawable(R.drawable.intro_screen1);
+		model.setIntro_text(MainSingleTon.introtext1);
+		arrayList.add(model);
+
+		IntroViewPagerModel model2 = new IntroViewPagerModel();
+		model2.setDrawable(R.drawable.intro_screen2);
+		model2.setIntro_text(MainSingleTon.introtext2);
+		arrayList.add(model2);
+
+		IntroViewPagerModel model3 = new IntroViewPagerModel();
+		model3.setDrawable(R.drawable.intro_screen3);
+		model3.setIntro_text(MainSingleTon.introtext3);
+		arrayList.add(model3);
+
+		IntroViewPagerModel model4 = new IntroViewPagerModel();
+		model4.setDrawable(R.drawable.intro_screen4);
+		model4.setIntro_text(MainSingleTon.introtext4);
+		arrayList.add(model4);
+
+		viewpageradapter = new Viewpageradapter(getApplicationContext(),
+				arrayList);
+
+		pager.setAdapter(viewpageradapter);
+
+		indicator.setViewPager(pager);
+
+		twiterManyLocalData = new TboardproLocalData(getApplicationContext());
 
 		myprint("onCreate  ");
 
@@ -61,7 +102,7 @@ public class WelcomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				progressDialog.setMessage("Twitter SignIn process..");
+				progressDialog.setMessage("Signing in to Twitter..");
 
 				progressDialog.show();
 
@@ -263,7 +304,7 @@ public class WelcomeActivity extends Activity {
 				webDialog = new Dialog(WelcomeActivity.this);
 
 				webDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				
+
 				webDialog.setCancelable(true);
 
 				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -282,7 +323,7 @@ public class WelcomeActivity extends Activity {
 
 				webDialog.setContentView(R.layout.signin_webview);
 
-				webDialog.setCancelable(false);
+				webDialog.setCancelable(true);
 
 				String webLoadSignInUrl = MainSingleTon.signInRequestURL
 						+ requestAccessToken;
@@ -306,12 +347,17 @@ public class WelcomeActivity extends Activity {
 	@Override
 	// Detect when the back button is pressed
 	public void onBackPressed() {
-		if (webView.canGoBack()) {
-			webView.goBack();
-		} else {
-			// Let the system handle the back button
-			super.onBackPressed();
+		super.onBackPressed();
+
+		if (webDialog != null) {
+
+			if (webDialog.isShowing()) {
+
+				webDialog.dismiss();
+
+			}
 		}
+
 	}
 
 	class MyWebClient extends WebViewClient {
@@ -327,15 +373,28 @@ public class WelcomeActivity extends Activity {
 
 				myprint("final response to get tokens " + url);
 
-				String url1 = url.replace("http://globussoft.com/?", "");
+				String url1 = url.replace(
+						MainSingleTon.oauth_callbackURL + "?", "");
+
 				String[] tokenarray = url1.split("&");
+
+				if (tokenarray.length == 0) {
+
+					webDialog.dismiss();
+
+				}
+
 				String[] oauthtokenrray = tokenarray[0].split("=");
 				String[] oauthverifier = tokenarray[1].split("=");
-				webDialog.dismiss();
 				System.out.println("@@@@@@@@@@@@@   " + oauthtokenrray[1]
 						+ "++++++++++++  " + oauthverifier[1]);
 				new GetAccessToken().execute(oauthtokenrray[1],
 						oauthverifier[1]);
+
+				webView.destroy();
+
+				webDialog.dismiss();
+
 				return true;
 			}
 
@@ -387,7 +446,7 @@ public class WelcomeActivity extends Activity {
 
 	void myToastS(final String toastMsg) {
 
-		Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_LONG)
+		Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT)
 				.show();
 	}
 

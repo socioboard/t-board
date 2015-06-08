@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp" android:background="@drawable/popover_outside">
+
+    <RelativeLayout
+        android:id="@+id/reltime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/editbox_dropdown_background" >
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/trmp"
+            android:gravity="center"
+            android:text=" 1-12-2015"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/trmp"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/trmp"
+            android:gravity="center"
+            android:text="10:12"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/reltime"
+        android:layout_below="@+id/reltime"
+        android:background="@drawable/editbox_dropdown_background" >
+
+        <TextView
+            android:id="@+id/textViewUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="4dp"
+            android:text="#himanshuglobussoft" />
+
+        <TextView
+            android:id="@+id/textViewTweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textViewUser"
+            android:layout_below="@+id/textViewUser"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:text="This is the demo tweet version of the tweet. this can be in max 140 chars"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,268 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ab_solid_light_holo" >
+
+    <EditText
+        android:id="@+id/editText1HashTagSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/button1Go"
+        android:background="@drawable/editbox_background_normal"
+        android:hint="username"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="@color/black" >
+    </EditText>
+
+    <Button
+        android:id="@+id/button1Go"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/button1Remove"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/myBlue"
+        android:text="find"
+        android:textColor="@color/White" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText1HashTagSearch"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/popup_reply_input_field"
+        android:visibility="visible" >
+
+        <com.socioboard.t_board_pro.ui.AccountImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="7dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/account_image"
+            app:maskDrawable="@drawable/circle_mask" />
+
+        <Button
+            android:id="@+id/buttonUnfollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_blue_matte"
+            android:text="UnFollow"
+            android:textColor="@color/White"
+            android:textSize="10sp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/buttonFollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_blue_matte"
+            android:text=" +Follow   "
+            android:textColor="@color/White"
+            android:textSize="10sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/followerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:text="@string/testaccount"
+            android:textColor="@color/SteelBlue"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/usersFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/followerName"
+            android:layout_below="@+id/followerName"
+            android:text="@string/testaccount"
+            android:textColor="@color/Gray"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/textViewtmp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/followerName"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="27dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:paddingBottom="5dp"
+            android:text="@string/tweets"
+            android:textSize="10sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textViewNotweets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/profile_pic"
+            android:layout_alignLeft="@+id/textViewtmp1"
+            android:layout_alignRight="@+id/textViewtmp1"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textViewNoofFollowers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewNoOfFollowings"
+            android:layout_alignBottom="@+id/textViewNoOfFollowings"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignRight="@+id/textView2"
+            android:gravity="center"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewtmp1"
+            android:layout_alignBottom="@+id/textViewtmp1"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/textViewtmp1"
+            android:text="@string/following"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/textView1"
+            android:text="@string/followers"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textViewNoOfFollowings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewNotweets"
+            android:layout_alignBottom="@+id/textViewNotweets"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignRight="@+id/textView1"
+            android:gravity="center"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/datasheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/card_frame_normal"
+        android:visibility="visible" >
+
+        <TextView
+            android:id="@+id/textView3Record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="4dp"
+            android:text="followed for 33/56"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reloutProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button1"
+        android:layout_below="@+id/datasheet"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/reloutNbottom"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/datasheet"
+        android:layout_margin="5dp" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/reloutNbottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/container_down_full_dark" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/editText1Range"
+            android:background="@color/myBlue"
+            android:text="Copy followers"
+            android:textColor="@color/White" />
+
+        <EditText
+            android:id="@+id/editText1Range"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/button1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="99"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textColor="@color/black" >
+
+            <requestFocus />
+        </EditText>
+    </RelativeLayout>
+
+</RelativeLayout>

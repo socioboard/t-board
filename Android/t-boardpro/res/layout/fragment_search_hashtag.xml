@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/container_down_full_dark" >
+
+    <ListView
+        android:id="@+id/timelineListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/viewTmp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="8dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="3dp" />
+
+    <RelativeLayout
+        android:id="@+id/reloutProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/editText1HashTagSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/button1Go"
+        android:background="@drawable/editbox_background_normal"
+        android:hint="#trendingTopic"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:textColor="@color/black" >
+    </EditText>
+
+    <View
+        android:id="@+id/viewTmp"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_below="@+id/button1Go"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/button1Go"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/myBlue"
+        android:text="Go"
+        android:textColor="@color/White" />
+
+</RelativeLayout>

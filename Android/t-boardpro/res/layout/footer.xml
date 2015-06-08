@@ -23,11 +23,11 @@
 
         <ImageView
             android:id="@+id/footer_icon3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:paddingLeft="16dp"
-            android:src="@drawable/ic_sales" />
+            android:src="@drawable/add_acount_icon" />
 
         <TextView
             android:id="@+id/footer_text3"
@@ -40,7 +40,7 @@
             android:text="@string/adaccount"
             android:textColor="@color/text"
             android:textSize="14sp" />
-     </RelativeLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relSettings"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingLeft="@dimen/drawer_left"
-            android:src="@drawable/ic_settings" />
+            android:src="@drawable/settings_icon" />
 
         <TextView
             android:id="@+id/footer_text1"
@@ -65,6 +65,33 @@
             android:paddingLeft="@dimen/drawer_text_with_icon"
             android:paddingRight="@dimen/drawer_right"
             android:text="@string/settings"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relFeddBack"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_item_height"
+        android:layout_marginTop="5dp" >
+
+        <ImageView
+            android:id="@+id/footer_icon1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/drawer_left"
+            android:src="@drawable/feed_back_icon" />
+
+        <TextView
+            android:id="@+id/footer_text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:paddingLeft="@dimen/drawer_text_with_icon"
+            android:paddingRight="@dimen/drawer_right"
+            android:text="@string/feedback"
             android:textColor="@color/text"
             android:textSize="14sp" />
     </RelativeLayout>

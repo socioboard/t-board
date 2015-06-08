@@ -1,8 +1,5 @@
 package com.socioboard.t_board_pro.adapters;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -10,9 +7,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,29 +17,39 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.socioboard.t_board_pro.AnyUserProfileDialog;
+import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.lazylist.ImageLoader;
 import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestFollow;
 import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestUnFollow;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.util.MainSingleTon;
-import com.socioboard.t_board_pro.util.MyFollowersModel;
+import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
+
 
 public class MyFollowersAdapter extends BaseAdapter {
 
-	private Context context;
+	public Context context;
 
-	private ArrayList<MyFollowersModel> tweetModels;
+	public ArrayList<ToFollowingModel> tweetModels;
+
+	Activity activity;
+
 	ImageLoader imageLoader;
 
 	ProgressDialog progressDialog;
 
-	Activity activity;
-
 	public MyFollowersAdapter(Context context,
-			ArrayList<MyFollowersModel> tweetModels, Activity activity) {
+			ArrayList<ToFollowingModel> tweetModels, Activity activity) {
+
 		this.context = context;
+
 		this.tweetModels = tweetModels;
+
+		imageLoader = new ImageLoader(context);
+
+		this.activity = activity;
 
 		activity.runOnUiThread(new Runnable() {
 
@@ -57,10 +61,8 @@ public class MyFollowersAdapter extends BaseAdapter {
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				progressDialog.setIndeterminate(true);
 				progressDialog.setCancelable(false);
-
 			}
 		});
-		imageLoader = new ImageLoader(context);
 
 	}
 
@@ -70,7 +72,7 @@ public class MyFollowersAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public MyFollowersModel getItem(int position) {
+	public ToFollowingModel getItem(int position) {
 		return tweetModels.get(position);
 	}
 
@@ -86,22 +88,61 @@ public class MyFollowersAdapter extends BaseAdapter {
 
 			LayoutInflater mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-			convertView = mInflater.inflate(R.layout.my_followers_items,
-					parent, false);
+			convertView = mInflater.inflate(R.layout.to_following_item, parent,
+					false);
 		}
 
-		MyFollowersModel myFollowersModel = getItem(position);
+		final ToFollowingModel toFollowingModel = getItem(position);
 
 		ImageView profilePic = (ImageView) convertView
 				.findViewById(R.id.profile_pic);
+		profilePic.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				String newUser = toFollowingModel.getUserName();
+
+				AnyUserProfileDialog anyUserProfile = new AnyUserProfileDialog(
+						activity, newUser.replace("@", ""), toFollowingModel
+								.getId());
+
+			}
+		});
 
 		TextView userName = (TextView) convertView
 				.findViewById(R.id.followerName);
 
-		Bitmap userImage = myFollowersModel.getUserimage();
+		userName.setText(toFollowingModel.getUserName());
 
-		userName.setText(myFollowersModel.getUserName());
+		userName.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				String newUser = toFollowingModel.getUserName();
+
+				AnyUserProfileDialog anyUserProfile = new AnyUserProfileDialog(
+						activity, newUser.replace("@", ""), toFollowingModel
+								.getId());
+
+			}
+		});
+
+		TextView noOfTweets = (TextView) convertView
+				.findViewById(R.id.textViewNotweets);
+
+		noOfTweets.setText(toFollowingModel.getNoTweets());
+
+		TextView noOfFollowings = (TextView) convertView
+				.findViewById(R.id.textViewNoOfFollowings);
+
+		noOfFollowings.setText(toFollowingModel.getNoToFollowing());
+
+		TextView noOfFollowers = (TextView) convertView
+				.findViewById(R.id.textViewNoofFollowers);
+
+		noOfFollowers.setText(toFollowingModel.getNoFollowers());
 
 		final Button buttonFollow = (Button) convertView
 				.findViewById(R.id.buttonFollow);
@@ -109,7 +150,7 @@ public class MyFollowersAdapter extends BaseAdapter {
 		final Button buttonUnfollow = (Button) convertView
 				.findViewById(R.id.buttonUnfollow);
 
-		if (myFollowersModel.isFollowingStatus()) {
+		if (toFollowingModel.isFollowingStatus()) {
 
 			buttonFollow.setVisibility(View.INVISIBLE);
 
@@ -122,17 +163,13 @@ public class MyFollowersAdapter extends BaseAdapter {
 			buttonUnfollow.setVisibility(View.INVISIBLE);
 
 		}
-		
+
 		final int pos = position;
 
 		buttonFollow.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
-				buttonFollow.setVisibility(View.INVISIBLE);
-
-				buttonUnfollow.setVisibility(View.VISIBLE);
 
 				myprint("buttonFollow " + getItem(pos));
 
@@ -151,7 +188,9 @@ public class MyFollowersAdapter extends BaseAdapter {
 
 							@Override
 							public void onSuccess(String jsonResult) {
-								progressDialog.cancel();
+
+								hideProgress();
+
 								myprint("buttonFollow onSuccess");
 
 								activity.runOnUiThread(new Runnable() {
@@ -165,6 +204,12 @@ public class MyFollowersAdapter extends BaseAdapter {
 										buttonUnfollow
 												.setVisibility(View.VISIBLE);
 
+										++MainSingleTon.followingCount;
+										
+										MainSingleTon.toFollowingModelsIDs.add(getItem(pos).getId());
+
+										MainActivity.isNeedToRefreshDrawer = true;
+
 									}
 								});
 
@@ -176,13 +221,13 @@ public class MyFollowersAdapter extends BaseAdapter {
 							public void onFailure(Exception e) {
 
 								myprint("buttonFollow onFailure" + e);
-								
-								progressDialog.cancel();
 
+								hideProgress();
 							}
 						});
 
-				twitterPostRequestFollow.executeThisRequest(getItem(pos).getId());
+				twitterPostRequestFollow.executeThisRequest(getItem(pos)
+						.getId());
 
 			}
 		});
@@ -193,13 +238,15 @@ public class MyFollowersAdapter extends BaseAdapter {
 			public void onClick(View v) {
 
 				myprint("buttonUnfollow " + getItem(pos));
-				progressDialog.setMessage( getItem(pos).getUserName()+" UnFollowing...");
-				progressDialog.show();
-				
+				progressDialog.setMessage(getItem(pos).getUserName()
+						+ " UnFollowing...");
+
+				showProgress();
+
 				TwitterPostRequestUnFollow twitterPostRequestUnFollow = new TwitterPostRequestUnFollow(
 						MainSingleTon.currentUserModel,
 						new TwitterRequestCallBack() {
- 
+
 							@Override
 							public void onSuccess(JSONObject jsonObject) {
 
@@ -209,8 +256,8 @@ public class MyFollowersAdapter extends BaseAdapter {
 							public void onSuccess(String jsonResult) {
 
 								myprint("buttonUnfollow onSuccess");
-				
-								progressDialog.cancel();
+
+								hideProgress();
 
 								activity.runOnUiThread(new Runnable() {
 
@@ -228,6 +275,12 @@ public class MyFollowersAdapter extends BaseAdapter {
 												buttonUnfollow
 														.setVisibility(View.INVISIBLE);
 
+												--MainSingleTon.followingCount;
+												
+												MainSingleTon.toFollowingModelsIDs.remove(getItem(pos).getId());
+
+												MainActivity.isNeedToRefreshDrawer = true;
+
 											}
 										});
 									}
@@ -239,9 +292,8 @@ public class MyFollowersAdapter extends BaseAdapter {
 
 							@Override
 							public void onFailure(Exception e) {
-								
-								progressDialog.cancel();
 
+								hideProgress();
 								myprint("buttonUnfollow onFailure" + e);
 							}
 						});
@@ -252,69 +304,42 @@ public class MyFollowersAdapter extends BaseAdapter {
 			}
 		});
 
-		imageLoader.DisplayImage(myFollowersModel.getUserImagerUrl(), profilePic);
+		imageLoader.DisplayImage(toFollowingModel.getUserImagerUrl(),
+				profilePic);
 
- 		return convertView;
-
+		return convertView;
 	}
 
-	public class ImageLoaders extends AsyncTask<Object, String, Bitmap> {
-
-		ImageView profilePic;
-
-		private Bitmap bitmap = null;
-
-		Integer position;
-
-		@Override
-		protected Bitmap doInBackground(Object... parameters) {
-
-			// Get the passed arguments here
-			profilePic = (ImageView) parameters[0];
-
-			Integer position = (Integer) parameters[1];
-
-			try {
-
-				Bitmap userImage = BitmapFactory.decodeStream(new URL(getItem(
-						position).getUserImagerUrl()).openStream());
-
-				getItem(position).setUserimage(userImage);
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			return bitmap;
-		}
-
-		@Override
-		protected void onPostExecute(final Bitmap bitmap) {
-
-			if (bitmap != null) {
-
-				new Handler().post(new Runnable() {
-
-					@Override
-					public void run() {
-
-						profilePic.setImageBitmap(bitmap);
-
-						notifyDataSetChanged();
-
-					}
-				});
-
-			}
-		}
-	}
 	public void myprint(Object msg) {
 
 		System.out.println(msg.toString());
 
 	}
-	
-	
+
+	void showProgress() {
+
+		activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				progressDialog.show();
+
+			}
+		});
+	}
+
+	void hideProgress() {
+
+		activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				progressDialog.cancel();
+
+			}
+		});
+	}
+
 }

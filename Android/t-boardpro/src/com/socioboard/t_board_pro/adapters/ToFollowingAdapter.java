@@ -1,8 +1,5 @@
 package com.socioboard.t_board_pro.adapters;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -10,9 +7,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +15,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.socioboard.t_board_pro.AnyUserProfileDialog;
+import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.lazylist.ImageLoader;
 import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestFollow;
 import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestUnFollow;
@@ -36,9 +31,10 @@ public class ToFollowingAdapter extends BaseAdapter {
 
 	public Context context;
 
-	private ArrayList<ToFollowingModel> tweetModels;
+	public ArrayList<ToFollowingModel> tweetModels;
 
 	Activity activity;
+
 	ImageLoader imageLoader;
 
 	ProgressDialog progressDialog;
@@ -50,8 +46,9 @@ public class ToFollowingAdapter extends BaseAdapter {
 
 		this.tweetModels = tweetModels;
 
-		this.activity = activity;
 		imageLoader = new ImageLoader(context);
+
+		this.activity = activity;
 
 		activity.runOnUiThread(new Runnable() {
 
@@ -94,36 +91,56 @@ public class ToFollowingAdapter extends BaseAdapter {
 					false);
 		}
 
-		ToFollowingModel toFollowingModel = getItem(position);
+		final ToFollowingModel toFollowingModel = getItem(position);
 
 		ImageView profilePic = (ImageView) convertView
 				.findViewById(R.id.profile_pic);
+		profilePic.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				String newUser = toFollowingModel.getUserName();
+
+				AnyUserProfileDialog anyUserProfile = new AnyUserProfileDialog(
+						activity, newUser.replace("@", ""), toFollowingModel
+								.getId());
+
+			}
+		});
 
 		TextView userName = (TextView) convertView
 				.findViewById(R.id.followerName);
 
 		userName.setText(toFollowingModel.getUserName());
 
-		TextView noOfTweets = (TextView) convertView
-				.findViewById(R.id.textViewNotweets);
+		userName.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				String newUser = toFollowingModel.getUserName();
+
+				AnyUserProfileDialog anyUserProfile = new AnyUserProfileDialog(activity, newUser.replace("@", ""), toFollowingModel .getId());
+
+			}
+		});
+
+		TextView noOfTweets = (TextView) convertView.findViewById(R.id.textViewNotweets);
 
 		noOfTweets.setText(toFollowingModel.getNoTweets());
 
-		TextView noOfFollowings = (TextView) convertView
-				.findViewById(R.id.textViewNoOfFollowings);
+		TextView noOfFollowings = (TextView) convertView.findViewById(R.id.textViewNoOfFollowings);
 
 		noOfFollowings.setText(toFollowingModel.getNoToFollowing());
 
-		TextView noOfFollowers = (TextView) convertView
-				.findViewById(R.id.textViewNoofFollowers);
+		TextView noOfFollowers = (TextView) convertView.findViewById(R.id.textViewNoofFollowers);
 
 		noOfFollowers.setText(toFollowingModel.getNoFollowers());
 
-		final Button buttonFollow = (Button) convertView
-				.findViewById(R.id.buttonFollow);
+		final Button buttonFollow = (Button) convertView.findViewById(R.id.buttonFollow);
 
-		final Button buttonUnfollow = (Button) convertView
-				.findViewById(R.id.buttonUnfollow);
+		final Button buttonUnfollow = (Button) convertView.findViewById(R.id.buttonUnfollow);
 
 		if (toFollowingModel.isFollowingStatus()) {
 
@@ -136,6 +153,14 @@ public class ToFollowingAdapter extends BaseAdapter {
 			buttonFollow.setVisibility(View.VISIBLE);
 
 			buttonUnfollow.setVisibility(View.INVISIBLE);
+
+		}
+
+		if (MainSingleTon.currentUserModel.getUserid().contains(
+				toFollowingModel.getId())) {
+
+			buttonUnfollow.setVisibility(View.INVISIBLE);
+			buttonFollow.setVisibility(View.INVISIBLE);
 
 		}
 
@@ -173,9 +198,18 @@ public class ToFollowingAdapter extends BaseAdapter {
 									@Override
 									public void run() {
 
-										buttonFollow.setVisibility(View.INVISIBLE);
+										buttonFollow
+												.setVisibility(View.INVISIBLE);
 
-										buttonUnfollow.setVisibility(View.VISIBLE);
+										buttonUnfollow
+												.setVisibility(View.VISIBLE);
+
+										++MainSingleTon.followingCount;
+										
+										MainSingleTon.toFollowingModelsIDs
+												.add(getItem(pos).getId());
+										
+										MainActivity.isNeedToRefreshDrawer = true;
 
 									}
 								});
@@ -188,7 +222,7 @@ public class ToFollowingAdapter extends BaseAdapter {
 							public void onFailure(Exception e) {
 
 								myprint("buttonFollow onFailure" + e);
-								
+
 								hideProgress();
 							}
 						});
@@ -205,6 +239,7 @@ public class ToFollowingAdapter extends BaseAdapter {
 			public void onClick(View v) {
 
 				myprint("buttonUnfollow " + getItem(pos));
+
 				progressDialog.setMessage(getItem(pos).getUserName()
 						+ " UnFollowing...");
 
@@ -224,9 +259,9 @@ public class ToFollowingAdapter extends BaseAdapter {
 
 								myprint("buttonUnfollow onSuccess");
 
-                                hideProgress();
-								
-                                activity.runOnUiThread(new Runnable() {
+								hideProgress();
+
+								activity.runOnUiThread(new Runnable() {
 
 									@Override
 									public void run() {
@@ -241,6 +276,14 @@ public class ToFollowingAdapter extends BaseAdapter {
 
 												buttonUnfollow
 														.setVisibility(View.INVISIBLE);
+
+												--MainSingleTon.followingCount;
+
+												MainSingleTon.toFollowingModelsIDs
+														.remove(getItem(pos)
+																.getId());
+
+												MainActivity.isNeedToRefreshDrawer = true;
 
 											}
 										});
@@ -265,8 +308,9 @@ public class ToFollowingAdapter extends BaseAdapter {
 			}
 		});
 
-		imageLoader.DisplayImage(toFollowingModel.getUserImagerUrl(), profilePic);
- 
+		imageLoader.DisplayImage(toFollowingModel.getUserImagerUrl(),
+				profilePic);
+
 		return convertView;
 	}
 
@@ -274,59 +318,6 @@ public class ToFollowingAdapter extends BaseAdapter {
 
 		System.out.println(msg.toString());
 
-	}
-
-	public class ImageLoaders extends AsyncTask<Object, String, Bitmap> {
-
-		ImageView profilePic;
-
-		private Bitmap bitmap = null;
-
-		Integer position;
-
-		@Override
-		protected Bitmap doInBackground(Object... parameters) {
-
-			// Get the passed arguments here
-			profilePic = (ImageView) parameters[0];
-
-			Integer position = (Integer) parameters[1];
-
-			try {
-
-				Bitmap userImage = BitmapFactory.decodeStream(new URL(getItem(
-						position).getUserImagerUrl()).openStream());
-
-				getItem(position).setUserimage(userImage);
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			return bitmap;
-		}
-
-		@Override
-		protected void onPostExecute(final Bitmap bitmap) {
-
-			if (bitmap != null) {
-
-				activity.runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						profilePic.setImageBitmap(bitmap);
-
-						notifyDataSetChanged();
-
-					}
-				});
-
-			}
-		}
 	}
 
 	void showProgress() {

@@ -4,7 +4,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.animation.Animator;
@@ -15,12 +21,14 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,7 +38,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -54,20 +61,27 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.socioboard.t_board_pro.adapters.AccountAdapter;
 import com.socioboard.t_board_pro.adapters.DrawerAdapter;
-import com.socioboard.t_board_pro.dialog.Multi_Dialog;
-import com.socioboard.t_board_pro.dialog.Radio_Dialog;
-import com.socioboard.t_board_pro.dialog.Single_Dialog;
-import com.socioboard.t_board_pro.dialog.Standard_Dialog;
+import com.socioboard.t_board_pro.fragments.FragmentCopyFollowers;
+import com.socioboard.t_board_pro.fragments.FragmentFans;
+import com.socioboard.t_board_pro.fragments.FragmentFavourites;
+import com.socioboard.t_board_pro.fragments.FragmentHashTagSearch;
 import com.socioboard.t_board_pro.fragments.FragmentIAMFollowingTo;
+import com.socioboard.t_board_pro.fragments.FragmentMutualFollowers;
+import com.socioboard.t_board_pro.fragments.FragmentNanFollowers;
+import com.socioboard.t_board_pro.fragments.FragmentOverlappingFollowers;
+import com.socioboard.t_board_pro.fragments.FragmentOverlappingFollowings;
 import com.socioboard.t_board_pro.fragments.FragmentProfile;
 import com.socioboard.t_board_pro.fragments.FragmentSchedule;
 import com.socioboard.t_board_pro.fragments.FragmentSearch;
+import com.socioboard.t_board_pro.fragments.FragmentSettingsRight;
 import com.socioboard.t_board_pro.fragments.FragmentTimeLine;
 import com.socioboard.t_board_pro.fragments.FragmentTweet;
 import com.socioboard.t_board_pro.fragments.FragmentUsersFollowingToMe;
@@ -75,59 +89,98 @@ import com.socioboard.t_board_pro.twitterapi.OAuthSignaturesGenerator;
 import com.socioboard.t_board_pro.twitterapi.TwitterAccessTokenPost;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterSignIn;
-import com.socioboard.t_board_pro.twitterapi.TwitterTimeLineRequest2;
+import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
+import com.socioboard.t_board_pro.twitterapi.TwitterUserShowRequest;
 import com.socioboard.t_board_pro.ui.Items;
-import com.socioboard.t_board_pro.ui.MultiSwipeRefreshLayout;
+import com.socioboard.t_board_pro.util.ConnectionDetector;
+import com.socioboard.t_board_pro.util.Const;
+import com.socioboard.t_board_pro.util.FullUserDetailModel;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ModelUserDatas;
-import com.socioboard.t_board_pro.util.TwtboardproLocalData;
+import com.socioboard.t_board_pro.util.SearchDetailModel;
+import com.socioboard.t_board_pro.util.TboardproLocalData;
+import com.socioboard.t_board_pro.util.TmpCallback;
+import com.socioboard.t_board_pro.util.TweetDMScheduller;
+import com.socioboard.t_board_pro.util.Utils;
 import com.socioboard.tboardpro.R;
 
-public class MainActivity extends ActionBarActivity implements
-		MultiSwipeRefreshLayout.CanChildScrollUpCallback {
+public class MainActivity extends ActionBarActivity {
 
- 	public static Menu yoyo;
-	private String[] mDrawerTitles;
+ 	private String[] mDrawerTitles;
+
 	private TypedArray mDrawerIcons;
+
 	private ArrayList<Items> drawerItems;
+
 	private ArrayList<ModelUserDatas> accountList;
+
 	private DrawerLayout mDrawerLayout;
+
 	private ListView mDrawerList_Left, mDrawerList_Right;
+
 	private ActionBarDrawerToggle mDrawerToggle;
+
 	private CharSequence mDrawerTitle;
+
 	private CharSequence mTitle;
-	TwtboardproLocalData twiterManyLocalData;
+
+	TboardproLocalData twiterManyLocalData;
+
 	OAuthSignaturesGenerator oAuthSignaturesGenerator;
+
 	Bitmap userImage, userbannerImage;
+
 	public String requestAccessToken, requestAccessSecret;
-	boolean callBackConfirm = false;
+
+	boolean callBackConfirm = false, isFirstTimeCountsChecked = false;
+
 	Dialog webDialog;
+
 	WebView webView;
+
+	TextView title_textview;
+
 	ProgressDialog progressDialog;
+
+	public static ProgressBar toolbarProgressBar;
+
+	static Handler handler = new Handler();
+	
+	public static Menu yoyo;
+
+	public ImageView imageViewSettings;
 
 	FragmentManager fragmentManager;
 
 	FragmentTransaction fragmentTransaction;
 
+	TweetDMScheduller myReceiver;
+
 	TextView textViewUserName;
 
 	ImageView imageViewProfileImage, imageviewCoverTimeline;
 
-	RelativeLayout relOutAdAccount, relOutSettingsRight, relOutSettingsLeft,
-			relOutFeedbackLeft, relOutHeader;
-
-	private static FragmentManager mManager;
+	RelativeLayout relOutAdAccount, relOutSettingsRight, relOutFeedbackLeft,
+			relOutHeader;
 
 	Toolbar toolbar;
 
-	private MultiSwipeRefreshLayout mSwipeRefreshLayout;
+	Timer timer = new Timer(), timer2 = new Timer();
+
+	DrawerAdapter drawerAdapter;
+
+	private FragmentManager mManager;
+
+	public static boolean isNeedToRefreshDrawer = false;
+
+	public static boolean isNeedToSendbroadCast = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		myprint("onCreate");
+		myprint("onCreateMainActivity");
 
 		progressDialog = new ProgressDialog(MainActivity.this);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -147,6 +200,11 @@ public class MainActivity extends ActionBarActivity implements
 
 		ImageView img = (ImageView) toolbar.findViewById(R.id.img);
 
+		title_textview = (TextView) toolbar.findViewById(R.id.title);
+
+		toolbarProgressBar = (ProgressBar) toolbar
+				.findViewById(R.id.toolbarProgressBar);
+
 		img.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -162,27 +220,37 @@ public class MainActivity extends ActionBarActivity implements
 		if (toolbar != null)
 			setSupportActionBar(toolbar);
 
-		twiterManyLocalData = new TwtboardproLocalData(getApplicationContext());
+		twiterManyLocalData = new TboardproLocalData(getApplicationContext());
+
+		MainSingleTon.connectionDetector = new ConnectionDetector(
+				getApplicationContext());
 
 		initView();
-
-		loadTHisFragment();
 
 		CookieSyncManager.createInstance(getApplicationContext());
 		CookieManager cookieManager = CookieManager.getInstance();
 		cookieManager.removeAllCookie();
 
+		myReceiver = new TweetDMScheduller();
+
+		IntentFilter intentFilter = new IntentFilter(
+				MainSingleTon.broadcataction);
+
+		MainActivity.this.registerReceiver(myReceiver, intentFilter);
+
 	}
 
 	private void loadTHisFragment() {
-
-		// new UserAccountData().execute();
 
 		fragmentTransaction = fragmentManager.beginTransaction();
 
 		fragmentTransaction.replace(R.id.main_content, new FragmentTimeLine());
 
 		fragmentTransaction.commit();
+
+		loadMyProfileImages();
+
+		title_textview.setText(mDrawerTitles[2]);
 
 	}
 
@@ -192,14 +260,14 @@ public class MainActivity extends ActionBarActivity implements
 
 		mDrawerToggle.syncState();
 
-		trySetupSwipeRefresh();
-
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+
 		mDrawerToggle.onConfigurationChanged(newConfig);
+
 		System.out.println(" + + + + +   onConfigurationChanged + + + + +");
 	}
 
@@ -216,17 +284,14 @@ public class MainActivity extends ActionBarActivity implements
 		case 0:
 			fragment = new FragmentProfile();
 			myprint("FragmentProfile");
-
 			break;
 		case 1:
-			fragment = new FragmentTweet();
+			fragment = new FragmentTweet();  
 			myprint("FragmentTweet");
-
 			break;
 		case 2:
 			fragment = new FragmentTimeLine();
 			myprint("FragmentTimeLine");
-
 			break;
 		case 3:
 			fragment = new FragmentIAMFollowingTo();
@@ -239,19 +304,91 @@ public class MainActivity extends ActionBarActivity implements
 			break;
 
 		case 5:
+			fragment = new FragmentCopyFollowers();
+			myprint("FragmentCopyFollowers");
+			break;
+
+		case 6:
+			fragment = new FragmentFavourites();
+			myprint("FragmentFavourites");
+			break;
+
+		case 7:
 			fragment = new FragmentSearch();
 			myprint("FragmentSearch");
 			break;
 
-		case 6:
+		case 8:
+			fragment = new FragmentHashTagSearch();
+			myprint("FragmentHashTagSearch");
+			break;
+
+		case 9:
+			
+			if (MainSingleTon.fansCount == -1) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentFans();
+				myprint("FragmentFans");
+			}
+			break;
+
+		case 10:
+			
+			if (MainSingleTon.mutualfansCount == -1) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentMutualFollowers();
+				myprint("FragmentMutualFans");
+			}
+			break;
+
+		case 11:
+	
+			if (MainSingleTon.fansCount == -1) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentNanFollowers();
+				myprint("FragmentNanFollowers");
+			}
+			break;
+
+		case 12:
+
+			if (MainSingleTon.fansCount == -1) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentOverlappingFollowers();
+				myprint("FragmentOverlappingFollowers");
+			}
+
+			break;
+
+		case 13:
+
+			if (MainSingleTon.fansCount == -1) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentOverlappingFollowings();
+				myprint("FragmentOverlappingFollowings");
+			}
+
+			break;
+
+		case 14:
 			fragment = new FragmentSchedule();
 			myprint("FragmentSchedule");
-
 			break;
+
 		default:
 			myprint("default: ");
-
 			break;
+		
 		}
 
 		if (fragment != null) {
@@ -294,6 +431,8 @@ public class MainActivity extends ActionBarActivity implements
 
 		}
 
+		title_textview.setText(mDrawerTitles[position]);
+
 	}
 
 	private void selectItemRight(int position, View view) {
@@ -303,18 +442,25 @@ public class MainActivity extends ActionBarActivity implements
 		myprint("  accountList.size()  " + accountList.size());
 
 		// Highlight the selected item, update the title, and close the drawer
+
 		if (mDrawerList_Left.isEnabled()) {
 
 			mDrawerList_Left.setItemChecked(position, true);
+
 			if (position != 0) {
+
 				setTitle(mDrawerTitles[position]);
 
 			}
+
 			mDrawerLayout.closeDrawer(mDrawerList_Left);
+
 		} else {
 
 			mDrawerList_Right.setItemChecked(position, true);
+
 			if (position != 0) {
+
 				setTitle(mDrawerTitles[position]);
 
 			}
@@ -322,7 +468,7 @@ public class MainActivity extends ActionBarActivity implements
 			mDrawerLayout.closeDrawer(mDrawerList_Right);
 		}
 
-		MainSingleTon.currentUserModel = accountList.get(position-1);
+		MainSingleTon.currentUserModel = accountList.get(position - 1);
 
 		setThisAsACurrentAccount(MainSingleTon.currentUserModel);
 
@@ -428,57 +574,33 @@ public class MainActivity extends ActionBarActivity implements
 
 	}
 
-	@Override
-	public boolean canSwipeRefreshChildScrollUp() {
-		return false;
-	}
-
-	private void trySetupSwipeRefresh() {
-
-		mSwipeRefreshLayout = (MultiSwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-
-		if (mSwipeRefreshLayout != null) {
-
-			mSwipeRefreshLayout.setColorSchemeResources(
-					R.color.refresh_progress_1, R.color.refresh_progress_2,
-					R.color.refresh_progress_3);
-
-			mSwipeRefreshLayout
-					.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-						@Override
-						public void onRefresh() {
-							Toast.makeText(getApplication(), "Refresh!",
-									Toast.LENGTH_LONG).show();
-						}
-					});
-
-			if (mSwipeRefreshLayout instanceof MultiSwipeRefreshLayout) {
-
-				MultiSwipeRefreshLayout mswrl = (MultiSwipeRefreshLayout) mSwipeRefreshLayout;
-
-				mswrl.setCanChildScrollUpCallback(this);
-			}
-
-		}
-
-	}
-
 	private class DrawerItemClickListenerLeft implements
 			ListView.OnItemClickListener {
+
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position,
 				long id) {
 			selectItemLeft(position, view);
 		}
+
 	}
 
 	private class DrawerItemClickListenerRight implements
 			ListView.OnItemClickListener {
+
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position,
 				long id) {
-			selectItemRight(position, view);
+
+			if (accountList.size() == 0) {
+
+			} else {
+
+				selectItemRight(position, view);
+
+			}
 		}
+
 	}
 
 	private void initView() {
@@ -540,17 +662,32 @@ public class MainActivity extends ActionBarActivity implements
 		final ViewGroup footerR = (ViewGroup) inflater.inflate(R.layout.footer,
 				mDrawerList_Right, false);
 
+		imageViewSettings = (ImageView) headerR
+				.findViewById(R.id.imageView1headerSettings);
+
+		imageViewSettings.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				accountSettings();
+
+			}
+		});
+
+		if (twiterManyLocalData.getAllIds().size() == 1) {
+
+			imageViewSettings.setVisibility(View.VISIBLE);
+		}
+
 		relOutAdAccount = (RelativeLayout) footerR
 				.findViewById(R.id.relAddAccount);
 
 		relOutSettingsRight = (RelativeLayout) footerR
 				.findViewById(R.id.relSettings);
 
-		relOutFeedbackLeft = (RelativeLayout) footer
-				.findViewById(R.id.relfeedback);
-
-		relOutSettingsLeft = (RelativeLayout) footer
-				.findViewById(R.id.relSettings);
+		relOutFeedbackLeft = (RelativeLayout) footerR
+				.findViewById(R.id.relFeddBack);
 
 		mDrawerList_Left.addFooterView(footer, null, true); // true = clickable
 
@@ -576,9 +713,9 @@ public class MainActivity extends ActionBarActivity implements
 		mDrawerList_Right.setLayoutParams(lpR);
 
 		// Set the adapter for the list view
+		drawerAdapter = new DrawerAdapter(getApplicationContext(), drawerItems);
 
-		mDrawerList_Left.setAdapter(new DrawerAdapter(getApplicationContext(),
-				drawerItems));
+		mDrawerList_Left.setAdapter(drawerAdapter);
 
 		// Set the list's click listener
 
@@ -599,7 +736,7 @@ public class MainActivity extends ActionBarActivity implements
 				CookieManager cookieManager = CookieManager.getInstance();
 				cookieManager.removeAllCookie();
 
-				progressDialog.setMessage("Twitter SignIn process..");
+				progressDialog.setMessage("Signing in to Twitter..");
 
 				showProgress();
 
@@ -624,22 +761,23 @@ public class MainActivity extends ActionBarActivity implements
 			}
 		});
 
-		relOutSettingsLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				myprint("relOutSettingsLeft");
-
-			}
-		});
-
 		relOutSettingsRight.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
 				myprint("relOutSettingsRight");
+
+				fragmentTransaction = fragmentManager.beginTransaction();
+
+				fragmentTransaction.replace(R.id.main_content,
+						new FragmentSettingsRight());
+
+				fragmentTransaction.commit();
+
+				title_textview.setText("Settings");
+
+				mDrawerLayout.closeDrawer(mDrawerList_Right);
 
 			}
 		});
@@ -669,6 +807,54 @@ public class MainActivity extends ActionBarActivity implements
 		setRightSideDrawer();
 
 		setThisAsACurrentAccount(MainSingleTon.currentUserModel);
+
+		timer2.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				if (isNeedToRefreshDrawer) {
+
+					MainActivity.isNeedToRefreshDrawer = false;
+
+					if (isFirstTimeCountsChecked) {
+
+						determineEntitiesCounts();
+					}
+
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+
+							int listCount = mDrawerList_Left.getCount();
+
+							mDrawerList_Left.setAdapter(drawerAdapter);
+
+							mDrawerList_Left.setScrollY(listCount);
+
+						}
+					});
+				}
+			}
+		}, 2000, 1000);
+
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		FlurryAgent.onStartSession(MainActivity.this);
+
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		FlurryAgent.onEndSession(MainActivity.this);
+
 	}
 
 	protected void startNewLogInProcess() {
@@ -759,9 +945,9 @@ public class MainActivity extends ActionBarActivity implements
 				webDialog = new Dialog(MainActivity.this);
 
 				webDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				
+
 				webDialog.setCancelable(true);
-				
+
 				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 
 				Window window = webDialog.getWindow();
@@ -778,7 +964,7 @@ public class MainActivity extends ActionBarActivity implements
 
 				webDialog.setContentView(R.layout.signin_webview);
 
-				webDialog.setCancelable(false);
+				webDialog.setCancelable(true);
 
 				String webLoadSignInUrl = MainSingleTon.signInRequestURL
 						+ requestAccessToken;
@@ -824,13 +1010,23 @@ public class MainActivity extends ActionBarActivity implements
 
 				myprint("final response to get tokens " + url);
 
-				String url1 = url.replace("http://globussoft.com/?", "");
+				if (url.contains("denied")) {
+
+					webView.destroy();
+
+					webDialog.dismiss();
+
+				}
+
+				String url1 = url.replace(MainSingleTon.oauth_callbackURL, "");
 
 				String[] tokenarray = url1.split("&");
 
 				String[] oauthtokenrray = tokenarray[0].split("=");
 
 				String[] oauthverifier = tokenarray[1].split("=");
+
+				webView.destroy();
 
 				webDialog.dismiss();
 
@@ -932,7 +1128,6 @@ public class MainActivity extends ActionBarActivity implements
 		// ..................................................
 
 		String[] array1 = baseString.split("&");
-
 		String[] arrayaccessToken = array1[0].split("=");
 		String[] arrayTokenSecret = array1[1].split("=");
 		String[] arrayUserID = array1[2].split("=");
@@ -956,21 +1151,48 @@ public class MainActivity extends ActionBarActivity implements
 
 		if (twiterManyLocalData.getUserData(addNewAccountModel.getUserid()) != null) {
 
-			myToastL("Fucker You are already Added");
+			myToastL("You are already Added");
 
 		} else {
 
 			twiterManyLocalData.addNewUserAccount(addNewAccountModel);
+
 		}
 
 		// Update UI
 
 		setRightSideDrawer();
+
+		TwitterUserShowRequest userShowRequest = new TwitterUserShowRequest(
+				addNewAccountModel, new TwitterRequestCallBack() {
+
+					@Override
+					public void onSuccess(JSONObject jsonObject) {
+
+						myprint("onSuccess " + jsonObject);
+
+						parseJsonResultForAccountData(jsonObject);
+
+					}
+
+					@Override
+					public void onSuccess(String jsonResult) {
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void onFailure(Exception e) {
+						// TODO Auto-generated method stub
+					}
+				});
+
+		userShowRequest.executeThisRequest(addNewAccountModel.getUsername());
+
 	}
 
 	void myToastS(final String toastMsg) {
 
-		Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_LONG)
+		Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT)
 				.show();
 	}
 
@@ -1035,86 +1257,6 @@ public class MainActivity extends ActionBarActivity implements
 		anim.start();
 	}
 
-	public static void showMyDialog(String title, String message,
-			String negativeButton, String positiveButton) {
-		Standard_Dialog newDialog = Standard_Dialog.newInstance(title, message,
-				negativeButton, positiveButton);
-		newDialog.show(mManager, "dialog");
-	}
-
-	public static void showMySingleDialog(String title,
-			ArrayList<String> dialogItems, String negativeButton,
-			String positiveButton) {
-		Single_Dialog newDialog = Single_Dialog.newInstance(title, dialogItems,
-				negativeButton, positiveButton);
-		newDialog.show(mManager, "dialog");
-	}
-
-	public static void showMyRadioDialog(String title,
-			ArrayList<String> dialogItems, String negativeButton,
-			String positiveButton) {
-		Radio_Dialog newDialog = Radio_Dialog.newInstance(title, dialogItems,
-				negativeButton, positiveButton);
-		newDialog.show(mManager, "dialog");
-	}
-
-	public static void showMyMultiDialog(String title,
-			ArrayList<String> dialogItems, String negativeButton,
-			String positiveButton) {
-		Multi_Dialog newDialog = Multi_Dialog.newInstance(title, dialogItems,
-				negativeButton, positiveButton);
-		newDialog.show(mManager, "dialog");
-	}
-
-	// class UserAccountData
-
-	public class UserAccountData extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			TwitterTimeLineRequest2 twitterTimeLineRequest = new TwitterTimeLineRequest2(
-					MainSingleTon.currentUserModel,
-					new TwitterRequestCallBack() {
-
-						@Override
-						public void onSuccess(String jsonResult) {
-
-							myprint("onSuccess jsonResult " + jsonResult);
-
-						}
-
-						@Override
-						public void onFailure(Exception e) {
-
-							myprint("onFailure e " + e);
-						}
-
-						@Override
-						public void onSuccess(JSONObject jsonObject) {
-							// TODO Auto-generated method stub
-
-						}
-					});
-
-			String userShowUrl = MainSingleTon.userAccountData + "?"
-					+ "user_id=" + MainSingleTon.currentUserModel.getUserid();
-
-			twitterTimeLineRequest.doInBackground(userShowUrl);
-
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... values) {
-			super.onProgressUpdate(values);
-
-			myprint("onProgressUpdate " + values);
-
-		}
-
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -1145,7 +1287,8 @@ public class MainActivity extends ActionBarActivity implements
 
 		}
 
-		AccountAdapter temAadapter = new AccountAdapter(  accountList,MainActivity.this);
+		AccountAdapter temAadapter = new AccountAdapter(accountList,
+				MainActivity.this);
 
 		myprint("accountList " + accountList);
 
@@ -1168,36 +1311,21 @@ public class MainActivity extends ActionBarActivity implements
 
 		textViewUserName.setText(MainSingleTon.currentUserModel.getUsername());
 
+		String userStringImage = MainSingleTon.currentUserModel.getUserimage();
+
+		if (userStringImage != null) {
+
+			Bitmap bitmap = Utils.decodeBase64(userStringImage);
+
+			imageViewProfileImage.setImageBitmap(bitmap);
+
+		}
+
+		MainSingleTon.resetSigleTon();
+
+		MainActivity.isNeedToSendbroadCast = true;
+
 		loadTHisFragment();
-
-	}
-
-	void loadMyProfiePicture(final String profile_image_url) {
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					userImage = BitmapFactory.decodeStream(new URL(
-							profile_image_url).openStream());
-
-					imageViewProfileImage.setImageBitmap(userImage);
-
-				} catch (MalformedURLException e) {
-
-					e.printStackTrace();
-
-				} catch (IOException e) {
-
-					e.printStackTrace();
-
-				}
-
-			}
-		}).start();
 
 	}
 
@@ -1227,5 +1355,722 @@ public class MainActivity extends ActionBarActivity implements
 		});
 	}
 
-	 
+	// PROFILE WORK
+
+	class DownloadIamge extends AsyncTask<Object, Void, Bitmap> {
+
+		@Override
+		protected Bitmap doInBackground(Object... params) {
+
+			String urlImg = params[0].toString(), userId = params[1].toString();
+
+			TmpCallback callback = (TmpCallback) params[2];
+
+			URL url;
+
+			Bitmap userBitImage = null;
+
+			try {
+
+				url = new URL(urlImg);
+
+				userBitImage = BitmapFactory.decodeStream(url.openStream());
+
+				if (userBitImage != null) {
+
+					callback.onsuccess(userId, userBitImage);
+				}
+
+			} catch (MalformedURLException e) {
+
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+
+			return userBitImage;
+		}
+
+	}
+
+	void savingStringImage(String userId, Bitmap userBitImage) {
+
+		String stringBitpmap = Utils.encodeTobase64(userBitImage);
+
+		twiterManyLocalData.updateUserData(userId,
+				TboardproLocalData.KEY_Userimage, stringBitpmap);
+
+		myprint("SaVED");
+	}
+
+	void downloadAndSaveThisuserImage(FullUserDetailModel userDatas) {
+
+		new DownloadIamge().execute(userDatas.getUserImagerUrl(),
+				userDatas.getId(), new TmpCallback() {
+
+					@Override
+					public void onsuccess(Object... params) {
+
+						String userID = params[0].toString();
+
+						Bitmap userBitImage = (Bitmap) params[1];
+
+						savingStringImage(userID, userBitImage);
+
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								setRightSideDrawer();
+							}
+						});
+					}
+
+				});
+	}
+
+	protected void parseJsonResultForAccountData(JSONObject jsonResult) {
+
+		myprint("parseJsonResult  ");
+
+		try {
+			myprint("jsonResult   = " + jsonResult);
+
+			FullUserDetailModel fullUserDetailModel = new FullUserDetailModel();
+
+			fullUserDetailModel.setFollowingStatus(jsonResult.getString(
+					Const.following).contains("true"));
+
+			fullUserDetailModel.setId(jsonResult.getString(Const.id_str));
+
+			fullUserDetailModel.setNoFollowers(jsonResult
+					.getString(Const.followers_count));
+
+			fullUserDetailModel.setNoToFollowing(jsonResult
+					.getString(Const.friends_count));
+
+			fullUserDetailModel.setNoTweets(jsonResult
+					.getString(Const.statuses_count));
+
+			fullUserDetailModel.setUserImagerUrl(jsonResult
+					.getString(Const.profile_image_url));
+
+			if (jsonResult.has(Const.profile_banner_url)) {
+
+				myprint("Const.profile_banner_url  <"
+						+ Const.profile_banner_url + ">");
+
+				fullUserDetailModel.setBannerUrl(jsonResult
+						.getString(Const.profile_banner_url));
+			}
+
+			fullUserDetailModel.setUserName("@"
+					+ jsonResult.getString(Const.screen_name));
+
+			myprint(fullUserDetailModel);
+
+			myprint(fullUserDetailModel);
+
+			downloadAndSaveThisuserImage(fullUserDetailModel);
+
+		} catch (JSONException e) {
+
+			e.printStackTrace();
+
+		}
+
+	}
+
+	void loadMyProfileImages() {
+
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				TwitterUserShowRequest userShowRequest = new TwitterUserShowRequest(
+						MainSingleTon.currentUserModel,
+						new TwitterRequestCallBack() {
+
+							@Override
+							public void onSuccess(JSONObject jsonObject) {
+
+								String bannewrUrl;
+
+								try {
+
+									myprint(jsonObject);
+
+									if (jsonObject
+											.has(Const.profile_banner_url)) {
+
+										myprint("Const.profile_banner_url  <"
+												+ Const.profile_banner_url
+												+ ">");
+
+										myprint("jsonObject .getString(Const.profile_banner_url)>"
+												+ jsonObject
+														.getString(Const.profile_banner_url)
+												+ ">");
+
+										bannewrUrl = jsonObject
+												.getString(Const.profile_banner_url);
+
+										myprint("bannewrUrl " + bannewrUrl);
+
+										new DownloadIamgeBanner()
+												.execute(bannewrUrl);
+
+									}
+
+									FullUserDetailModel fullUserDetailModel = new FullUserDetailModel();
+
+									fullUserDetailModel
+											.setFollowingStatus(jsonObject
+													.getString(Const.following)
+													.contains("true"));
+
+									fullUserDetailModel
+											.setFollowingStatus(jsonObject
+													.getString(Const.following)
+													.contains("true"));
+
+									fullUserDetailModel.setId(jsonObject
+											.getString(Const.id_str));
+
+									fullUserDetailModel.setFullName(jsonObject
+											.getString(Const.name));
+
+									fullUserDetailModel.setNoFollowers(jsonObject
+											.getString(Const.followers_count));
+
+									fullUserDetailModel.setNoToFollowing(jsonObject
+											.getString(Const.friends_count));
+
+									fullUserDetailModel.setNoTweets(jsonObject
+											.getString(Const.statuses_count));
+
+									fullUserDetailModel.setUserImagerUrl(jsonObject
+											.getString(Const.profile_image_url));
+
+									if (jsonObject
+											.has(Const.profile_banner_url)) {
+
+										myprint("Const.profile_banner_url  <"
+												+ Const.profile_banner_url
+												+ ">");
+
+										myprint("jsonResult .getString(Const.profile_banner_url)>"
+												+ jsonObject
+														.getString(Const.profile_banner_url)
+												+ ">");
+
+										fullUserDetailModel.setBannerUrl(jsonObject
+												.getString(Const.profile_banner_url));
+
+									}
+
+									fullUserDetailModel.setUserName("@"
+											+ jsonObject
+													.getString(Const.screen_name));
+
+									MainSingleTon.fullUserDetailModel = fullUserDetailModel;
+
+									MainSingleTon.favoritesCount = jsonObject
+											.getInt(Const.favourites_count);
+
+									MainSingleTon.favoritesCount = jsonObject
+											.getInt(Const.favourites_count);
+
+									MainSingleTon.tweetsCount = jsonObject
+											.getInt(Const.statuses_count);
+
+									MainSingleTon.followingCount = jsonObject
+											.getInt(Const.friends_count);
+
+									MainSingleTon.myfollowersCount = jsonObject
+											.getInt(Const.followers_count);
+
+									isNeedToRefreshDrawer = true;
+
+									new DownloadMineIamge().execute(jsonObject
+											.getString(Const.profile_image_url));
+
+									loadOtherEntity();
+
+								} catch (JSONException e) {
+
+								}
+
+							}
+
+							@Override
+							public void onSuccess(String jsonResult) {
+
+								myprint("onSuccess " + jsonResult);
+
+							}
+
+							@Override
+							public void onFailure(Exception e) {
+
+							}
+						});
+
+				userShowRequest
+						.executeThisRequest(MainSingleTon.currentUserModel
+								.getUsername());
+
+			}
+		}, 3000);
+
+	}
+
+	private void loadOtherEntity() {
+
+		myprint("@@@@@@@ loadOtherEntity @@@@@@@@");
+
+		TwitterUserGETRequest userGETRequest = new TwitterUserGETRequest(
+				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
+
+					@Override
+					public void onSuccess(JSONObject jsonObject) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(String jsonResult) {
+
+						myprint("jsonResult" + jsonResult);
+
+						try {
+
+							JSONObject jsonObject = new JSONObject(jsonResult);
+
+							JSONArray jsonArray;
+
+							try {
+
+								jsonArray = new JSONArray(jsonObject
+										.getString("ids"));
+
+								for (int i = 0; i < jsonArray.length(); ++i) {
+
+									MainSingleTon.listMyfollowersIDs
+											.add(jsonArray.getString(i));
+
+								}
+
+							} catch (JSONException e) {
+
+								e.printStackTrace();
+							}
+
+							loadfollowings();
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+
+					}
+
+					@Override
+					public void onFailure(Exception e) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
+		String url = MainSingleTon.users_following_to_me_Ids;
+
+		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+
+		peramPairs.add(new BasicNameValuePair(Const.cursor, "-1"));
+
+		peramPairs.add(new BasicNameValuePair(Const.count, "5000"));
+
+		userGETRequest.executeThisRequest(url, peramPairs);
+
+	}
+
+	protected void loadfollowings() {
+
+		myprint("@@@@@@@ loadfollowings @@@@@@@@");
+
+		TwitterUserGETRequest userGETRequest = new TwitterUserGETRequest(
+				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
+
+					@Override
+					public void onSuccess(JSONObject jsonObject) {
+
+					}
+
+					@Override
+					public void onSuccess(String jsonResult) {
+
+						myprint("jsonResult" + jsonResult);
+
+						JSONArray jsonArray;
+
+						try {
+
+							JSONObject jsonObject = new JSONObject(jsonResult);
+
+							jsonArray = new JSONArray(jsonObject
+									.getString("ids"));
+
+							for (int i = 0; i < jsonArray.length(); ++i) {
+
+								MainSingleTon.toFollowingModelsIDs
+										.add(jsonArray.getString(i));
+							}
+
+						} catch (JSONException e) {
+
+							e.printStackTrace();
+						}
+
+						determineEntitiesCounts();
+
+						isFirstTimeCountsChecked = true;
+
+						isNeedToRefreshDrawer = true;
+
+					}
+
+					@Override
+					public void onFailure(Exception e) {
+						// TODO Auto-generated method stub
+
+					}
+
+				});
+
+		String url = MainSingleTon.i_am_following_to_ids;
+
+		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+
+		peramPairs.add(new BasicNameValuePair(Const.cursor, "-1"));
+
+		peramPairs.add(new BasicNameValuePair(Const.count, "5000"));
+
+		userGETRequest.executeThisRequest(url, peramPairs);
+
+	}
+
+	protected void determineEntitiesCounts() {
+
+		// .....................................................................
+
+		ArrayList<String> listMyfollowersIDs = (ArrayList<String>) MainSingleTon.listMyfollowersIDs
+				.clone();
+
+		ArrayList<String> toFollowingModelsIDs = (ArrayList<String>) MainSingleTon.toFollowingModelsIDs
+				.clone();
+
+		myprint("listMyfollowersIDs  **********  " + listMyfollowersIDs);
+
+		myprint("toFollowingModelsIDs  **********  " + toFollowingModelsIDs);
+
+		toFollowingModelsIDs.removeAll(listMyfollowersIDs);
+
+		MainSingleTon.nonFollowersIds = toFollowingModelsIDs;
+
+		myprint("MainSingleTon.nonFollowersIds  **********  "
+				+ MainSingleTon.nonFollowersIds);
+
+		MainSingleTon.NOnfollowersCount = MainSingleTon.nonFollowersIds.size();
+
+		// NOn followers are here
+
+		toFollowingModelsIDs = (ArrayList<String>) MainSingleTon.toFollowingModelsIDs
+				.clone();
+
+		toFollowingModelsIDs.removeAll(MainSingleTon.nonFollowersIds);
+
+		MainSingleTon.mutualsIds = toFollowingModelsIDs;
+
+		MainSingleTon.mutualfansCount = MainSingleTon.mutualsIds.size();
+		// NOn followers are here
+
+		toFollowingModelsIDs = MainSingleTon.toFollowingModelsIDs;
+
+		listMyfollowersIDs.removeAll(toFollowingModelsIDs);
+
+		MainSingleTon.fansIds = listMyfollowersIDs;
+
+		// fans are here
+
+		// .....................................................................
+
+		MainSingleTon.fansCount = MainSingleTon.fansIds.size();
+
+		myprint("MainSingleTon.fansCount  **********  "
+				+ MainSingleTon.fansCount);
+
+		myprint("MainSingleTon.mutualfansCount  **********  "
+				+ MainSingleTon.mutualfansCount);
+
+		myprint("MainSingleTon.NOnfollowersCount  **********  "
+				+ MainSingleTon.NOnfollowersCount);
+
+		Intent intent = new Intent(MainSingleTon.broadcataction);
+
+		if (MainSingleTon.mutualsIds.size() > 0) {
+		
+			MainActivity.this.sendBroadcast(intent);
+		
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+
+		super.onBackPressed();
+
+		if (webDialog != null) {
+
+			if (webDialog.isShowing()) {
+
+				webDialog.dismiss();
+
+			}
+		}
+
+	}
+
+	class DownloadIamgeBanner extends AsyncTask<String, Void, Bitmap> {
+
+		@Override
+		protected Bitmap doInBackground(String... params) {
+
+			String urlImg = params[0].toString();
+
+			URL url;
+
+			Bitmap userBitBanner = null;
+
+			try {
+
+				url = new URL(urlImg);
+
+				userBitBanner = BitmapFactory.decodeStream(url.openStream());
+
+				MainSingleTon.bitmapBanner = userBitBanner;
+
+				myprint("Banner downloaded");
+
+				runOnUiThread(new Runnable() {
+					public void run() {
+
+						imageviewCoverTimeline
+								.setImageBitmap(MainSingleTon.bitmapBanner);
+
+					}
+				});
+
+			} catch (MalformedURLException e) {
+
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+
+			return userBitBanner;
+		}
+	}
+
+	void accountSettings() {
+
+		final Dialog dialog;
+
+		dialog = new Dialog(MainActivity.this);
+
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		dialog.setContentView(R.layout.account_dialog);
+
+		dialog.setCancelable(true);
+
+		dialog.getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+		ImageView imageView = (ImageView) dialog.findViewById(R.id.profile_pic);
+
+		TextView textView = (TextView) dialog
+				.findViewById(R.id.textViewAccount);
+
+		if (MainSingleTon.currentUserModel.getUserimage() != null) {
+
+			Bitmap bitmap = Utils.decodeBase64(MainSingleTon.currentUserModel
+					.getUserimage());
+
+			if (bitmap == null) {
+			} else {
+				imageView.setImageBitmap(bitmap);
+			}
+
+		}
+
+		textView.setText(MainSingleTon.currentUserModel.getUsername());
+
+		Button buttonRemove, buttonCancel;
+
+		buttonRemove = (Button) dialog.findViewById(R.id.button1Remove);
+
+		buttonCancel = (Button) dialog.findViewById(R.id.button2Cancel);
+
+		buttonRemove.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				myprint("buttonRemove");
+
+				TboardproLocalData twiterManyLocalData = new TboardproLocalData(
+						getApplicationContext());
+
+				twiterManyLocalData
+						.deleteThisUserData(MainSingleTon.currentUserModel
+								.getUserid());
+
+				dialog.dismiss();
+
+				Editor editor = getSharedPreferences("twtboardpro",
+						Context.MODE_PRIVATE).edit();
+
+				editor.putString("userid", null);
+
+				editor.clear();
+
+				myprint("editor " + editor.commit());
+
+				MainSingleTon.currentUserModel = null;
+
+				MainSingleTon.searchDetailModel = new SearchDetailModel();
+
+				MainSingleTon.listMyfollowers.clear();
+
+				startActivity(new Intent(getApplicationContext(),
+						WelcomeActivity.class));
+				finish();
+
+			}
+		});
+
+		buttonCancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				myprint("buttonCancel");
+
+				dialog.dismiss();
+			}
+		});
+
+		new Handler().post(new Runnable() {
+
+			@Override
+			public void run() {
+
+				dialog.show();
+
+			}
+		});
+	}
+
+	class DownloadMineIamge extends AsyncTask<String, Void, Void> {
+
+		@Override
+		protected Void doInBackground(String... params) {
+
+			String urlImg = params[0].toString();
+
+			URL url;
+
+			Bitmap userBitImage = null;
+
+			try {
+
+				url = new URL(urlImg);
+
+				userBitImage = BitmapFactory.decodeStream(url.openStream());
+
+				myprint("Download cPOmpleteas");
+
+				if (userBitImage != null) {
+
+					savingStringImage(userBitImage);
+
+				}
+
+			} catch (MalformedURLException e) {
+
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+	}
+
+	void savingStringImage(final Bitmap userBitImage) {
+
+		String stringBitpmap = Utils.encodeTobase64(userBitImage);
+
+		myprint("converted");
+
+		MainSingleTon.currentUserModel.setUserimage(stringBitpmap);
+
+		twiterManyLocalData.updateUserData(MainSingleTon.currentUserModel);
+
+		MainSingleTon.currentUserModel.setUserimage(stringBitpmap);
+
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+
+				imageViewProfileImage.setImageBitmap(userBitImage);
+
+			}
+		});
+
+		myprint("Saved");
+	}
+
+	public static void showActionBarProgress() {
+
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				toolbarProgressBar.setVisibility(View.VISIBLE);
+			}
+		});
+
+	}
+
+	public static void HideActionBarProgress() {
+
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				toolbarProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
+
+	}
+
 }

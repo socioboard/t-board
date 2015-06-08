@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/Silver" >
+
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/composer_middle_normal"
+                android:gravity="start"
+                android:hint="@string/tweethint"
+                android:lines="4"
+                android:maxLength="140"
+                android:padding="5dp"
+                android:textColor="@color/black" >
+            </EditText>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl1" >
+
+        <ImageView
+            android:id="@+id/bottombtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/tweetcompose" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/date"
+            android:layout_alignBottom="@+id/date"
+            android:layout_toLeftOf="@+id/bottombtn"
+            android:background="@drawable/edit_query_background_normal"
+            android:gravity="center"
+            android:text="Select Time"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/bottombtn"
+            android:background="@drawable/edit_query_background_normal"
+            android:gravity="center"
+            android:text="Select Date "
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

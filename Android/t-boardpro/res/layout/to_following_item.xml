@@ -67,16 +67,6 @@
             android:textSize="10sp" />
 
         <TextView
-            android:id="@+id/textViewNoOfFollowings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textViewNotweets"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:textSize="10sp" />
-
-        <TextView
             android:id="@+id/textViewNotweets"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,12 +78,24 @@
             android:textSize="10sp" />
 
         <TextView
+            android:id="@+id/textViewNoofFollowers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewNoOfFollowings"
+            android:layout_alignBottom="@+id/textViewNoOfFollowings"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignRight="@+id/textView2"
+            android:gravity="center"
+            android:textSize="10sp" />
+
+        <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewtmp1"
             android:layout_alignBottom="@+id/textViewtmp1"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@+id/textViewtmp1"
             android:text="@string/following"
             android:textSize="10sp" />
 
@@ -103,19 +105,20 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView1"
             android:layout_alignBottom="@+id/textView1"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/buttonUnfollow"
+            android:layout_toRightOf="@+id/textView1"
             android:text="@string/followers"
             android:textSize="10sp" />
 
         <TextView
-            android:id="@+id/textViewNoofFollowers"
+            android:id="@+id/textViewNoOfFollowings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewNoOfFollowings"
-            android:layout_alignBottom="@+id/textViewNoOfFollowings"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_alignRight="@+id/textView2"
+            android:layout_alignBaseline="@+id/textViewNotweets"
+            android:layout_alignBottom="@+id/textViewNotweets"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignRight="@+id/textView1"
             android:gravity="center"
             android:textSize="10sp" />
     </RelativeLayout>

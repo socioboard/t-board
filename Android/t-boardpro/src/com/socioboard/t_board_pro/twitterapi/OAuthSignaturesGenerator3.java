@@ -53,7 +53,6 @@ public class OAuthSignaturesGenerator3 {
 
 	public String getOauthSignature(List<BasicNameValuePair> peramPairs){
 		
-		
 		String oAuthSignature = null;
 		
 		// * * * 1 * * * *
@@ -90,8 +89,7 @@ public class OAuthSignaturesGenerator3 {
 				+"&" + OAUTH_VERSION             +"="   + URLEncoder.encode(VERSION_1_0 );
           
 		if(peramPairs.size()>0){
-			
- 			
+  			
 			for( int i = 0 ;i<peramPairs.size();++i){
 				
 				GeneratedPerams = GeneratedPerams 

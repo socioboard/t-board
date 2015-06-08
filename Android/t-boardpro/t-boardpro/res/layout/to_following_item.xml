@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ab_share_pack_holo_light" >
+
+        <com.socioboard.t_board_pro.ui.AccountImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="7dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/account_image"
+            app:maskDrawable="@drawable/circle_mask" />
+
+        <Button
+            android:id="@+id/buttonUnfollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_blue_matte"
+            android:text="UnFollow"
+            android:textColor="@color/White"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/buttonFollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_blue_matte"
+            android:text=" +Follow   "
+            android:textColor="@color/White"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/followerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:text="@string/testaccount"
+            android:textColor="@color/SteelBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textViewtmp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/followerName"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="27dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:paddingBottom="5dp"
+            android:text="@string/tweets"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textViewNotweets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/profile_pic"
+            android:layout_alignLeft="@+id/textViewtmp1"
+            android:layout_alignRight="@+id/textViewtmp1"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textViewNoofFollowers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewNoOfFollowings"
+            android:layout_alignBottom="@+id/textViewNoOfFollowings"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignRight="@+id/textView2"
+            android:gravity="center"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewtmp1"
+            android:layout_alignBottom="@+id/textViewtmp1"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@+id/textViewtmp1"
+            android:text="@string/following"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/buttonUnfollow"
+            android:text="@string/followers"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textViewNoOfFollowings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewNotweets"
+            android:layout_alignBottom="@+id/textViewNotweets"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignRight="@+id/textView1"
+            android:gravity="center"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

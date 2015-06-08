@@ -3,20 +3,23 @@
 
     <string name="app_name" translatable="false">tboardpro</string>
     <string name="action_settings" translatable="true">Settings</string>
-    <string name="hello_world" translatable="true">Welcome!!  \nt-boardpro is solely created with an intention to manage multiple twitter accounts.</string>
+    <string name="hello_world" translatable="true">t-boardpro is World’s Best Open Source Twitter Account Management and Marketing Automation Software.</string>
     <string name="drawer_open" translatable="true">open</string>
     <string name="drawer_close" translatable="true">close</string>
     <string name="settings" translatable="true">Settings</string>
     <string name="feedback" translatable="true">Feedback</string>
     <string name="loading" translatable="true">Loading</string>
-    <string name="tweethint" translatable="true">Maximum 140 characters</string>
+    <string name="tweethint" translatable="true">  Maximum 140 characters</string>
     <string name="tweet" translatable="true">tweet</string>
+    <string name="done" translatable="true">Done</string>
     <string name="tweets" translatable="false">tweets</string>
     <string name="following" translatable="false">Following</string>
     <string name="followers" translatable="false">Followers</string>
     <string name="testaccount" translatable="false">#himanshuglobussot</string>
     <string name="testtweet" translatable="false">this is the demo tweet text. Have good Day</string>
     <string name="adaccount" translatable="true">AddAccount</string>
+    <string name="Schedulle" translatable="true">Schedule</string>
+    <string name="twitter_text" translatable="true">We do not post without your permission</string>
 
     <plurals name="numberOfNewArticles">
         <item quantity="one">%d new</item>
@@ -29,18 +32,34 @@
         <item>Feeds</item>
         <item>Following</item>
         <item>Followed By</item>
-        <item>Search</item>
-        <item>Schedulle</item>
+        <item>Copy Followers</item>
+        <item>Favorites</item>
+        <item>User Search</item>
+        <item>#Tag Search</item>
+        <item>Fans</item>
+        <item>MutualFollowers</item>
+        <item>NonFollowers</item>
+        <item>Overlapping Followers</item>
+        <item>Overlapping Followings</item>
+        <item>Schedule</item>
     </string-array>
 
     <array name="drawer_icons">
         <item>@drawable/account_image</item>
         <item>@drawable/tweetcompose</item>
-        <item>@drawable/feed</item>
-        <item>@drawable/followby</item>
-        <item>@drawable/followedby</item>
+        <item>@drawable/home_feeds_icon</item>
+        <item>@drawable/friends_icon</item>
+        <item>@drawable/group</item>
+        <item>@drawable/find_friend</item>
+        <item>@drawable/ic_action_fave_on_focused</item>
         <item>@drawable/ic_search_api_holo_light</item>
-        <item>@drawable/ic_dialog_time</item>
+        <item>@drawable/tagsearch</item>
+        <item>@drawable/fans</item>
+        <item>@drawable/mutualfollwers</item>
+        <item>@drawable/non_followers</item>
+        <item>@drawable/overlappingfollowers</item>
+        <item>@drawable/overlappingfollowers</item>
+        <item>@drawable/schedule_icon</item>
     </array>
 
     <string-array name="footer_titles" translatable="false">
@@ -49,8 +68,8 @@
     </string-array>
 
     <array name="footer_icons">
-        <item>@drawable/ic_settings</item>
-        <item>@drawable/ic_help</item>
+        <item>@drawable/settings_icon</item>
+        <item>@drawable/feed_back_icon</item>
     </array>
 
     <string name="timeline_empty" translatable="false">timeline_empty</string>

@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_frame_normal"
+    android:padding="5dp" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewTime"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/editbox_dropdown_background" >
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/trmp"
+            android:gravity="center"
+            android:text=" 1-12-2015"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/trmp"
+            android:layout_width="2dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/Silver" />
+
+        <View
+            android:id="@+id/trmp2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/textViewDate"
+            android:layout_marginTop="8dp"
+            android:background="@color/Silver" />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/trmp"
+            android:gravity="center"
+            android:text="10:12"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewTime"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dp"
+            android:text="#himanshuglobussoft"
+            android:textColor="@color/SteelBlue" />
+
+        <TextView
+            android:id="@+id/textViewTweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textViewUser"
+            android:layout_below="@+id/textViewUser"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:text="This is the demo tweet version of the tweet. this can be in max 140 chars"
+            android:textColor="@color/Gray"
+            android:textSize="13sp" />
+
+        <View
+            android:id="@+id/trmps"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textViewTweet"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp" />
+
+        <ImageView
+            android:id="@+id/imageView2Remove"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_action_delete_focused" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/pin" />
+
+</RelativeLayout>
