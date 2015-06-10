@@ -132,7 +132,7 @@ public class SplashActivity extends Activity {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			MainSingleTon.TWITTER_KEY = "oXPJHvlIX02UpEIu5K8EpKbdt";
+			MainSingleTon.TWITTER_KEY = "XXXXXXXXXXXXXXXXXXXX";
 
 		} finally {
 
@@ -145,7 +145,7 @@ public class SplashActivity extends Activity {
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			MainSingleTon.TWITTER_SECRET = "qmAWPnQR5FOkAlF7Ws7t4im62EG3lGgQaZVfQdJYgKZHm08wE3";
+			MainSingleTon.TWITTER_SECRET = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
 		} finally {
 
