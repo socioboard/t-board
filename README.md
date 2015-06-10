@@ -27,11 +27,22 @@ Features:
 ===========
 
 The easiest way to build is to install Android IDE, Once installed, then you can import the project into Android Studio:
+
+
 1.	Open File
-2.	Import Project. ![](http://i.imgur.com/d1NkOaE.png) 
+	
+2.	Import Project.
+
+	![](http://i.imgur.com/d1NkOaE.png) 
+	
 3.	Select tboardpro , android support library and viewpager library.
-4.	Add project libraries into tboardpro project. ![](http://i.imgur.com/xsdzex4.png)
+
+4.	Add project libraries into tboardpro project.
+
+	![](http://i.imgur.com/xsdzex4.png)
+	
 	![](http://i.imgur.com/RBGrl8v.png)
+	
 5.	Clean and build all projects after importing.
 	
 	
