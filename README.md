@@ -4,17 +4,40 @@
 Features:
 ===========
 
-> **Multi accounts manager:**Multi accounts manager: You can manage your multiple twitter accounts and easily switch between accounts without logging in again and again . ![](http://i.imgur.com/iFDs61D.png)
+> ** Multi accounts manager:**Multi accounts manager: You can manage your multiple twitter accounts and easily switch between accounts without logging in again and again . ![](http://imgur.com/9zWtCz8)
 
->**Feeds view:** You can check all your Feeds here.![](http://i.imgur.com/ZsqSruF.png) 
+>**All features:** This is the compact list of features available in application.![](http://imgur.com/hnK000v) 
 
->**All Following:** You can see list of user whom you are following in this view.![](http://i.imgur.com/m95mlpk.png)
+>**Feeds view:** You can check all your Feeds here.![](http://imgur.com/mgcLP4N)
+![](http://imgur.com/cPoSkfS) 
 
->**Tweet to Follower:** You Can tweet to a User you are following.![](http://imgur.com/tsetwy7)
+>**All Following:** You can see list of user whom you are following in this view.![](http://imgur.com/hOaHz0V)
 
->**Tweets:** Your all tweets are listed here.![](http://i.imgur.com/0yxZXmU.png)
+>**Tweet to Follower:** You Can tweet to a User you are following.![](http://imgur.com/RTbiYVG)
 
->**Copy Follower:**Search any user by typing username and press plus button to follow him. ![](http://i.imgur.com/CGaY02X.png)
+>**Copy Follower:**Search any user by typing username and set rang to follow that users folowers. ![](http://imgur.com/WmFH2jj)
 
->**Tweet schedule:** You can schedule your message to post on future date.![](http://i.imgur.com/aZRFXig.png)
-    
+>**Tweet schedule:** You can schedule your message to post on future date.![](http://imgur.com/wDhGK5C)
+ ![](http://imgur.com/Vzcia8C) 
+
+>**Search User/Trends:** You search perticular user OR top trending topics here.![](http://imgur.com/LqScOR7)
+![](http://imgur.com/OtXzUNL)
+
+ Installation Guide Android:
+===========
+
+The easiest way to build is to install Android IDE, Once installed, then you can import the project into Android Studio:
+1.	Open File
+2.	Import Project
+3.	Select tboardpro , android support library and viewpager library .
+4.	Clean and build all projects after importing.
+
+	![](http://imgur.com/d1NkOaE)
+	![](http://imgur.com/RBGrl8v)
+	![](http://imgur.com/xsdzex4)
+
+After building the project while running on your device ,you might find that your device doesn't let you install your build if you already have the version from Google Play installed. This is standard Android security as it won't let you directly replace an app that's been signed with a different key. Manually uninstall tboardpro from your device and you will then be able to install your own built version.
+
+
+ Installation Guide IOS:
+===========
