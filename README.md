@@ -32,9 +32,9 @@ The easiest way to build is to install Android IDE, Once installed, then you can
 3.	Select tboardpro , android support library and viewpager library .
 4.	Clean and build all projects after importing.
 
-	![](http://imgur.com/d1NkOaE)
-	![](http://imgur.com/RBGrl8v)
-	![](http://imgur.com/xsdzex4)
+	.![](http://imgur.com/d1NkOaE)
+	.![](http://imgur.com/RBGrl8v)
+	.![](http://imgur.com/xsdzex4)
 
 After building the project while running on your device ,you might find that your device doesn't let you install your build if you already have the version from Google Play installed. This is standard Android security as it won't let you directly replace an app that's been signed with a different key. Manually uninstall tboardpro from your device and you will then be able to install your own built version.
 
