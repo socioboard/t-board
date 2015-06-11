@@ -1,20 +1,64 @@
-![](http://i.imgur.com/ZzshPQj.png)
+![](http://i.imgur.com/0wivQLV.png)
 **t-board** is a multiple twitter account management app, it helps you to login to multiple twitter accounts from your iOS or Android device and do various twitter activities like tweeting, re-tweeting, favorites, follow, unfollow, scheduling tweets etc. Its a a very powerful twitter marketing automation app.
 
 Features:
 ===========
 
-> **Multi accounts manager:**Multi accounts manager: You can manage your multiple twitter accounts and easily switch between accounts without logging in again and again . ![](http://i.imgur.com/iFDs61D.png)
+> ** Multi accounts manager:**Multi accounts manager: You can manage your multiple twitter accounts and easily switch between accounts without logging in again and again . ![](http://i.imgur.com/9zWtCz8.png)
 
->**Feeds view:** You can check all your Feeds here.![](http://i.imgur.com/ZsqSruF.png) 
+>**All features:** This is the compact list of features available in application.![](http://i.imgur.com/hnK000v.png) 
 
->**All Following:** You can see list of user whom you are following in this view.![](http://i.imgur.com/m95mlpk.png)
+>**Feeds view:** You can check all your Feeds here.![](http://i.imgur.com/mgcLP4N.png)
+![](http://i.imgur.com/cPoSkfS.png) 
 
->**Tweet to Follower:** You Can tweet to a User you are following.![](http://imgur.com/tsetwy7)
+>**All Following:** You can see list of user whom you are following in this view.![](http://i.imgur.com/hOaHz0V.png)
 
->**Tweets:** Your all tweets are listed here.![](http://i.imgur.com/0yxZXmU.png)
+>**Tweet to Follower:** You Can tweet to a User you are following.![](http://i.imgur.com/RTbiYVG.png)
 
->**Copy Follower:**Search any user by typing username and press plus button to follow him. ![](http://i.imgur.com/CGaY02X.png)
+>**Copy Follower:**Search any user by typing username and set rang to follow that users folowers. ![](http://i.imgur.com/WmFH2jj.png)
 
->**Tweet schedule:** You can schedule your message to post on future date.![](http://i.imgur.com/aZRFXig.png)
-    
+>**Tweet schedule:** You can schedule your message to post on future date.![](http://i.imgur.com/wDhGK5C.png)
+ ![](http://i.imgur.com/Vzcia8C.png) 
+
+>**Search User/Trends:** You search perticular user OR top trending topics here.![](http://i.imgur.com/LqScOR7.png)
+![](http://i.imgur.com/OtXzUNL.png)
+
+ Installation Guide Android:
+===========
+
+The easiest way to build is to install Android IDE, Once installed, then you can import the project into Android Studio:
+
+
+1.	Open File
+	
+2.	Import Project.
+
+	![](http://i.imgur.com/d1NkOaE.png) 
+	
+3.	Select tboardpro , android support library and viewpager library.
+
+4.	Add project libraries into tboardpro project.
+
+	![](http://i.imgur.com/xsdzex4.png)
+	
+	![](http://i.imgur.com/RBGrl8v.png)
+	
+5.	Clean and build all projects after importing.
+	
+	
+
+After building the project while running on your device ,you might find that your device doesn't let you install your build if you already have the version from Google Play installed. This is standard Android security as it won't let you directly replace an app that's been signed with a different key. Manually uninstall tboardpro from your device and you will then be able to install your own built version.
+
+
+ Installation Guide IOS:
+===========
+1. Extract the downloaded t-boardpro.zip file.
+
+2. Open the t-boardpro folder,you will find t-boardpro.xcodeProject file and double click on that folder to open Xcode.
+ ![](http://i.imgur.com/KvoNsL4.png)
+3. Click on project file from Project navigator and click on the t-boardpro under the Targets.
+4. Click on General , set the proper Bundle Identifier and go to Build settings menu, change Proovisioning profile under Code Signing.
+ ![](http://i.imgur.com/nf2pBHd.png)
+5. Go to Prefix File and set the client_id and client_secrete id . 
+6 Build and run the application.￼
+ ![](http://i.imgur.com/eIyaWTj.png)
