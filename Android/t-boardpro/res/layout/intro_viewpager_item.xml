@@ -13,7 +13,7 @@
         android:layout_marginTop="34dp"
         android:gravity="center"
         android:text="Anonymous iLike or Next"
-        android:textColor="@color/Gray"
+        android:textColor="@color/White"
         android:textSize="14dp"
         android:textStyle="bold" />
 

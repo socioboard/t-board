@@ -32,7 +32,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/drawer_right"
         android:padding="3dp"
-        android:src="@drawable/ic_settings"
+        android:src="@drawable/delete_account_icon"
         android:textColor="@color/google_white" />
 
 </RelativeLayout>

@@ -9,13 +9,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -32,30 +33,55 @@ import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
 import com.socioboard.t_board_pro.twitterapi.TwitterUserSearchRequest;
 import com.socioboard.t_board_pro.util.Const;
 import com.socioboard.t_board_pro.util.MainSingleTon;
+import com.socioboard.t_board_pro.util.SearchDetailModel;
 import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
 
-public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
-		OnScrollListener {
+public class FragmentSearch extends Fragment implements OnScrollListener {
 
 	View rootView;
+
 	EditText editText;
+
 	TwitterUserSearchRequest userSearchRequest;
+
 	String searchText = "";
+
 	ImageView button1Search;
+
 	ListView listView;
+
 	SearchAdapter searchAdapter;
+
 	Activity aActivity;
-	RelativeLayout reloutProgress, rel;
+
+	RelativeLayout reloutProgress;
+
 	boolean isAlreadyScrolling = true;
+
 	TextView textView1SearchedText;
+
 	ImageView imageView1;
+
 	ViewGroup viewGroup;
 
 	Handler handler = new Handler();
 
+	SearchDetailModel searchDetailModel = new SearchDetailModel();
+
+	public static FragmentSearch newInstance(String text) {
+
+		FragmentSearch f = new FragmentSearch();
+		Bundle b = new Bundle();
+		b.putString("msg", text);
+		f.setArguments(b);
+
+		return f;
+	}
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
 		rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
@@ -63,29 +89,32 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 		editText = (EditText) rootView.findViewById(R.id.edsearchView1);
 
-		textView1SearchedText = (TextView) rootView.findViewById(R.id.textView1SearchedText);
+		textView1SearchedText = (TextView) rootView
+				.findViewById(R.id.textView1SearchedText);
 
 		button1Search = (ImageView) rootView.findViewById(R.id.button1Search);
 
 		listView = (ListView) rootView.findViewById(R.id.listView1Searched);
 
-		imageView1 = (ImageView) rootView.findViewById(R.id.imageView1);
+		imageView1 = (ImageView) rootView.findViewById(R.id.imageView1Removes);
 
 		imageView1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				
+				viewGroup.setVisibility(View.INVISIBLE);
 
 				imageView1.setVisibility(View.INVISIBLE);
 
-				MainSingleTon.searchDetailModel.setSearchText("");
+				searchDetailModel.setSearchText("");
 
-				MainSingleTon.searchDetailModel.getSearchList().clear();
+				searchDetailModel.getSearchList().clear();
 
 				searchAdapter.tweetModels.clear();
 
-				searchAdapter = new SearchAdapter(getActivity(),
-						MainSingleTon.searchDetailModel.getSearchList(),
+				searchAdapter = new SearchAdapter(FragmentSearch.this
+						.getActivity(), searchDetailModel.getSearchList(),
 						FragmentSearch.this.getActivity());
 
 				listView.setAdapter(searchAdapter);
@@ -95,7 +124,9 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 				textView1SearchedText.setText("");
 
 				editText.setText("");
-
+				
+				cancelProgres();
+				
 			}
 		});
 
@@ -107,13 +138,6 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 		reloutProgress = (RelativeLayout) rootView
 				.findViewById(R.id.reloutProgress);
-
-		rel = (RelativeLayout) rootView.findViewById(R.id.rel);
-
-		rel.setVisibility(View.VISIBLE);
-
-		userSearchRequest = new TwitterUserSearchRequest(
-				MainSingleTon.currentUserModel, this);
 
 		button1Search.setOnClickListener(new OnClickListener() {
 
@@ -131,17 +155,32 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 					myToastS("Enter username to search");
 
 				} else {
+					
+					View view = getActivity().getCurrentFocus();
+
+					if (view != null) {
+
+						InputMethodManager imm = (InputMethodManager) getActivity()
+								.getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+					}
+
+					searchDetailModel.getSearchList().clear();
+
+					searchAdapter = new SearchAdapter(aActivity,
+							searchDetailModel.getSearchList(), aActivity);
 
 					textView1SearchedText.setText("Searching results for: \""
 							+ searchText + "\"");
 
-					MainSingleTon.searchDetailModel.setSearchText(searchText);
+					searchDetailModel.setSearchText(searchText);
 
-					MainSingleTon.searchDetailModel.getSearchList().clear();
+					listView.setAdapter(searchAdapter);
 
 					showProgress();
 
-					userSearchRequest.executeThisRequest(searchText);
+					FetchReqPaged();
 
 				}
 			}
@@ -154,23 +193,23 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 	private void initView() {
 
-		if (MainSingleTon.searchDetailModel.getSearchList().size() == 0) {
+		if (searchDetailModel.getSearchList().size() == 0) {
 
 		} else {
 
 			imageView1.setVisibility(View.VISIBLE);
 
 			searchAdapter = new SearchAdapter(getActivity(),
-					MainSingleTon.searchDetailModel.getSearchList(),
+					searchDetailModel.getSearchList(),
 					FragmentSearch.this.getActivity());
 
 			listView.setAdapter(searchAdapter);
 
 			textView1SearchedText.setText("Searched "
 					+ searchAdapter.tweetModels.size() + " results for: \""
-					+ MainSingleTon.searchDetailModel.getSearchText() + "\"");
+					+ searchDetailModel.getSearchText() + "\"");
 
-			editText.append(MainSingleTon.searchDetailModel.getSearchText());
+			editText.append(searchDetailModel.getSearchText());
 
 			isAlreadyScrolling = false;
 
@@ -180,6 +219,7 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 	void myToastS(final String toastMsg) {
 
 		Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_SHORT).show();
+
 	}
 
 	private void addFooterView() {
@@ -191,94 +231,7 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 		listView.addFooterView(viewGroup);
 
-		myprint("addFooterView++++++++++++++++++++++++++++++++++++++++++++++ DONt LOad");
-
-	}
-
-	protected void parseJsonResultPaged(String jsonResult) {
-
-		myprint("parseJsonResultPaged  ");
-
-		handler.post(new Runnable() {
-
-			@Override
-			public void run() {
-
-				viewGroup.setVisibility(View.INVISIBLE);
-
-			}
-		});
-
-		try {
-
-			JSONArray jsonArray = new JSONArray(jsonResult);
-
-			for (int i = 0; i < jsonArray.length(); ++i) {
-
-				JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-
-				myprint("jsonObject2 " + i + " = " + jsonObject2);
-
-				final ToFollowingModel followingModel = new ToFollowingModel();
-
-				followingModel.setFollowingStatus(jsonObject2.getString(
-						Const.following).contains("true"));
-
-				followingModel.setId(jsonObject2.getString(Const.id_str));
-
-				followingModel.setNoFollowers(jsonObject2
-						.getString(Const.followers_count));
-
-				followingModel.setNoToFollowing(jsonObject2
-						.getString(Const.friends_count));
-
-				followingModel.setNoTweets(jsonObject2
-						.getString(Const.listed_count));
-
-				followingModel.setTweeet_str("");
-
-				followingModel.setUserImagerUrl(jsonObject2
-						.getString(Const.profile_image_url));
-
-				followingModel.setUserName("@"
-						+ jsonObject2.getString(Const.screen_name));
-
-				myprint(followingModel);
-
-				getActivity().runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						if (FragmentSearch.this.getActivity() != null) {
-
-							int listCount = listView.getCount();
-
-							searchAdapter.tweetModels.add(followingModel);
-
-							listView.setScrollY(listCount);
-
-							searchAdapter.notifyDataSetChanged();
-
-						}
-					}
-				});
-			}
-
-			textView1SearchedText.setText("Searched "
-					+ searchAdapter.tweetModels.size() + " results for: \""
-					+ searchText + "\"");
-
-			isAlreadyScrolling = false;
-
-			MainSingleTon.searchDetailModel
-					.setSearchList(searchAdapter.tweetModels);
-
-		} catch (JSONException e) {
-
-			e.printStackTrace();
-
-		}
+		myprint("addFooterView ++++++++++++++++++++++++++++++++++++++++++++++ DONt LOad");
 
 	}
 
@@ -293,87 +246,54 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 	}
 
-	@Override
-	public void onSuccess(String jsonResult) {
-		cancelProgres();
-		myprint("onSuccess jsonResult= " + jsonResult);
-		parseJsonResult(jsonResult);
+	public void FetchReqPaged() {
 
-	}
+		String urlTimeline = MainSingleTon.userSearch;
 
-	@Override
-	public void onSuccess(JSONObject jsonObject) {
+		TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(
+				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
 
-	}
+					@Override
+					public void onSuccess(String jsonResult) {
 
-	@Override
-	public void onFailure(Exception e) {
+						myprint("onSuccess jsonResult " + jsonResult);
 
-		cancelProgres();
+						parseJsonResult(jsonResult);
 
-		myprint("onFailure " + e);
+					}
 
-		aActivity.runOnUiThread(new Runnable() {
+					@Override
+					public void onFailure(Exception e) {
+						myprint("onFailure e " + e);
 
-			@Override
-			public void run() {
+						handler.post(new Runnable() {
 
-				textView1SearchedText.setText("No results found for: \"" + searchText + "\" ");
-				
-			}
-		});
+							@Override
+							public void run() {
 
-	}
+								viewGroup.setVisibility(View.INVISIBLE);
 
-	public class FetchReqPaged extends AsyncTask<String, Void, Void> {
+							}
+						});
 
-		@Override
-		protected Void doInBackground(String... params) {
+					}
 
-			String urlTimeline = MainSingleTon.userSearch;
+					@Override
+					public void onSuccess(JSONObject jsonObject) {
 
-			TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(
-					MainSingleTon.currentUserModel,
-					new TwitterRequestCallBack() {
+					}
+				});
 
-						@Override
-						public void onSuccess(String jsonResult) {
-							myprint("onSuccess jsonResult " + jsonResult);
-							parseJsonResultPaged(jsonResult);
-						}
+		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
-						@Override
-						public void onFailure(Exception e) {
-							myprint("onFailure e " + e);
+		peramPairs.add(new BasicNameValuePair(Const.count, "" + 20));
 
-							handler.post(new Runnable() {
+		peramPairs.add(new BasicNameValuePair(Const.page, ""
+				+ (searchAdapter.getCount() / 20 + 1)));
 
-								@Override
-								public void run() {
+		peramPairs.add(new BasicNameValuePair(Const.q, searchText));
 
-									viewGroup.setVisibility(View.INVISIBLE);
-
-								}
-							});
-
-						}
-
-						@Override
-						public void onSuccess(JSONObject jsonObject) {
-						}
-					});
-
-			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
-
-			peramPairs.add(new BasicNameValuePair(Const.count, "" + 20));
-			peramPairs.add(new BasicNameValuePair(Const.page, ""
-					+ searchAdapter.getCount() / 20));
-			peramPairs.add(new BasicNameValuePair(Const.q, searchText));
-
-			twitterUserGETRequest.executeThisRequest(urlTimeline, peramPairs);
-
-			return null;
-		}
+		twitterUserGETRequest.executeThisRequest(urlTimeline, peramPairs);
 
 	}
 
@@ -383,15 +303,14 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 		try {
 
-			MainSingleTon.searchDetailModel.getSearchList().clear();
-
 			JSONArray jsonArray = new JSONArray(jsonResult);
 
 			for (int i = 0; i < jsonArray.length(); ++i) {
 
 				JSONObject jsonObject2 = jsonArray.getJSONObject(i);
 
-				myprint("jsonObject2 " + i + " = " + jsonObject2);
+				myprint("jsonObject2 " + (searchAdapter.getCount() + i) + " = "
+						+ "");
 
 				ToFollowingModel followingModel = new ToFollowingModel();
 
@@ -417,57 +336,53 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 				followingModel.setUserName("@"
 						+ jsonObject2.getString(Const.screen_name));
 
-				MainSingleTon.searchDetailModel.getSearchList().add(
-						followingModel);
+				searchAdapter.tweetModels.add(followingModel);
 
-				myprint(followingModel);
+				// myprint(followingModel);
 
 			}
 
-			getActivity().runOnUiThread(new Runnable() {
+			if (FragmentSearch.this.getActivity() != null) {
 
-				@Override
-				public void run() {
+				aActivity.runOnUiThread(new Runnable() {
 
-					if (FragmentSearch.this.getActivity() != null) {
+					@Override
+					public void run() {
 
-						searchAdapter = new SearchAdapter(
-								getActivity(),
-								MainSingleTon.searchDetailModel.getSearchList(),
-								FragmentSearch.this.getActivity());
+						searchDetailModel
+								.setSearchList(searchAdapter.tweetModels);
 
-						listView.setAdapter(searchAdapter);
+						if (searchDetailModel.getSearchList().size() < 20) {
 
-						
-						MainSingleTon.searchDetailModel.setSearchList(searchAdapter.tweetModels);
+							isAlreadyScrolling = true;
 
-						if (MainSingleTon.searchDetailModel.getSearchList()
-								.size() == 0) {
-							
 						} else {
-						
+
 							isAlreadyScrolling = false;
+
+						}
+
+						if (searchDetailModel.getSearchList().size() == 0) {
+
+						} else {
 
 							imageView1.setVisibility(View.VISIBLE);
 						}
-						
+
+						int listCount = listView.getCount();
+
+						listView.setScrollY(listCount);
+
+						textView1SearchedText.setText("Searched "
+								+ searchAdapter.tweetModels.size()
+								+ " results for: \"" + searchText + "\"");
+
+						searchAdapter.notifyDataSetChanged();
 
 					}
-				}
-			});
+				});
 
-			aActivity.runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-
-					textView1SearchedText.setText("Searched "
-							+ searchAdapter.tweetModels.size()
-							+ " results for: \"" + searchText + "\"");
-				}
-			});
-
-
+			}
 		} catch (JSONException e) {
 
 			e.printStackTrace();
@@ -516,12 +431,9 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 			if (isAlreadyScrolling) {
 
-				// DO NOTHING
 				myprint("BUT isAlreadyScrolling ");
 
 			} else {
-
-				viewGroup.setVisibility(View.VISIBLE);
 
 				isAlreadyScrolling = true;
 
@@ -531,7 +443,21 @@ public class FragmentSearch extends Fragment implements TwitterRequestCallBack,
 
 				myprint(searchAdapter.getItem(searchAdapter.getCount() - 1));
 
-				new FetchReqPaged().execute(madMaxId);
+				if (searchAdapter.getCount() % 20 != 0) {
+
+					myprint("searchAdapter.getCount() % 20 != 0 "
+							+ searchAdapter.getCount() % 20);
+
+				} else {
+
+					viewGroup.setVisibility(View.VISIBLE);
+
+					FetchReqPaged();
+
+				}
+
+				myprint("*********** searchAdapter.getCount() "
+						+ (searchAdapter.getCount()));
 
 			}
 

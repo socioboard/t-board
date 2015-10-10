@@ -6,8 +6,11 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.socioboard.t_board_pro.AnyUserProfileDialog;
 import com.socioboard.t_board_pro.MainActivity;
@@ -47,6 +51,12 @@ public class SearchAdapter extends BaseAdapter {
 
 	public SparseBooleanArray sparseBooleanArray;
 
+	TboardproLocalData tboardproLocalData;
+
+	ArrayList<String> sendingids;
+
+	ArrayList<String> sentIds;
+ 	
 	public SearchAdapter(Context context,
 			ArrayList<ToFollowingModel> tweetModels, Activity activity) {
 
@@ -58,6 +68,12 @@ public class SearchAdapter extends BaseAdapter {
 
 		this.activity = activity;
 
+		tboardproLocalData = new TboardproLocalData(context);
+
+		sendingids = tboardproLocalData.getAllSendingIDs(MainSingleTon.currentUserModel.getUserid());
+
+		sentIds = tboardproLocalData.getAllSentIDs(MainSingleTon.currentUserModel.getUserid());
+
 		activity.runOnUiThread(new Runnable() {
 
 			@Override
@@ -67,6 +83,7 @@ public class SearchAdapter extends BaseAdapter {
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				progressDialog.setIndeterminate(true);
 				progressDialog.setCancelable(false);
+				
 			}
 		});
 
@@ -99,10 +116,10 @@ public class SearchAdapter extends BaseAdapter {
 
 		if (convertView == null) {
 
-			LayoutInflater mInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater
-					.inflate(R.layout.search_item, parent, false);
+			LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			convertView = mInflater.inflate(R.layout.search_item, parent, false);
+			
 		}
 
 		final ToFollowingModel toFollowingModel = getItem(position);
@@ -188,6 +205,14 @@ public class SearchAdapter extends BaseAdapter {
 
 		}
 
+		if (MainSingleTon.currentUserModel.getUserid().contains(
+				toFollowingModel.getId())) {
+
+			buttonUnfollow.setVisibility(View.INVISIBLE);
+			buttonFollow.setVisibility(View.INVISIBLE);
+
+		}
+
 		final int pos = position;
 
 		buttonFollow.setOnClickListener(new OnClickListener() {
@@ -195,61 +220,72 @@ public class SearchAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 
-				myprint("buttonFollow " + getItem(pos));
+ 				myprint("buttonFollow " + getItem(pos));
 
-				progressDialog.setMessage(getItem(pos).getUserName()
-						+ " Following...");
-				progressDialog.show();
+				if (MainSingleTon.isNeedTOstopFollowing) {
 
-				TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
-						MainSingleTon.currentUserModel,
-						new TwitterRequestCallBack() {
+					myToastS("You have Exceeded Follow Limit Today");
 
-							@Override
-							public void onSuccess(JSONObject jsonObject) {
+				} else {
 
-							}
+					progressDialog.setMessage(getItem(pos).getUserName()
+							+ " Following...");
+					progressDialog.show();
 
-							@Override
-							public void onSuccess(String jsonResult) {
+					TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
+							MainSingleTon.currentUserModel,
+							new TwitterRequestCallBack() {
 
-								hideProgress();
+								@Override
+								public void onSuccess(JSONObject jsonObject) {
 
-								myprint("buttonFollow onSuccess");
+								}
 
-								activity.runOnUiThread(new Runnable() {
+								@Override
+								public void onSuccess(String jsonResult) {
 
-									@Override
-									public void run() {
+									hideProgress();
+									
+									addDMStatus(toFollowingModel);
 
-										buttonFollow.setVisibility(View.INVISIBLE);
+									myprint("buttonFollow onSuccess");
 
-										buttonUnfollow.setVisibility(View.VISIBLE);
-										
-										++MainSingleTon.followingCount;
-										MainSingleTon.toFollowingModelsIDs.add(getItem(pos).getId());
+									activity.runOnUiThread(new Runnable() {
 
-										MainActivity.isNeedToRefreshDrawer = true;
+										@Override
+										public void run() {
 
-									}
-								});
+											buttonFollow.setVisibility(View.INVISIBLE);
 
-								getItem(pos).setFollowingStatus(true);
+											buttonUnfollow.setVisibility(View.VISIBLE);
 
-							}
+											++MainSingleTon.followingCount;
 
-							@Override
-							public void onFailure(Exception e) {
+											MainSingleTon.toFollowingModelsIDs.add(toFollowingModel.getId());
 
-								myprint("buttonFollow onFailure" + e);
+											MainActivity.isNeedToRefreshDrawer = true;
 
-								hideProgress();
-							}
-						});
+											addDMStatus(toFollowingModel);
+											
+										}
+									});
 
-				twitterPostRequestFollow.executeThisRequest(getItem(pos)
-						.getId());
+									getItem(pos).setFollowingStatus(true);
 
+								}
+
+								@Override
+								public void onFailure(Exception e) {
+
+									myprint("buttonFollow onFailure" + e);
+
+									hideProgress();
+								}
+							});
+
+					twitterPostRequestFollow.executeThisRequest(toFollowingModel.getId());
+					
+				}
 			}
 		});
 
@@ -259,6 +295,7 @@ public class SearchAdapter extends BaseAdapter {
 			public void onClick(View v) {
 
 				myprint("buttonUnfollow " + getItem(pos));
+
 				progressDialog.setMessage(getItem(pos).getUserName()
 						+ " UnFollowing...");
 
@@ -293,12 +330,12 @@ public class SearchAdapter extends BaseAdapter {
 												buttonFollow
 														.setVisibility(View.VISIBLE);
 
-												buttonUnfollow
-														.setVisibility(View.INVISIBLE);
-												
+												buttonUnfollow.setVisibility(View.INVISIBLE);
+
 												++MainSingleTon.followingCount;
-												
-												MainSingleTon.toFollowingModelsIDs.remove(getItem(pos).getId());
+
+												MainSingleTon.toFollowingModelsIDs
+														.remove(toFollowingModel.getId());
 
 												MainActivity.isNeedToRefreshDrawer = true;
 
@@ -319,8 +356,7 @@ public class SearchAdapter extends BaseAdapter {
 							}
 						});
 
-				twitterPostRequestUnFollow.executeThisRequest(getItem(pos)
-						.getId());
+				twitterPostRequestUnFollow.executeThisRequest(toFollowingModel.getId());
 
 			}
 		});
@@ -448,6 +484,111 @@ public class SearchAdapter extends BaseAdapter {
 
 				progressDialog.cancel();
 
+			}
+		});
+	}
+
+	private void addDMStatus(final ToFollowingModel toFollowingModel) {
+
+		if (MainSingleTon.autoDmfirstime.contains("yes")) {
+
+			activity.runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					new AlertDialog.Builder(activity)
+							.setTitle("Direct Message")
+							.setMessage(
+									"A thanks message will be sent to those users. who are following you back!")
+							.setPositiveButton(android.R.string.yes,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+
+											Editor editor = context
+													.getSharedPreferences(
+															"twtboardpro",
+															Context.MODE_PRIVATE)
+													.edit();
+											editor.putString("autoDmfirstime",
+													"no");
+
+											editor.putBoolean("autodm", true);
+
+											MainSingleTon.autodm = true;
+
+											MainSingleTon.autoDmfirstime = "no";
+
+											editor.commit();
+											
+											addDMStatus(toFollowingModel);
+											
+										}
+									})
+							.setNegativeButton(android.R.string.no,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+
+											Editor editor = context
+													.getSharedPreferences(
+															"twtboardpro",
+															Context.MODE_PRIVATE)
+													.edit();
+
+											editor.putString("autoDmfirstime",
+													"no");
+
+											editor.putBoolean("autodm", false);
+
+											editor.commit();
+
+											MainSingleTon.autoDmfirstime = "no";
+
+											MainSingleTon.autodm = false;
+
+										}
+									}).setIcon(R.drawable.ic_launcher).show();
+				}
+			});
+
+		} else {
+
+			myprint("Not to diss[ay fvnefisdfnvko nvkjn");
+
+			if (MainSingleTon.autodm) {
+
+				if (sendingids.contains(toFollowingModel.getId())
+						|| sentIds.contains(toFollowingModel.getId())) {
+
+					
+					
+				} else {
+
+					tboardproLocalData.addNewDMsendingId(
+							toFollowingModel.getId(),
+							MainSingleTon.currentUserModel.getUserid());
+
+					sendingids.add(toFollowingModel.getId());
+
+				}
+
+			} else {
+
+			}
+		}
+	}
+
+	void myToastS(final String toastMsg) {
+
+		activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				Toast.makeText(activity, toastMsg, Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

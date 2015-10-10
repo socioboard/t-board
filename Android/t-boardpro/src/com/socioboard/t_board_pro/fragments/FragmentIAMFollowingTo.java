@@ -56,6 +56,7 @@ public class FragmentIAMFollowingTo extends Fragment implements
 
 		rootView = inflater.inflate(R.layout.fragment_to_following, container,
 				false);
+
 		reloutProgress = (RelativeLayout) rootView
 				.findViewById(R.id.reloutProgress);
 
@@ -67,33 +68,40 @@ public class FragmentIAMFollowingTo extends Fragment implements
 
 		viewGroup.setVisibility(View.INVISIBLE);
 
-		if (MainSingleTon.toFollowingModels.size() > 0) {
+		if (MainSingleTon.toFollowingModelsIDs.size() == 0) {
 
-			for (int i = 0; i < MainSingleTon.toFollowingModels.size(); i++) {
-				
-				if (MainSingleTon.toFollowingModels.get(i).isFollowingStatus()) {
-				} else {
-					MainSingleTon.toFollowingModels.remove(i);
-				}
-				
- 			}
-
-			toFollowingAdp = new ToFollowingAdapter(getActivity(),
-					MainSingleTon.toFollowingModels,
-					FragmentIAMFollowingTo.this.getActivity());
-
-			listView.setAdapter(toFollowingAdp);
-
-			isAlreadyScrolling = false;
-			
 			cancelProgres();
 
 		} else {
 
-			new ToFollowing().execute();
+			if (MainSingleTon.toFollowingModels.size() > 0) {
 
+				for (int i = 0; i < MainSingleTon.toFollowingModels.size(); i++) {
+
+					if (MainSingleTon.toFollowingModels.get(i)
+							.isFollowingStatus()) {
+					} else {
+						MainSingleTon.toFollowingModels.remove(i);
+					}
+
+				}
+
+				toFollowingAdp = new ToFollowingAdapter(getActivity(),
+						MainSingleTon.toFollowingModels,
+						FragmentIAMFollowingTo.this.getActivity());
+
+				listView.setAdapter(toFollowingAdp);
+
+				isAlreadyScrolling = false;
+
+				cancelProgres();
+
+			} else {
+
+				new ToFollowing().execute();
+
+			}
 		}
-
 		return rootView;
 
 	}
@@ -176,7 +184,11 @@ public class FragmentIAMFollowingTo extends Fragment implements
 
 			JSONArray jsonArray = jsonObject.getJSONArray("users");
 
-			MainSingleTon.followingNextCursor = jsonObject.getString(Const.next_cursor_str);
+			MainSingleTon.followingNextCursor = jsonObject
+					.getString(Const.next_cursor_str);
+
+			myprint("************** MainSingleTon.followingNextCursor "
+					+ MainSingleTon.followingNextCursor);
 
 			for (int i = 0; i < jsonArray.length(); ++i) {
 
@@ -283,7 +295,8 @@ public class FragmentIAMFollowingTo extends Fragment implements
 
 			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
-			peramPairs.add(new BasicNameValuePair(Const.cursor, MainSingleTon.followingNextCursor));
+			peramPairs.add(new BasicNameValuePair(Const.cursor,
+					MainSingleTon.followingNextCursor));
 
 			twitterUserGETRequest.executeThisRequest(urlTimeline, peramPairs);
 
@@ -302,7 +315,11 @@ public class FragmentIAMFollowingTo extends Fragment implements
 
 			JSONArray jsonArray = jsonObject.getJSONArray("users");
 
-			MainSingleTon.followingNextCursor = jsonObject.getString(Const.next_cursor_str);
+			MainSingleTon.followingNextCursor = jsonObject
+					.getString(Const.next_cursor_str);
+
+			myprint("************** MainSingleTon.followingNextCursor "
+					+ MainSingleTon.followingNextCursor);
 
 			for (int i = 0; i < jsonArray.length(); ++i) {
 
@@ -426,13 +443,21 @@ public class FragmentIAMFollowingTo extends Fragment implements
 
 			} else {
 
-				viewGroup.setVisibility(View.VISIBLE);
-
 				isAlreadyScrolling = true;
 
 				myprint(toFollowingAdp.getItem(toFollowingAdp.getCount() - 1));
 
-				new FetchReqPaged().execute();
+				if (MainSingleTon.followingNextCursor.length() == 1) {
+
+					myprint("MainSingleTon.followingNextCursor.length() == 1 "
+							+ MainSingleTon.followingNextCursor);
+
+				} else {
+
+					viewGroup.setVisibility(View.VISIBLE);
+
+					new FetchReqPaged().execute();
+				}
 
 			}
 

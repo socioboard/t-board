@@ -23,6 +23,6 @@
 #define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
 #define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
 #define Header_Text_Color [UIColor colorWithRed:(CGFloat)84/255 green:(CGFloat)143/255 blue:(CGFloat)195/255 alpha:1]
-#define TwitterSecretKey @"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-#define TwiterConsumerKey @"xxxxxxxxxxxxxxxx"
+#define TwitterSecretKey @"qmAWPnQR5FOkAlF7Ws7t4im62EG3lGgQaZVfQdJYgKZHm08wE3"
+#define TwiterConsumerKey @"oXPJHvlIX02UpEIu5K8EpKbdt"
 #endif

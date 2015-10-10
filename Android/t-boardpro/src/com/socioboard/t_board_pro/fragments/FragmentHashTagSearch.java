@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,18 +20,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.socioboard.t_board_pro.adapters.SearchAdapter;
 import com.socioboard.t_board_pro.adapters.TweetsAdapter;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
@@ -53,11 +52,23 @@ public class FragmentHashTagSearch extends Fragment implements
 	ViewGroup viewGroup;
 	boolean isAlreadyScrolling = true;
 	EditText editText1HashTagSearch;
-	Button buttopnGo;
+	ImageView buttopnGo;
 	String searchTag;
 
+	public static FragmentHashTagSearch newInstance(String text) {
+
+		FragmentHashTagSearch f = new FragmentHashTagSearch();
+		Bundle b = new Bundle();
+		b.putString("msg", text);
+
+		f.setArguments(b);
+
+		return f;
+	}
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
 		rootView = inflater.inflate(R.layout.fragment_search_hashtag,
 				container, false);
@@ -72,9 +83,7 @@ public class FragmentHashTagSearch extends Fragment implements
 		editText1HashTagSearch = (EditText) rootView
 				.findViewById(R.id.editText1HashTagSearch);
 
-		editText1HashTagSearch.append("#");
-
-		buttopnGo = (Button) rootView.findViewById(R.id.button1Go);
+		buttopnGo = (ImageView) rootView.findViewById(R.id.button1Go);
 
 		listView.setOnScrollListener(FragmentHashTagSearch.this);
 
@@ -110,21 +119,28 @@ public class FragmentHashTagSearch extends Fragment implements
 						editText1HashTagSearch.setText(searchTag);
 
 					}
+					
+					View view = getActivity().getCurrentFocus();
+
+					if (view != null) {
+
+						InputMethodManager imm = (InputMethodManager) getActivity()
+								.getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+					}
 
 					showProgress();
 
 					List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
-					TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(
-							MainSingleTon.currentUserModel,
-							FragmentHashTagSearch.this);
+					TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(MainSingleTon.currentUserModel, FragmentHashTagSearch.this);
 
 					peramPairs.add(new BasicNameValuePair(Const.count, "10"));
 
-					peramPairs.add(new BasicNameValuePair(
-							Const.include_entities, "false"));
+					peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
 
-					try {
+ 					try {
 
 						peramPairs.add(new BasicNameValuePair(Const.q,
 								URLEncoder.encode(searchTag, "UTF-8")));
@@ -201,15 +217,48 @@ public class FragmentHashTagSearch extends Fragment implements
 					tweetModel.setUserImagerUrl(jsonObject3
 							.getString(Const.profile_image_url));
 
-					tweetModel.setUserimage(null);
-
 					tweetModel.setUserName("@"
 							+ jsonObject3.getString(Const.screen_name));
 
 					tweetModel.setFullName(jsonObject3.getString(Const.name));
+					
+					tweetModel.setUserID(jsonObject3.getString(Const.id));
 
-					tweetModel.setFollowing(jsonObject3
-							.getBoolean(Const.following));
+					tweetModel.setFollowing(jsonObject3.getBoolean(Const.following));
+
+					if (jsonObjectk2.has("extended_entities")) {
+
+						JSONObject jsonObjectEntities = jsonObjectk2
+								.getJSONObject("extended_entities");
+
+						System.out.println("***** jsonObjectEntities  *****"
+								+ jsonObjectEntities);
+
+						System.out
+								.println("***** jsonObjectk2.has(Const.media) *****");
+
+						JSONArray jsonArray2Media = jsonObjectEntities
+								.getJSONArray(Const.media);
+
+						System.out.println("***** jsonArray2Media *****");
+
+						JSONObject jsonObjectMedia = jsonArray2Media
+								.getJSONObject(0);
+
+						System.out.println("***** jsonObjectMedia *****"
+								+ jsonObjectMedia);
+
+						tweetModel.setMediaImagerUrl(jsonObjectMedia
+								.getString(Const.media_url));
+
+					} else {
+
+						System.out
+								.println("***** Noooooo jsonObjectk2.has(Const.media) *****");
+
+						tweetModel.setMediaImagerUrl("");
+
+					}
 
 					listTaggedTweets.add(tweetModel);
 
@@ -300,8 +349,6 @@ public class FragmentHashTagSearch extends Fragment implements
 					tweetModel.setUserImagerUrl(jsonObject3
 							.getString(Const.profile_image_url));
 
-					tweetModel.setUserimage(null);
-
 					tweetModel.setUserName("@"
 							+ jsonObject3.getString(Const.screen_name));
 
@@ -311,6 +358,39 @@ public class FragmentHashTagSearch extends Fragment implements
 
 					tweetModel.setFollowing(jsonObject3
 							.getBoolean(Const.following));
+
+					if (jsonObjectk2.has("extended_entities")) {
+
+						JSONObject jsonObjectEntities = jsonObjectk2
+								.getJSONObject("extended_entities");
+
+						System.out.println("***** jsonObjectEntities  *****"
+								+ jsonObjectEntities);
+
+						System.out
+								.println("***** jsonObjectk2.has(Const.media) *****");
+
+						JSONArray jsonArray2Media = jsonObjectEntities
+								.getJSONArray(Const.media);
+
+						System.out.println("***** jsonArray2Media *****");
+
+						JSONObject jsonObjectMedia = jsonArray2Media
+								.getJSONObject(0);
+
+						System.out.println("***** jsonObjectMedia *****"
+								+ jsonObjectMedia);
+
+						tweetModel.setMediaImagerUrl(jsonObjectMedia.getString(Const.media_url));
+
+					} else {
+
+						System.out
+								.println("***** Noooooo jsonObjectk2.has(Const.media) *****");
+
+						tweetModel.setMediaImagerUrl("");
+
+					}
 
 					// listMyfollowers.add(tweetModel);
 

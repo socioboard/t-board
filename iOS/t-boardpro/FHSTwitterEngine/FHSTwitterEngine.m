@@ -354,7 +354,7 @@ id removeNull(id rootObject) {
     int cycle = 0;
     int inpos = 0;
     int outpos = 0;
-    char temp;
+    char temp = '\0';
     
     outputBuffer[outLength-1] = '=';
     outputBuffer[outLength-2] = '=';

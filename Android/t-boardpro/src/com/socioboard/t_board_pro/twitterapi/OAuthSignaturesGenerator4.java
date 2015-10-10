@@ -98,7 +98,7 @@ public class OAuthSignaturesGenerator4 {
 			}
 		}
 		
-		System.out.println("GeneratedPerams = "+ GeneratedPerams);
+		//System.out.println("GeneratedPerams = "+ GeneratedPerams);
 
 		return GeneratedPerams;
 	}
@@ -107,11 +107,11 @@ public class OAuthSignaturesGenerator4 {
 
 		String baseString = null;
 
-		System.out.println("URLEncoder.encode("+url+") = "+ URLEncoder.encode(url));
+		//System.out.println("URLEncoder.encode("+url+") = "+ URLEncoder.encode(url));
 
 		baseString = method+"&"+URLEncoder.encode(url )+"&"+URLEncoder.encode(peramsUrl );
 
-		System.out.println("baseString = "+ baseString);
+		//System.out.println("baseString = "+ baseString);
 
 		return baseString;
 		
@@ -123,7 +123,7 @@ public class OAuthSignaturesGenerator4 {
 
 		singningKey = URLEncoder.encode(cSecret )+"&"+URLEncoder.encode(tokenSecret );
 
-		System.out.println("genrateSigningKey = "+ singningKey);
+		//System.out.println("genrateSigningKey = "+ singningKey);
 
 		return singningKey;
 		

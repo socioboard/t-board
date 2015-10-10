@@ -17,7 +17,13 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 	public static final String table_name = "twittermanytable";
 
+	public static final String table_followers = "table_followers";
+
+	public static final String table_stats = "table_stats";
+
 	public static final String table_dm_records = "table_dm_records";
+
+	public static final String table_dm_sending_records = "table_dm_sending_records";
 
 	public static final String sch_table_name = "schedullertable";
 
@@ -37,7 +43,19 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 	public static final String KEY_TwtTime = "tweettimestamp";
 
+	public static final String KEY_followers_ids = "recent_ids";
+
 	public static final String KEY_DM_sent_ids = "dm_ids";
+
+	public static final String KEY_DM_sending_ids = "dm_ids";
+
+	// ////////////////////////////////////////////////////////
+
+	public static final String KEY_FOLLOWING = "followings";
+	public static final String KEY_NONFOLLWERS = "nonfollowers";
+	public static final String KEY_FOLLOWERS = "followers";
+	public static final String KEY_MUTUAL = "mutuals";
+	public static final String KEY_TIMESTAMP = "timestamp";
 
 	// ////////////////////////////////////////////////////////
 
@@ -61,20 +79,29 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 	public void CreateTable() {
 
-		
 		String querry = "CREATE TABLE IF NOT EXISTS " + table_name + "("
 				+ KEY_UserID + " TEXT," + KEY_Userimage + " TEXT,"
 				+ KEY_Username + " TEXT," + KEY_UserAcessToken + " TEXT,"
 				+ KEY_UserSecretKey + " TEXT)";
 
-		
 		String querry2 = "CREATE TABLE IF NOT EXISTS " + sch_table_name + "("
 				+ KEY_SchTID + " INTEGER," + KEY_UserID + " TEXT," + KEY_Tweet
 				+ " TEXT," + KEY_TwtTime + " INTEGER)";
 
-
 		String querry3 = "CREATE TABLE IF NOT EXISTS " + table_dm_records + "("
-				+ KEY_DM_sent_ids + " TEXT,"+ KEY_UserID + " TEXT)";
+				+ KEY_DM_sent_ids + " TEXT," + KEY_UserID + " TEXT)";
+
+		String querry4 = "CREATE TABLE IF NOT EXISTS "
+				+ table_dm_sending_records + "(" + KEY_DM_sending_ids
+				+ " TEXT," + KEY_UserID + " TEXT)";
+
+		String querry5 = "CREATE TABLE IF NOT EXISTS " + table_followers + "("
+				+ KEY_followers_ids + " TEXT," + KEY_UserID + " TEXT)";
+
+		String querry6 = "CREATE TABLE IF NOT EXISTS " + table_stats + "("
+				+ KEY_FOLLOWING + " TEXT," + KEY_FOLLOWERS + " TEXT,"
+				+ KEY_MUTUAL + " TEXT," + KEY_NONFOLLWERS + " TEXT,"
+				+ KEY_TIMESTAMP + " TEXT," + KEY_UserID + " TEXT)";
 
 		SQLiteDatabase database = this.getWritableDatabase();
 
@@ -84,11 +111,23 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 		database.execSQL(querry3);
 
+		database.execSQL(querry4);
+
+		database.execSQL(querry5);
+
+		database.execSQL(querry6);
+
 		System.out.println("CreateTable " + querry);
 
 		System.out.println("CreateTable2 " + querry2);
 
 		System.out.println("querry3 " + querry3);
+
+		System.out.println("querry4 " + querry4);
+
+		System.out.println("querry5 " + querry5);
+
+		System.out.println("querry6 " + querry6);
 
 	}
 
@@ -213,10 +252,10 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 				+ modelUserDatas.getUserAcessToken() + "' " + " WHERE "
 				+ KEY_UserID + " = '" + modelUserDatas.getUserid() + "'";
 
-		System.out.println(updateQuery);
+		System.out.println("updateQuery " + modelUserDatas);
 
 		database.execSQL(updateQuery);
-		
+
 	}
 
 	public void updateUserData(String userId, String KEY, String dataValue) {
@@ -248,6 +287,7 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 		System.out.println("updateUserDataField" + userId);
 
 		database.execSQL(updateQuery);
+
 	}
 
 	public void deleteAllRows() {
@@ -404,12 +444,12 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 	}
 
-	public ArrayList<String> getAllSentIDs() {
+	public ArrayList<String> getAllSentIDs(String Userid) {
 
 		ArrayList<String> listIDs = new ArrayList<String>();
 
-		String query = "SELECT * FROM " + table_dm_records + " WHERE " + KEY_UserID
-				+ " = '" + MainSingleTon.currentUserModel.getUserid()+"'";
+		String query = "SELECT * FROM " + table_dm_records + " WHERE "
+				+ KEY_UserID + " = '" + Userid + "'";
 
 		SQLiteDatabase liteDatabase = this.getReadableDatabase();
 
@@ -430,15 +470,15 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 		return listIDs;
 	}
 
-	public void addNewDMsentId(String id) {
+	public void addNewDMsentId(String id, String Userid) {
 
 		SQLiteDatabase liteDatabase = this.getWritableDatabase();
 
 		ContentValues contentValues = new ContentValues();
 
 		contentValues.put(KEY_DM_sent_ids, id);
-		
-		contentValues.put(KEY_UserID, MainSingleTon.currentUserModel.getUserid());
+
+		contentValues.put(KEY_UserID, Userid);
 
 		liteDatabase.insert(table_dm_records, null, contentValues);
 
@@ -446,16 +486,167 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 	}
 
-	public void deleteAllDMIds() {
+	public ArrayList<String> getAllSendingIDs(String Userid) {
 
-		String query = "DELETE FROM " + table_dm_records;
+		ArrayList<String> listIDs = new ArrayList<String>();
+
+		String query = "SELECT * FROM " + table_dm_sending_records + " WHERE "
+				+ KEY_UserID + " = '" + Userid + "'";
+
+		SQLiteDatabase liteDatabase = this.getReadableDatabase();
+
+		Cursor cursor = liteDatabase.rawQuery(query, null);
+
+		if (cursor.moveToFirst()) {
+
+			do {
+
+				listIDs.add(cursor.getString(0));
+
+			} while (cursor.moveToNext());
+
+		}
+
+		System.out.println("listIDs ==== " + listIDs);
+
+		return listIDs;
+	}
+
+	public void addNewDMsendingId(String id, String Userid) {
+
+		SQLiteDatabase liteDatabase = this.getWritableDatabase();
+
+		ContentValues contentValues = new ContentValues();
+
+		contentValues.put(KEY_DM_sending_ids, id);
+
+		contentValues.put(KEY_UserID, Userid);
+
+		liteDatabase.insert(table_dm_sending_records, null, contentValues);
+
+		System.out.println("Added id ==== " + id);
+
+	}
+
+	public void deleteThisDMSendingId(String dmId, String userId) {
+
+		String query = "DELETE FROM " + table_dm_sending_records + " WHERE "
+				+ KEY_UserID + " = '" + userId + "' AND " + KEY_DM_sending_ids
+				+ " = '" + dmId + "'";
 
 		SQLiteDatabase liteDatabase = this.getReadableDatabase();
 
 		liteDatabase.execSQL(query);
-		
-		System.out.println("1111111111111111111 deleteAllDMIds ==== ");
 
+		System.out.println(" ==== deleteThisDMSendingId ==== " + query);
+
+	}
+
+	// Recent
+
+	public void addFollwersIds(String jsonIds, String Userid) {
+
+		SQLiteDatabase liteDatabase = this.getWritableDatabase();
+
+		ContentValues contentValues = new ContentValues();
+
+		contentValues.put(KEY_followers_ids, jsonIds);
+
+		contentValues.put(KEY_UserID, Userid);
+
+		liteDatabase.insert(table_followers, null, contentValues);
+
+		System.out.println("addFollwersIds ==== ");
+
+	}
+
+	public String getAllFollowersIDs(String Userid) {
+
+		String jsonResult = null;
+
+		String query = "SELECT * FROM " + table_followers + " WHERE "
+				+ KEY_UserID + " = '" + Userid + "'";
+
+		SQLiteDatabase liteDatabase = this.getReadableDatabase();
+
+		Cursor cursor = liteDatabase.rawQuery(query, null);
+
+		if (cursor.moveToFirst()) {
+
+			jsonResult = cursor.getString(0);
+
+		}
+
+		System.out.println("jsonResult ==== " + jsonResult);
+
+		return jsonResult;
+	}
+
+	public void deleteAllFollowers(String userID) {
+
+		String query = "DELETE FROM " + table_followers + " WHERE "
+				+ KEY_UserID + " = '" + userID + "'";
+
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+		sqLiteDatabase.execSQL(query);
+
+	}
+
+	public void addUserEntity(EntityModel entityModel, String userId) {
+
+		SQLiteDatabase liteDatabase = this.getWritableDatabase();
+
+		ContentValues contentValues = new ContentValues();
+
+		contentValues.put(KEY_FOLLOWING, entityModel.getFollowings());
+
+		contentValues.put(KEY_FOLLOWERS, entityModel.getFollowers());
+
+		contentValues.put(KEY_MUTUAL, entityModel.getMutuals());
+
+		contentValues.put(KEY_NONFOLLWERS, entityModel.getNonfollwers());
+
+		contentValues.put(KEY_TIMESTAMP, entityModel.getMillis());
+
+		contentValues.put(KEY_UserID, MainSingleTon.currentUserModel.getUserid());
+
+		liteDatabase.insert(table_stats, null, contentValues);
+
+		System.out.println("entityModel = "+entityModel);
+		
+	}
+
+	public ArrayList<EntityModel> getAllUsersEntity(String userId) {
+
+		ArrayList<EntityModel> entityModels = new ArrayList<EntityModel>();
+
+		String sql = "SELECT * FROM " + table_stats + " WHERE " + KEY_UserID
+				+ " = '" + userId + "'";
+
+		SQLiteDatabase database = this.getReadableDatabase();
+
+		Cursor cursor = database.rawQuery(sql, null);
+
+		if (cursor.moveToFirst()) {
+
+			do {
+
+				EntityModel entityModel = new EntityModel();
+				
+ 				entityModel.setFollowings(cursor.getLong(0));
+				entityModel.setFollowers(cursor.getLong(1));
+				entityModel.setMutuals(cursor.getLong(2));
+				entityModel.setNonfollwers(cursor.getLong(3));
+ 				entityModel.setMillis(cursor.getLong(4));
+
+				entityModels.add(entityModel);
+
+			} while (cursor.moveToNext());
+
+		}
+
+		return entityModels;
 	}
 
 }

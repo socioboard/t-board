@@ -26,7 +26,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/drawer_left"
             android:src="@drawable/add_acount_icon" />
 
         <TextView

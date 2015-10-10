@@ -43,7 +43,7 @@ public class TwitterShowUserJSon {
 
 			myprint("url : " + url);
 
-			myprint("authData : " + authData);
+			//myprint("authData : " + authData);
 
 			URL obj = new URL(url);
 

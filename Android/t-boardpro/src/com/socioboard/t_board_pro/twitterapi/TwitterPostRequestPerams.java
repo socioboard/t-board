@@ -24,9 +24,9 @@ public class TwitterPostRequestPerams {
 
 	ModelUserDatas userDatas;
 
-	OAuthSignaturesGeneratorPostReq authSignaturesGenerator3;
+	OAuthSignaturesGeneratorSorted authSignaturesGenerator3;
 
-	public TwitterPostRequestPerams(ModelUserDatas userDatas,
+ 	public TwitterPostRequestPerams(ModelUserDatas userDatas,
 			TwitterRequestCallBack twitterRequestCallBack) {
 
 		this.twitterRequestCallBack = twitterRequestCallBack;
@@ -34,13 +34,13 @@ public class TwitterPostRequestPerams {
 		this.userDatas = userDatas;
 		
 	}
-
+ 	
 	public void executeThisRequest(String reqUrl,List<BasicNameValuePair> peramPairs) {
 
 		new RequestAsync().execute(reqUrl,peramPairs);
 
 	}
-
+	
 	public class RequestAsync extends AsyncTask<Object, Void, Void> {
 
 		@Override
@@ -57,15 +57,17 @@ public class TwitterPostRequestPerams {
 
 		@Override
 		protected void onProgressUpdate(Void... values) {
+			
 			super.onProgressUpdate(values);
 
 		}
 
 	}
 
+	
 	public void myDoInBackground(String reqUrl,List<BasicNameValuePair> peramPairs) {
 
-		authSignaturesGenerator3 = new OAuthSignaturesGeneratorPostReq(
+		authSignaturesGenerator3 = new OAuthSignaturesGeneratorSorted(
 				userDatas.getUserAcessToken(), userDatas.getUsersecretKey(),
 				MainSingleTon.TWITTER_KEY, MainSingleTon.TWITTER_SECRET, "POST");
 
@@ -79,7 +81,7 @@ public class TwitterPostRequestPerams {
 
 			System.out.println("url : " + reqUrl);
 
-			System.out.println("authData : " + authData);
+			//System.out.println("authData : " + authData);
 
 			URL obj = new URL(reqUrl);
 
@@ -99,13 +101,11 @@ public class TwitterPostRequestPerams {
 
 			boolean tmp;
 
-			String data = peramPairs.get(0).getName()+"="
-					+ URLEncoder.encode(peramPairs.get(0).getValue()).replace("+", "%20");
+			String data = peramPairs.get(0).getName()+"=" + URLEncoder.encode(peramPairs.get(0).getValue()).replace("+", "%20");
 
 			for(int i=1;i<peramPairs.size();++i){
 				
-				data = data +"&"+ peramPairs.get(i).getName()+"="
-						+ URLEncoder.encode(peramPairs.get(i).getValue()).replace("+", "%20");
+				data = data +"&"+ peramPairs.get(i).getName()+"=" + URLEncoder.encode(peramPairs.get(i).getValue()).replace("+", "%20");
 				
 			}
 			
@@ -126,6 +126,7 @@ public class TwitterPostRequestPerams {
 					twitterRequestCallBack.onSuccess(jsonString);
 
 				}
+				
 			} else {
 
 				twitterRequestCallBack.onFailure(new Exception());
@@ -138,7 +139,7 @@ public class TwitterPostRequestPerams {
 
 			twitterRequestCallBack.onFailure(e);
 
-			System.out.println("Exception = =    " + e);
+			//System.out.println("Exception = =    " + e);
 
 		}
 
@@ -163,17 +164,17 @@ public class TwitterPostRequestPerams {
 
 			return false;
 		}
-	}
+ 	}
 
 	// Reads a response for a given connection and returns it as a string.
+	
 	public String readResponse(HttpsURLConnection connection) {
 
 		try {
 
 			int responseCode = connection.getResponseCode();
 
-			myprint("readResponse connection.getResponseCode()   "
-					+ responseCode);
+			myprint("readResponse connection.getResponseCode()   " + responseCode);
 
 			String jsonString = null;
 

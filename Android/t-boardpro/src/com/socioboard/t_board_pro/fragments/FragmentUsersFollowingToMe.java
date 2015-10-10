@@ -23,7 +23,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.socioboard.t_board_pro.adapters.MyFollowersAdapter;
 import com.socioboard.t_board_pro.adapters.ToFollowingAdapter;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterTimeLineRequest2;
@@ -42,13 +41,13 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 
 	Bitmap userImage, userbannerImage;
 
-	MyFollowersAdapter myFollowersAdapter;
+	ToFollowingAdapter myFollowersAdapter;
 
 	RelativeLayout reloutProgress;
 
 	Activity aActivity;
 
-	boolean isAlreadyScrolling = true;
+	boolean isAlreadyScrolling = true, isneedTostop = false;
 
 	ViewGroup viewGroup;
 
@@ -74,20 +73,27 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 
 		viewGroup.setVisibility(View.INVISIBLE);
 
-		if (MainSingleTon.myFollowers.size() > 0) {
+		if (MainSingleTon.listMyfollowersIDs.size() == 0) {
 
-			myFollowersAdapter = new MyFollowersAdapter(getActivity(),MainSingleTon.myFollowers,FragmentUsersFollowingToMe.this.getActivity());
-
-			listView.setAdapter(myFollowersAdapter);
+			cancelProgres();
 
 		} else {
 
-			new FollowingToMe().execute();
+			if (MainSingleTon.myFollowers.size() > 0) {
 
+				myFollowersAdapter = new ToFollowingAdapter(getActivity(),
+						MainSingleTon.myFollowers,
+						FragmentUsersFollowingToMe.this.getActivity());
+
+				listView.setAdapter(myFollowersAdapter);
+
+			} else {
+
+				new FollowingToMe().execute();
+
+			}
 		}
-
 		return rootView;
-
 	}
 
 	protected void parseJsonResultPaged(String jsonResult) {
@@ -113,6 +119,9 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 
 			MainSingleTon.myfollowersNextCursor = jsonObject
 					.getString(Const.next_cursor_str);
+
+			myprint("************** MainSingleTon.myfollowersNextCursor "
+					+ MainSingleTon.myfollowersNextCursor);
 
 			for (int i = 0; i < jsonArray.length(); ++i) {
 
@@ -148,12 +157,12 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 
 				final int indexed = i;
 
-				getActivity().runOnUiThread(new Runnable() {
+				if (FragmentUsersFollowingToMe.this.getActivity() != null) {
 
-					@Override
-					public void run() {
+					getActivity().runOnUiThread(new Runnable() {
 
-						if (FragmentUsersFollowingToMe.this.getActivity() != null) {
+						@Override
+						public void run() {
 
 							int listCount = listView.getCount();
 
@@ -168,10 +177,9 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 									myFollowersModel);
 
 						}
-						
-					}
-				});
 
+					});
+				}
 			}
 
 		} catch (JSONException e) {
@@ -308,6 +316,9 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 			MainSingleTon.myfollowersNextCursor = jsonObject
 					.getString(Const.next_cursor_str);
 
+			myprint("************** MainSingleTon.myfollowersNextCursor "
+					+ MainSingleTon.myfollowersNextCursor);
+
 			for (int i = 0; i < jsonArray.length(); ++i) {
 
 				JSONObject jsonObject2 = jsonArray.getJSONObject(i);
@@ -353,7 +364,7 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 
 					if (FragmentUsersFollowingToMe.this.getActivity() != null) {
 
-						myFollowersAdapter = new MyFollowersAdapter(
+						myFollowersAdapter = new ToFollowingAdapter(
 								getActivity(), MainSingleTon.myFollowers,
 								FragmentUsersFollowingToMe.this.getActivity());
 
@@ -434,14 +445,22 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 
 			} else {
 
-				viewGroup.setVisibility(View.VISIBLE);
-
 				isAlreadyScrolling = true;
 
 				myprint(myFollowersAdapter.getItem(myFollowersAdapter
 						.getCount() - 1));
 
-				new FetchReqPaged().execute();
+				if (MainSingleTon.myfollowersNextCursor.length() == 1) {
+
+					myprint("MainSingleTon.myfollowersNextCursor.length() == 1 DONt LOad");
+
+				} else {
+
+					viewGroup.setVisibility(View.VISIBLE);
+
+					new FetchReqPaged().execute();
+
+				}
 
 			}
 

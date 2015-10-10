@@ -3,6 +3,7 @@ package com.socioboard.t_board_pro.fragments;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -10,21 +11,30 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,18 +54,28 @@ import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
 
 public class FragmentCopyFollowers extends Fragment implements OnScrollListener {
-//test
+
 	View rootView;
 	ListView listView;
 	Bitmap userImage, userbannerImage;
 	public ToFollowingAdapter toFollowingAdp;
 	RelativeLayout reloutProgress;
 	Activity aActivity;
-	Button buttonAdd, buttonCopyFollowers;
+	Button button1Remove;
+	ImageView buttonAdd;
 	EditText editTextUserName, editText1Range;
 	ProgressDialog progressDialog;
 	ImageView profile_picorlpAcc;
-	RelativeLayout relativeLayout1;
+	RelativeLayout relativeLayout1, reloutSearch, datasheet;
+	Dialog progressDialogProcess;
+	TextView processDesc, textViewNoOfFollowers;
+	Thread thread;
+
+	TboardproLocalData tboardproLocalData;
+
+	ArrayList<String> sendingids;
+
+	ArrayList<String> sentIds;
 
 	TextView textView1Nameovlp, textView1UserNameovlp, textViewNotweets,
 			TextView01Followingsovlp, TextView0FollowedByovlp, textView3Record;
@@ -70,7 +90,7 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 	public ArrayList<String> targetIds = new ArrayList<String>();
 
-	boolean isAlreadyScrolling = true;
+	boolean isAlreadyScrolling = true, isneedTostop = false;
 
 	ViewGroup viewGroup;
 
@@ -90,6 +110,14 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 		aActivity = getActivity();
 
+		tboardproLocalData = new TboardproLocalData(aActivity);
+
+		sendingids = tboardproLocalData
+				.getAllSendingIDs(MainSingleTon.currentUserModel.getUserid());
+
+		sentIds = tboardproLocalData
+				.getAllSentIDs(MainSingleTon.currentUserModel.getUserid());
+
 		imageLoader = new ImageLoader(getActivity());
 
 		rootView = inflater.inflate(R.layout.fragment_copyfollowers, container,
@@ -101,14 +129,21 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 		relativeLayout1 = (RelativeLayout) rootView
 				.findViewById(R.id.relativeLayout1);
 
+		datasheet = (RelativeLayout) rootView.findViewById(R.id.datasheet);
+
 		relativeLayout1.setVisibility(View.GONE);
 
 		listView = (ListView) rootView.findViewById(R.id.listView1);
+
+		reloutSearch = (RelativeLayout) rootView.findViewById(R.id.rel);
 
 		profile_picorlpAcc = (ImageView) rootView
 				.findViewById(R.id.profile_pic);
 
 		textView1Nameovlp = (TextView) rootView.findViewById(R.id.followerName);
+
+		textViewNoOfFollowers = (TextView) rootView
+				.findViewById(R.id.textViewNoOfFollowers);
 
 		textViewNotweets = (TextView) rootView
 				.findViewById(R.id.textViewNotweets);
@@ -118,6 +153,7 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 		textView3Record = (TextView) rootView
 				.findViewById(R.id.textView3Record);
+
 		textView3Record.setText("");
 
 		// ABSDBASJ
@@ -132,9 +168,10 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 		editText1Range = (EditText) rootView.findViewById(R.id.editText1Range);
 
-		buttonAdd = (Button) rootView.findViewById(R.id.button1Go);
+		buttonAdd = (ImageView) rootView.findViewById(R.id.button1Go);
 
 		buttonAdd.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 
@@ -144,7 +181,19 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 					return;
 				}
 
+				View view = getActivity().getCurrentFocus();
+
+				if (view != null) {
+
+					InputMethodManager imm = (InputMethodManager) getActivity()
+							.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+				}
+
 				relativeLayout1.setVisibility(View.GONE);
+
+				datasheet.setVisibility(View.INVISIBLE);
 
 				copyFollowedCount = 0;
 				targetCount = 0;
@@ -179,7 +228,6 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCancelable(false);
-
 		listView.setOnScrollListener(this);
 
 		addFooterView();
@@ -190,57 +238,86 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 		buttonUnfollow = (Button) rootView.findViewById(R.id.buttonUnfollow);
 
-		buttonCopyFollowers = (Button) rootView.findViewById(R.id.button1);
+		Button buttonCopyFollowers = (Button) rootView
+				.findViewById(R.id.button1);
 
 		buttonCopyFollowers.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				if (followerIds.size() == 0) {
+				View view = getActivity().getCurrentFocus();
 
-					myToastL("Non users Available !!");
+				if (view != null) {
+
+					InputMethodManager imm = (InputMethodManager) getActivity()
+							.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+				}
+
+				if (MainSingleTon.isNeedTOstopFollowing) {
+
+					myToastL("You have Exceeded Follow Limit Today");
 
 				} else {
 
-					if (editText1Range.getText().toString().isEmpty()) {
+					if (followerIds.size() == 0) {
 
-						myToastS("Invalid Range!");
-
-						return;
-					}
-
-					Integer tarInteger = new Integer(editText1Range.getText()
-							.toString());
-
-					if (tarInteger <= 0) {
-
-						myToastS("Invalid Range!");
+						myToastL("Non users Available !!");
 
 					} else {
 
-						setTargetIds(tarInteger);
+						if (editText1Range.getText().toString().isEmpty()) {
 
-						if (targetIds.size() == 0) {
+							myToastS("Invalid Range!");
 
-							myToastL("Non users Available To Follow!!");
-
-						} else {
-							
-							copyFollowedCount = 0;
-
-							progressDialog.setMessage("Processing - "
-									+ copyFollowedCount + "/" + targetCount
-									+ "...");
-							progressDialog.show();
-
-							followThisId(targetIds.get(0));
-
+							return;
 						}
 
+						Integer tarInteger = new Integer(editText1Range
+								.getText().toString());
+
+						if (tarInteger <= 0) {
+
+							myToastS("Invalid Range!");
+
+						} else {
+
+							setTargetIds(tarInteger);
+
+							if (targetIds.size() == 0) {
+
+								myToastL("Non users Available To Follow!!");
+
+							} else {
+
+								isneedTostop = false;
+
+								copyFollowedCount = 0;
+
+								progressDialogProcess.show();
+
+								setProgressData("Processing - "
+										+ copyFollowedCount + "/" + targetCount
+										+ "...");
+
+								new Thread(new Runnable() {
+
+									@Override
+									public void run() {
+
+										followThisId(targetIds.get(0));
+
+									}
+								}).start();
+
+							}
+
+						}
 					}
 				}
- 			}
+			}
 		});
 
 		buttonFollow.setOnClickListener(new OnClickListener() {
@@ -268,6 +345,8 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 							public void onSuccess(String jsonResult) {
 
 								cancelProgresBar();
+
+								addDMStatus(fullUserDetailModel.getId());
 
 								myprint("buttonFollow onSuccess");
 
@@ -305,6 +384,7 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 								myToastS("Request Failed!");
 
 								cancelProgresBar();
+
 							}
 						});
 
@@ -392,6 +472,8 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 			}
 		});
+
+		initDialog();
 
 		return rootView;
 	}
@@ -490,6 +572,8 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 				myprint("fullUserDetailModel.getNoToFollowing()  "
 						+ fullUserDetailModel.getNoToFollowing());
 
+				datasheet.setVisibility(View.VISIBLE);
+
 				TextView01Followingsovlp.setText(fullUserDetailModel
 						.getNoToFollowing());
 
@@ -497,6 +581,9 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 				TextView0FollowedByovlp.setText(fullUserDetailModel
 						.getNoFollowers());
+
+				textViewNoOfFollowers.setText("Followers : "
+						+ fullUserDetailModel.getNoFollowers());
 
 				imageLoader.DisplayImage(
 						fullUserDetailModel.getUserImagerUrl(),
@@ -516,9 +603,9 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 				}
 
-				loadfollowers();
-
 				relativeLayout1.setVisibility(View.VISIBLE);
+
+				loadfollowers();
 
 			}
 		});
@@ -702,16 +789,14 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 			@Override
 			public void run() {
 
-				viewGroup.setVisibility(View.INVISIBLE);
+				viewGroup.setVisibility(View.GONE);
 
 			}
 		});
 
 		try {
 
-			JSONObject jsonObject = new JSONObject(jsonResult);
-
-			JSONArray jsonArray = jsonObject.getJSONArray("users");
+			JSONArray jsonArray = new JSONArray(jsonResult);
 
 			for (int i = 0; i < jsonArray.length(); ++i) {
 
@@ -743,7 +828,7 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 				followingModel.setUserName("@"
 						+ jsonObject2.getString(Const.screen_name));
 
-				myprint(followingModel);
+				// myprint(followingModel);
 
 				getActivity().runOnUiThread(new Runnable() {
 
@@ -827,10 +912,20 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 		} else {
 
-			for (int i = followerIdsLoaded.size(); i < (followerIdsLoaded
-					.size() + 99); ++i) {
+			System.out.println("followerIdsLoaded.size() + 99"
+					+ (followerIdsLoaded.size() + 99));
 
-				if (i == followerIdsLoaded.size()) {
+			boolean loadFirstTime = true;
+
+			int start = followerIdsLoaded.size();
+
+			int target = followerIdsLoaded.size() + 99;
+
+			for (int i = start; i < (target); ++i) {
+
+				if (loadFirstTime) {
+
+					loadFirstTime = false;
 
 					userswithComma = followerIds.get(i);
 
@@ -850,7 +945,6 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 					}
 
 				}
-
 			}
 
 			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
@@ -908,7 +1002,7 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 				adapterModels.add(followingModel);
 
-				myprint(followingModel);
+				// myprint(followingModel);
 
 			}
 
@@ -979,9 +1073,10 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 			@Override
 			public void run() {
-				reloutProgress.setVisibility(View.VISIBLE);
-			}
 
+				reloutProgress.setVisibility(View.VISIBLE);
+
+			}
 		});
 
 	}
@@ -1040,10 +1135,11 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 			if (isAlreadyScrolling) {
 
-				// DO NOTHING
 				myprint("BUT isAlreadyScrolling ");
 
 			} else {
+
+				isAlreadyScrolling = true;
 
 				myprint(toFollowingAdp.getItem(toFollowingAdp.getCount() - 1));
 
@@ -1054,8 +1150,6 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 				} else {
 
 					viewGroup.setVisibility(View.VISIBLE);
-
-					isAlreadyScrolling = true;
 
 					FetchReqPagedFollowers();
 				}
@@ -1077,161 +1171,341 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 	public void followThisId(final String id) {
 
-		myprint("*********targetCount " + targetCount);
-		myprint("*********targetIds " + targetIds);
-		myprint("*********copyFollowedCount " + copyFollowedCount);
-		myprint("*********id " + id);
+		if (MainSingleTon.isNeedTOstopFollowing) {
 
-		TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
-				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
+			myToastL("You have Exceeded Follow Limit Today");
 
-					@Override
-					public void onSuccess(JSONObject jsonObject) {
+			thread.interrupt();
 
-					}
+			adapterModels.clear();
 
-					@Override
-					public void onSuccess(String jsonResult) {
+			followerIdsLoaded.clear();
 
-						myprint("buttonFollow onSuccess");
+			isAlreadyScrolling = true;
 
-						if (MainSingleTon.toFollowingModelsIDs.contains(id)) {
+			toFollowingAdp = new ToFollowingAdapter(getActivity(),
+					adapterModels, FragmentCopyFollowers.this.getActivity());
 
-						} else {
+			listView.setAdapter(toFollowingAdp);
 
-							++MainSingleTon.followingCount;
-							MainSingleTon.toFollowingModelsIDs.add(id);
-							MainActivity.isNeedToRefreshDrawer = true;
+			ShowThisIdsFollowers();
+
+		} else {
+
+			myprint("*********targetCount " + targetCount);
+			myprint("*********targetIds " + targetIds);
+			myprint("*********copyFollowedCount " + copyFollowedCount);
+			myprint("*********id " + id);
+
+			TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
+					MainSingleTon.currentUserModel,
+					new TwitterRequestCallBack() {
+
+						@Override
+						public void onSuccess(JSONObject jsonObject) {
 
 						}
 
-						copyFollowedCount++;
+						@Override
+						public void onSuccess(String jsonResult) {
 
-						aActivity.runOnUiThread(new Runnable() {
+							addDMStatus(id);
 
-							@Override
-							public void run() {
+							myprint("buttonFollow onSuccess");
 
-								progressDialog.setMessage("Followed - "
-										+ copyFollowedCount + "/" + targetCount
-										+ "...");
+							if (MainSingleTon.toFollowingModelsIDs.contains(id)) {
 
-								progressDialog.show();
+							} else {
 
-								if (targetCount == copyFollowedCount) {
-									
- 									adapterModels.clear();
-
-									followerIdsLoaded.clear();
-
-									isAlreadyScrolling = true;
-
-									toFollowingAdp = new ToFollowingAdapter(
-											getActivity(), adapterModels,
-											FragmentCopyFollowers.this
-													.getActivity());
-
-									listView.setAdapter(toFollowingAdp);
-
-									ShowThisIdsFollowers();
-
-								} else {
-
-									followThisId(targetIds
-											.get((int) copyFollowedCount));
-
-								}
-
-								textView3Record.setText("Processed - "
-										+ copyFollowedCount + "/" + targetCount
-										+ "      Failed : " + failedcount);
+								++MainSingleTon.followingCount;
+								MainSingleTon.toFollowingModelsIDs.add(id);
+								MainActivity.isNeedToRefreshDrawer = true;
 
 							}
 
-						});
+							copyFollowedCount++;
 
-						if (targetCount == copyFollowedCount) {
+							aActivity.runOnUiThread(new Runnable() {
 
-							cancelProgresBar();
+								@Override
+								public void run() {
 
-							myToastS("Failed for " + failedcount + " users");
+									setProgressData("Processing - "
+											+ copyFollowedCount + "/"
+											+ targetCount + "...");
 
-						} else {
+									if (targetCount == copyFollowedCount
+											|| isneedTostop) {
 
-						}
+										adapterModels.clear();
 
-					}
+										followerIdsLoaded.clear();
 
-					@Override
-					public void onFailure(Exception e) {
+										isAlreadyScrolling = true;
 
-						myprint("buttonFollow onFailure" + e);
+										toFollowingAdp = new ToFollowingAdapter(
+												getActivity(), adapterModels,
+												FragmentCopyFollowers.this
+														.getActivity());
 
-						// myToastS("Request Failed!");
+										listView.setAdapter(toFollowingAdp);
 
-						cancelProgresBar();
+										ShowThisIdsFollowers();
 
-						copyFollowedCount++;
+									} else {
 
-						failedcount++;
+										Random random = new Random();
 
-						aActivity.runOnUiThread(new Runnable() {
+										final int randomDelay = random
+												.nextInt(12);
 
-							@Override
-							public void run() {
+										myprint("$$$$$$$$$$$$$$$$$$$$$ Thread started sleeping");
 
-								progressDialog.setMessage("Followed - "
-										+ copyFollowedCount + "/" + targetCount
-										+ "...");
+										new Thread(new Runnable() {
 
-								progressDialog.show();
+											@Override
+											public void run() {
 
-								if (targetCount == copyFollowedCount) {
+												try {
 
- 									adapterModels.clear();
+													Thread.sleep(25000 + randomDelay);
 
-									followerIdsLoaded.clear();
+													myprint("$$$$$$$$$$$$$$$$$$$$$ Thread stoped sleeping");
 
-									isAlreadyScrolling = true;
+													followThisId(targetIds
+															.get((int) copyFollowedCount));
 
-									toFollowingAdp = new ToFollowingAdapter(
-											getActivity(), adapterModels,
-											FragmentCopyFollowers.this
-													.getActivity());
+												} catch (InterruptedException e) {
+													// TODO Auto-generated catch
+													// block
+													e.printStackTrace();
+												}
 
-									listView.setAdapter(toFollowingAdp);
+											}
+										}).start();
 
-									ShowThisIdsFollowers();
+									}
 
-								} else {
-
-									followThisId(targetIds
-											.get((int) copyFollowedCount));
+									textView3Record.setText("Processed - "
+											+ copyFollowedCount + "/"
+											+ targetCount + "      Failed : "
+											+ failedcount);
 
 								}
 
-								textView3Record.setText("Processed - "
-										+ copyFollowedCount + "/" + targetCount
-										+ "      Failed : " + failedcount);
+							});
+
+							if (targetCount == copyFollowedCount
+									|| isneedTostop) {
+
+								cancelProgresBar();
+
+								cancelProgressData();
+
+								myToastS("Failed for " + failedcount + " users");
+
+							} else {
 
 							}
 
-						});
+						}
 
-						if (targetCount == copyFollowedCount) {
+						@Override
+						public void onFailure(Exception e) {
+
+							myprint("buttonFollow onFailure" + e);
+
+							// myToastS("Request Failed!");
 
 							cancelProgresBar();
 
-							myToastS("Failed for " + failedcount + " users");
+							copyFollowedCount++;
 
-						} else {
+							failedcount++;
 
+							aActivity.runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									setProgressData("Processing - "
+											+ copyFollowedCount + "/"
+											+ targetCount + "...");
+
+									if (targetCount == copyFollowedCount
+											|| isneedTostop) {
+
+										adapterModels.clear();
+
+										followerIdsLoaded.clear();
+
+										isAlreadyScrolling = true;
+
+										toFollowingAdp = new ToFollowingAdapter(
+												getActivity(), adapterModels,
+												FragmentCopyFollowers.this
+														.getActivity());
+
+										listView.setAdapter(toFollowingAdp);
+
+										ShowThisIdsFollowers();
+
+									} else {
+
+										Random random = new Random();
+
+										final int randomDelay = random
+												.nextInt(12);
+
+										myprint("$$$$$$$$$$$$$$$$$$$$$ Thread started sleeping");
+
+										new Thread(new Runnable() {
+
+											@Override
+											public void run() {
+
+												try {
+
+													Thread.sleep(25000 + randomDelay);
+
+													myprint("$$$$$$$$$$$$$$$$$$$$$ Thread stoped sleeping");
+
+													followThisId(targetIds
+															.get((int) copyFollowedCount));
+
+												} catch (InterruptedException e) {
+													// TODO Auto-generated catch
+													// block
+													e.printStackTrace();
+												}
+
+											}
+										}).start();
+
+									}
+
+									textView3Record.setText("Processed - "
+											+ copyFollowedCount + "/"
+											+ targetCount + "      Failed : "
+											+ failedcount);
+
+								}
+
+							});
+
+							if (targetCount == copyFollowedCount
+									|| isneedTostop) {
+
+								// cancelProgresBar();
+
+								cancelProgressData();
+
+								myToastS("Failed for " + failedcount + " users");
+
+							} else {
+
+							}
 						}
-					}
-				});
 
-		twitterPostRequestFollow.executeThisRequest(id);
+					});
 
+			twitterPostRequestFollow.executeThisRequest(id);
+
+		}
+
+	}
+
+	private void addDMStatus(final String id) {
+
+		if (MainSingleTon.autoDmfirstime.contains("yes")) {
+
+			MainSingleTon.autoDmfirstime = "no";
+
+			getActivity().runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					new AlertDialog.Builder(getActivity())
+							.setTitle("Direct Message")
+							.setMessage(
+									"A thanks message will be sent to those users. who are following you back!")
+							.setPositiveButton(android.R.string.yes,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+
+											Editor editor = getActivity()
+													.getSharedPreferences(
+															"twtboardpro",
+															Context.MODE_PRIVATE)
+													.edit();
+											editor.putString("autoDmfirstime",
+													"no");
+
+											editor.putBoolean("autodm", true);
+
+											MainSingleTon.autodm = true;
+
+											MainSingleTon.autoDmfirstime = "no";
+
+											editor.commit();
+
+											addDMStatus(id);
+
+										}
+									})
+							.setNegativeButton(android.R.string.no,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+
+											Editor editor = getActivity()
+													.getSharedPreferences(
+															"twtboardpro",
+															Context.MODE_PRIVATE)
+													.edit();
+
+											editor.putString("autoDmfirstime",
+													"no");
+
+											editor.putBoolean("autodm", false);
+
+											editor.commit();
+
+											MainSingleTon.autoDmfirstime = "no";
+
+											MainSingleTon.autodm = false;
+
+										}
+
+									}).setIcon(R.drawable.ic_launcher).show();
+
+				}
+			});
+
+		} else {
+
+			myprint("Not to diss[ay fvnefisdfnvko nvkjn");
+
+			if (MainSingleTon.autodm) {
+
+				if (sendingids.contains(id) || sentIds.contains(id)) {
+
+				} else {
+
+					tboardproLocalData.addNewDMsendingId(id,
+							MainSingleTon.currentUserModel.getUserid());
+
+					sendingids.add(id);
+				}
+
+			} else {
+
+			}
+		}
 	}
 
 	void setTargetIds(int targetCountEditBox) {
@@ -1251,9 +1525,10 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 			if (MainSingleTon.toFollowingModelsIDs.contains(tmpIds.get(i))) {
 
 				myprint("toFollowingModelsIDs Contains ++ ");
-				
-			} else if (MainSingleTon.currentUserModel.getUserid().contains(tmpIds.get(i))) {
-				
+
+			} else if (MainSingleTon.currentUserModel.getUserid().contains(
+					tmpIds.get(i))) {
+
 				myprint("MainSingleTon.currentUserModel Contains ++ ");
 
 			} else {
@@ -1264,18 +1539,18 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 			i++;
 
- 			if (i == tmpIds.size()) {
+			if (i == tmpIds.size()) {
 
 				isNeedToLoadMore = false;
 
 			}
-			
+
 			if (targetCountEditBox == targetIds.size()) {
 
 				isNeedToLoadMore = false;
 
 			}
-			
+
 		}
 
 		myprint("targetIds " + targetIds);
@@ -1283,4 +1558,84 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 		targetCount = targetIds.size();
 
 	}
+
+	void initDialog() {
+
+		progressDialogProcess = new Dialog(
+				FragmentCopyFollowers.this.getActivity());
+
+		progressDialogProcess.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		progressDialogProcess
+				.setContentView(R.layout.copy_followers_progress_layout);
+
+		progressDialogProcess.setCancelable(false);
+
+		progressDialogProcess.getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.R.color.transparent));
+
+		ProgressBar progressBar = (ProgressBar) progressDialogProcess
+				.findViewById(R.id.progressBar1);
+
+		TextView name = (TextView) progressDialogProcess
+				.findViewById(R.id.textView1Title);
+
+		name.setText(MainSingleTon.currentUserModel.getUsername());
+
+		processDesc = (TextView) progressDialogProcess
+				.findViewById(R.id.textView1);
+
+		final Button button = (Button) progressDialogProcess
+				.findViewById(R.id.button1);
+
+		button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				myprint("button save");
+
+				if (isneedTostop) {
+
+					button.setBackgroundDrawable(new ColorDrawable(R.color.Silver));
+
+					myToastS("please wait stopping process..");
+					
+				} else {
+
+					isneedTostop = true;
+
+				}
+
+			}
+		});
+
+	}
+
+	void setProgressData(final String progressData) {
+
+		aActivity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				processDesc.setText(progressData);
+
+			}
+		});
+	}
+
+	void cancelProgressData() {
+
+		aActivity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				progressDialogProcess.dismiss();
+
+			}
+		});
+	}
+
 }

@@ -82,6 +82,9 @@ public class SchTweetsAdapter extends BaseAdapter {
 		TextView txtTime = (TextView) convertView
 				.findViewById(R.id.textViewTime);
 
+		TextView textViewTweetType = (TextView) convertView
+				.findViewById(R.id.textViewTweetType);
+
 		ImageView imageViewRemove = (ImageView) convertView
 				.findViewById(R.id.imageView2Remove);
 
@@ -119,6 +122,20 @@ public class SchTweetsAdapter extends BaseAdapter {
 
 		tweetView.setText(getItem(position).getTweet());
 
+		if (getItem(position).getTweetType() == 0) {
+
+			textViewTweetType.setText("");
+
+		} else if (getItem(position).getTweetType() == 1) {
+
+			textViewTweetType.setText("Reply");
+
+		} else {
+
+			textViewTweetType.setText("Retweet");
+
+		}
+
 		return convertView;
 
 	}
@@ -139,7 +156,7 @@ public class SchTweetsAdapter extends BaseAdapter {
 
 		textTweet.setText(schTweetModel.getTweet());
 
-		user.setText("@"+schTweetModel.getUserDatas().getUsername());
+		user.setText("@" + schTweetModel.getUserDatas().getUsername());
 
 		buttonRemove.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -148,13 +165,11 @@ public class SchTweetsAdapter extends BaseAdapter {
 				TboardproLocalData localData = new TboardproLocalData(context);
 
 				localData.deleteThisTweet(schTweetModel.getTweetId());
-				
-				MainSingleTon.schedulecount--;
-				
+
 				MainActivity.isNeedToRefreshDrawer = true;
-				
+
 				// **************************************
-				
+
 				alarmManagers = (AlarmManager) context
 						.getSystemService(context.ALARM_SERVICE);
 
@@ -165,20 +180,15 @@ public class SchTweetsAdapter extends BaseAdapter {
 
 				PendingIntent pendingIntent = PendingIntent.getBroadcast(
 						context, schTweetModel.getTweetId(), myIntent,
-						PendingIntent.FLAG_UPDATE_CURRENT);
+						PendingIntent.FLAG_CANCEL_CURRENT );
 
-				alarmManagers.set(AlarmManager.RTC_WAKEUP,
-						schTweetModel.getTweettime(), pendingIntent);
+ 				alarmManagers.cancel(pendingIntent);
 
-				alarmManagers.cancel(pendingIntent);
-				
 				FragmentSchedule.isNeedToUpdateUI = true;
 
- 				
 				// **************************************
 
 				dialog.dismiss();
-
 
 			}
 		});

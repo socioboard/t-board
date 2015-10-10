@@ -28,8 +28,6 @@ public class StartDM {
 
 	TboardproLocalData tboardproLocalData;
 
-	ModelUserDatas modelUserDatas;
-
 	ArrayList<String> targetIds = new ArrayList<String>();
 
 	ModelUserDatas userDatas;
@@ -38,23 +36,26 @@ public class StartDM {
 
 	String messagtext;
 
-	public StartDM(Context context, ModelUserDatas modelUserDatas) {
+	ArrayList<String> mutualsIds;
+
+	Thread thread;
+
+	public StartDM(Context context, ModelUserDatas modelUserDatas,
+			ArrayList<String> mutualsIds) {
 
 		super();
 
+		this.mutualsIds = mutualsIds;
+
 		this.context = context;
 
-		String middlemessagtext = context.getSharedPreferences("twtboardpro",
-				Context.MODE_PRIVATE).getString("autodmtext", "");
+		String middlemessagtext = context.getSharedPreferences("twtboardpro", Context.MODE_PRIVATE).getString("autodmtext", "");
 
-		messagtext = "Thanks for Following me :) " + middlemessagtext
-				+ " \n-via @socioboard";
+		messagtext = "Thanks for Following me :) " + middlemessagtext + " \n-via @socioboard";
 
 		tboardproLocalData = new TboardproLocalData(context);
 
-		// tboardproLocalData.deleteAllDMIds();
-
-		userDatas = MainSingleTon.currentUserModel;
+		userDatas = modelUserDatas;
 
 		authSignaturesGeneratorSorted = new OAuthSignaturesGenerator3(
 				modelUserDatas.getUserAcessToken(),
@@ -65,40 +66,109 @@ public class StartDM {
 
 	public void analyseTarget() {
 
-		ArrayList<String> listIDs = tboardproLocalData.getAllSentIDs();
+		ArrayList<String> listIDs = tboardproLocalData
+				.getAllSendingIDs(userDatas.getUserid());
 
-		for (int i = 0; i < MainSingleTon.mutualsIds.size(); ++i) {
+		// these are the ids which need to be sent DM.
 
-			if (listIDs.contains(MainSingleTon.mutualsIds.get(i))) {
+		// upto here i know i have followed these ids
+
+		myprint("getAllSendingIDs  " + listIDs);
+
+		for (int i = 0; i < mutualsIds.size(); ++i) {
+
+			if (listIDs.contains(mutualsIds.get(i))) {
+
+				// got confirmed that i dint sent DM to this Mutual id
+
+				// is the id which following me back.
+
+				targetIds.add(mutualsIds.get(i));
+
+				myprint("targetIds.add(mutualsIds.get(i)); "
+						+ mutualsIds.get(i));
 
 			} else {
 
-				targetIds.add(MainSingleTon.mutualsIds.get(i));
+				myprint("rejected ID  " + mutualsIds.get(i));
 
 			}
 
 		}
 
 		myprint("targetIds = " + targetIds);
-	}
-
-	public void startSendingMessages() {
 
 		myprint("@@@@@@@@@@@@@@@@@@@ startSendingMessages @@@@@@@@@@@@@@@@@@");
 
-		for (int i = 0; i < targetIds.size(); i++) {
+		if (targetIds.size() > 0) {
 
-			String url = MainSingleTon.createMessage;
+			thread = new Thread(new Runnable() {
 
-			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+				@Override
+				public void run() {
 
-			peramPairs.add(new BasicNameValuePair("text", messagtext));
+					startSendingMessages(0);
 
-			peramPairs.add(new BasicNameValuePair(Const.user_id, targetIds
-					.get(i)));
+				}
+			});
 
-			myDoInBackground(url, peramPairs);
-				
+			thread.start();
+
+			try {
+
+				thread.join();
+
+			} catch (InterruptedException e) {
+
+				e.printStackTrace();
+
+			}
+
+		} else {
+
+			myprint("No targets TO strat ");
+		}
+
+	}
+
+	public void startSendingMessages(final int i) {
+
+		myprint("********** startSendingMessages(final int i) " + i);
+
+		String url = MainSingleTon.createMessage;
+
+		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+
+		peramPairs.add(new BasicNameValuePair("text", messagtext));
+
+		peramPairs.add(new BasicNameValuePair(Const.user_id, targetIds.get(i)));
+
+		myDoInBackground(url, peramPairs);
+
+		int tmp_i = i;
+
+		tmp_i++;
+
+		if (tmp_i < (targetIds.size() - 1)) {
+
+			try {
+
+				Thread.sleep(5000);
+
+				myprint("********** Thread.sleep(7200000);");
+
+			} catch (InterruptedException e) {
+
+				e.printStackTrace();
+
+			}
+
+			startSendingMessages(tmp_i);
+
+		} else {
+
+			myprint("********** ENd of sending DM");
+
 		}
 
 	}
@@ -140,7 +210,7 @@ public class StartDM {
 
 			con.setDoOutput(true);
 
-			boolean tmp;
+			boolean tmp = false;
 
 			String data = peramPairs.get(0).getName()
 					+ "="
@@ -170,27 +240,23 @@ public class StartDM {
 
 				if (jsonString == null) {
 
-					// twitterRequestCallBack.onFailure(new Exception());
-
 				} else {
 
-					// twitterRequestCallBack.onSuccess(jsonString);
+					tboardproLocalData.addNewDMsentId(peramPairs.get(1)
+							.getValue(), userDatas.getUserid());
+
+					tboardproLocalData.deleteThisDMSendingId(peramPairs.get(1)
+							.getValue(), userDatas.getUserid());
 
 				}
 
-				tboardproLocalData.addNewDMsentId(peramPairs.get(1).getValue());
-
 			} else {
-
-				// twitterRequestCallBack.onFailure(new Exception());
 
 			}
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
-
-			// twitterRequestCallBack.onFailure(e);
 
 			System.out.println("Exception = =    " + e);
 
@@ -250,6 +316,19 @@ public class StartDM {
 				byte[] data = baos.toByteArray();
 
 				jsonString = new String(data);
+
+			} else {
+
+				System.out
+						.println("***********************************Need to stop sending Due to invalid responses********************");
+
+				try {
+
+					thread.interrupt();
+
+				} catch (Exception exception) {
+
+				}
 
 			}
 
@@ -319,7 +398,7 @@ public class StartDM {
 
 	}
 
-	public static void myprint(Object msg) {
+	public void myprint(Object msg) {
 
 		System.out.println(msg.toString());
 

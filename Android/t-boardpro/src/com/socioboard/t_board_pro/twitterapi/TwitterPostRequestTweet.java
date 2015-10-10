@@ -83,7 +83,7 @@ public class TwitterPostRequestTweet {
 
 			System.out.println("url : " + url);
 
-			System.out.println("authData : " + authData);
+			//System.out.println("authData : " + authData);
 
 			URL obj = new URL(url);
 
@@ -115,12 +115,15 @@ public class TwitterPostRequestTweet {
 				jsonString = readResponse(con);
 
 				if (jsonString == null) {
+					
+					twitterRequestCallBack.onFailure(new Exception());
 
 				} else {
 
 					twitterRequestCallBack.onSuccess(jsonString);
 
 				}
+				
 			} else {
 
 				twitterRequestCallBack.onFailure(new Exception());
@@ -167,8 +170,7 @@ public class TwitterPostRequestTweet {
 
 			int responseCode = connection.getResponseCode();
 
-			myprint("readResponse connection.getResponseCode()   "
-					+ responseCode);
+			myprint("readResponse connection.getResponseCode()   " + responseCode);
 
 			String jsonString = null;
 
@@ -255,7 +257,7 @@ public class TwitterPostRequestTweet {
 
 	public static void myprint(Object msg) {
 
-		System.out.println(msg.toString());
+		//System.out.println(msg.toString());
 
 	}
 

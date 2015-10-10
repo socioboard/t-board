@@ -6,14 +6,15 @@ public class Application extends android.app.Application {
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
-		super.onCreate();
-
-		// configure Flurry
+		
+  		super.onCreate();
+ 		
+ 		// configure Flurry
 		FlurryAgent.setLogEnabled(true);
-
+        
 		// init Flurry
 		FlurryAgent.init(this, "JPQF3XP5QY7S9S3TKXFT");
+		
 	}
 
 }

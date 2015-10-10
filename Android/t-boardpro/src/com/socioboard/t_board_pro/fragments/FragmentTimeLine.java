@@ -36,20 +36,21 @@ import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TweetModel;
 import com.socioboard.tboardpro.R;
 
-public class FragmentTimeLine extends Fragment implements OnScrollListener {
+public class FragmentTimeLine  extends Fragment implements
+		OnScrollListener {
 
 	View rootView;
-	
+
 	ListView listView;
-	
+
 	Bitmap userImage, userbannerImage;
-	
+
 	TweetsAdapter twtAdpr;
-	
+
 	RelativeLayout reloutProgress;
-	
+
 	Activity aActivity;
-	
+
 	Timer timer = new Timer();
 
 	Handler handler = new Handler();
@@ -57,17 +58,20 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 	boolean isAlreadyScrolling = true;
 
 	ViewGroup viewGroup;
-	
-    private SwipeRefreshLayout swipeContainer;
+
+	private SwipeRefreshLayout swipeContainer;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-		rootView = inflater.inflate(R.layout.fragment_timelineview, container,false);
+		rootView = inflater.inflate(R.layout.fragment_timelineview, container,
+				false);
 
-		aActivity = getActivity();
+		aActivity =FragmentTimeLine.this.getActivity();
 
-		reloutProgress = (RelativeLayout) rootView .findViewById(R.id.reloutProgress);
+		reloutProgress = (RelativeLayout) rootView
+				.findViewById(R.id.reloutProgress);
 
 		listView = (ListView) rootView.findViewById(R.id.timelineListView);
 
@@ -77,24 +81,25 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 		listView.setOnScrollListener(FragmentTimeLine.this);
 
-		twtAdpr = new TweetsAdapter(MainSingleTon.listMyfollowers, getActivity());
+		twtAdpr = new TweetsAdapter(MainSingleTon.loadedtweets,FragmentTimeLine.this.getActivity() );
 
 		listView.setAdapter(twtAdpr);
-		
+
 		MainActivity.showActionBarProgress();
 
-		if (MainSingleTon.listMyfollowers.size() == 0) {
-  
+		if (MainSingleTon.loadedtweets.size() == 0) {
+
 			myprint("++++++++Load Frst time");
-			
-			new FetchTimeline().execute();
-			
- 		} else {
-			
-  			myprint("+++++++++further Loading");
-            
-			new FetchTimelineLatestPaged().execute(MainSingleTon.listMyfollowers.get(0).getTweetId());
- 			
+
+			FetchTimeline();
+
+		} else {
+
+			myprint("+++++++++further Loading");
+
+			new FetchTimelineLatestPaged().execute(MainSingleTon.loadedtweets
+					.get(0).getTweetId());
+
 		}
 
 		timer.schedule(new TimerTask() {
@@ -102,7 +107,7 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 			@Override
 			public void run() {
 
-				getActivity().runOnUiThread(new Runnable() {
+				FragmentTimeLine.this.getActivity().runOnUiThread(new Runnable() {
 
 					@Override
 					public void run() {
@@ -115,60 +120,64 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 			}
 		}, 2000, 60000);
 
-        swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
-        
-        // Setup refresh listener which triggers new data loading
-       
-        swipeContainer.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-            	
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-            	
-            	swipeContainer.setRefreshing(false);
-            	
-            	if(isAlreadyScrolling){
-            		
-            	}else{
-            		
-            		if (MainSingleTon.listMyfollowers.size() == 0) {
-            			
-            	 		showProgress();
+		swipeContainer = (SwipeRefreshLayout) rootView
+				.findViewById(R.id.swipeContainer);
 
-            			myprint("++++++++Load Frst time");
-            			
-            			new FetchTimeline().execute();
-            			
-            		} else {
-            			
-            			cancelProgres();
-            			
-            			MainActivity.showActionBarProgress();
+		// Setup refresh listener which triggers new data loading
 
-            			myprint("+++++++++further Loading");
+		swipeContainer.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
 
-            			new FetchTimelineLatestPaged().execute(MainSingleTon.listMyfollowers.get(0).getTweetId());
-             			
-            		}
-            		 
-             	}
-             } 
-        });
-        
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, 
-                android.R.color.holo_green_light, 
-                android.R.color.holo_orange_light, 
-                android.R.color.holo_red_light);
+				// Your code to refresh the list here.
+				// Make sure you call swipeContainer.setRefreshing(false)
+				// once the network request has completed successfully.
 
- 		return rootView;
- 	}
+				swipeContainer.setRefreshing(false);
+
+				if (isAlreadyScrolling) {
+
+				} else {
+
+					if (MainSingleTon.loadedtweets.size() == 0) {
+
+						showProgress();
+
+						myprint("++++++++Load Frst time");
+
+						FetchTimeline();
+
+					} else {
+
+						cancelProgres();
+
+						MainActivity.showActionBarProgress();
+
+						myprint("+++++++++further Loading");
+
+						new FetchTimelineLatestPaged()
+								.execute(MainSingleTon.loadedtweets.get(0)
+										.getTweetId());
+
+					}
+
+				}
+			}
+		});
+
+		// Configure the refreshing colors
+		swipeContainer.setColorSchemeResources(
+				android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
+
+		return rootView;
+	}
 
 	private void addFooterView() {
 
-		LayoutInflater inflater = getActivity().getLayoutInflater();
+		LayoutInflater inflater =FragmentTimeLine.this.getActivity().getLayoutInflater();
 
 		viewGroup = (ViewGroup) inflater.inflate(R.layout.progress_layout,
 				listView, false);
@@ -188,106 +197,92 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 	}
 
-	public class FetchTimeline extends AsyncTask<Void, Void, Void> {
+	public void FetchTimeline() {
 
-		@Override
-		protected Void doInBackground(Void... params) {
+		String urlTimeline = "https://api.twitter.com/1.1/statuses/home_timeline.json";
 
-			String urlTimeline = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+		TwitterUserGETRequest twitterTimeLineRequest = new TwitterUserGETRequest(
+				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
 
-			TwitterUserGETRequest twitterTimeLineRequest = new TwitterUserGETRequest(
-					MainSingleTon.currentUserModel,
-					new TwitterRequestCallBack() {
+					@Override
+					public void onSuccess(String jsonResult) {
 
-						@Override
-						public void onSuccess(String jsonResult) {
+						myprint("onSuccess jsonResult " + jsonResult);
 
-							myprint("onSuccess jsonResult " + jsonResult);
-							
-							parseJsonResult(jsonResult);
+						parseJsonResult(jsonResult);
 
-						}
+					}
 
-						@Override
-						public void onFailure(Exception e) {
+					@Override
+					public void onFailure(Exception e) {
 
-							myprint("onFailure e " + e);
-							
-							cancelProgres();
-						}
+						myprint("onFailure e " + e);
 
-						@Override
-						public void onSuccess(JSONObject jsonObject) {
- 
-						}
-					});
-			
-			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+						cancelProgres();
 
-			peramPairs.add(new BasicNameValuePair(Const.count, "10"));
-			
-			peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
+						isAlreadyScrolling = false;
+					}
 
-			twitterTimeLineRequest.executeThisRequest(urlTimeline,peramPairs);
+					@Override
+					public void onSuccess(JSONObject jsonObject) {
 
-			return null;
-		}
+					}
+				});
+
+		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+
+		peramPairs.add(new BasicNameValuePair(Const.count, "10"));
+
+		peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
+
+		twitterTimeLineRequest.executeThisRequest(urlTimeline, peramPairs);
 
 	}
 
-	public class FetchTimelinePaged extends AsyncTask<String, Void, Void> {
+	public void FetchTimelinePaged(String madMaxId) {
 
-		@Override
-		protected Void doInBackground(String... params) {
+		String urlTimeline = "https://api.twitter.com/1.1/statuses/home_timeline.json";
 
-			String madMaxId = params[0].toString();
+		TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(
+				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
 
-			String urlTimeline = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+					@Override
+					public void onSuccess(String jsonResult) {
+						myprint("onSuccess jsonResult " + jsonResult);
+						parseJsonResultPaged(jsonResult);
+					}
 
-			TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(
-					MainSingleTon.currentUserModel,
-					new TwitterRequestCallBack() {
+					@Override
+					public void onFailure(Exception e) {
 
-						@Override
-						public void onSuccess(String jsonResult) {
-							myprint("onSuccess jsonResult " + jsonResult);
-							parseJsonResultPaged(jsonResult);
-						}
+						myprint("onFailure e " + e);
 
-						@Override
-						public void onFailure(Exception e) {
+						handler.post(new Runnable() {
 
-							myprint("onFailure e " + e);
+							@Override
+							public void run() {
 
-							handler.post(new Runnable() {
+								viewGroup.setVisibility(View.INVISIBLE);
 
-								@Override
-								public void run() {
+							}
+						});
 
-									viewGroup.setVisibility(View.INVISIBLE);
+					}
 
-								}
-							});
+					@Override
+					public void onSuccess(JSONObject jsonObject) {
+					}
+				});
 
-						}
+		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
-						@Override
-						public void onSuccess(JSONObject jsonObject) {
-						}
-					});
+		peramPairs.add(new BasicNameValuePair(Const.max_id, madMaxId));
 
-			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+		peramPairs.add(new BasicNameValuePair(Const.count, "10"));
 
-			peramPairs.add(new BasicNameValuePair(Const.max_id, madMaxId));
-			
-			peramPairs.add(new BasicNameValuePair(Const.count, "10"));
-			
-			peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
+		peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
 
-			twitterUserGETRequest.executeThisRequest(urlTimeline, peramPairs);
-
-			return null;
-		}
+		twitterUserGETRequest.executeThisRequest(urlTimeline, peramPairs);
 
 	}
 
@@ -306,13 +301,13 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 						@Override
 						public void onSuccess(String jsonResult) {
-							
+
 							myprint("onSuccess jsonResult " + jsonResult);
-							
+
 							MainActivity.HideActionBarProgress();
 
-							parseJsonResultPagedLatest(jsonResult); 
-							
+							parseJsonResultPagedLatest(jsonResult);
+
 						}
 
 						@Override
@@ -322,20 +317,23 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 							MainActivity.HideActionBarProgress();
 
- 						}
+						}
 
 						@Override
 						public void onSuccess(JSONObject jsonObject) {
+
 						}
+
 					});
 
 			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
 			peramPairs.add(new BasicNameValuePair(Const.since_id, madMaxId));
-			
+
 			peramPairs.add(new BasicNameValuePair(Const.count, "10"));
-			
-			peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
+
+			peramPairs.add(new BasicNameValuePair(Const.include_entities,
+					"false"));
 
 			twitterUserGETRequest.executeThisRequest(urlTimeline, peramPairs);
 
@@ -359,8 +357,8 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 				try {
 
 					JSONObject jsonObjectk2 = jsonArray.getJSONObject(i);
- 					
- 					tweetModel
+
+					tweetModel
 							.setTweeet_str(jsonObjectk2.getString(Const.text));
 
 					tweetModel.setIsfavourated(jsonObjectk2
@@ -386,23 +384,54 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 					tweetModel.setUserImagerUrl(jsonObject3
 							.getString(Const.profile_image_url));
 
-					tweetModel.setUserimage(null);
-
 					tweetModel.setUserName("@"
 							+ jsonObject3.getString(Const.screen_name));
 
-					
 					tweetModel.setUserID(jsonObject3.getString(Const.id));
 
-					
 					tweetModel.setFullName(jsonObject3.getString(Const.name));
 
-					
 					tweetModel.setFollowing(jsonObject3
 							.getBoolean(Const.following));
 
-					
-					MainSingleTon.listMyfollowers.add(tweetModel);
+					System.out.println("***** jsonObjectk2  *****"
+							+ jsonObjectk2);
+
+					if (jsonObjectk2.has("extended_entities")) {
+
+						JSONObject jsonObjectEntities = jsonObjectk2
+								.getJSONObject("extended_entities");
+
+						System.out.println("***** jsonObjectEntities  *****"
+								+ jsonObjectEntities);
+
+						System.out
+								.println("***** jsonObjectk2.has(Const.media) *****");
+
+						JSONArray jsonArray2Media = jsonObjectEntities
+								.getJSONArray(Const.media);
+
+						System.out.println("***** jsonArray2Media *****");
+
+						JSONObject jsonObjectMedia = jsonArray2Media
+								.getJSONObject(0);
+
+						System.out.println("***** jsonObjectMedia *****"
+								+ jsonObjectMedia);
+
+						tweetModel.setMediaImagerUrl(jsonObjectMedia
+								.getString(Const.media_url));
+
+					} else {
+
+						System.out
+								.println("***** Noooooo jsonObjectk2.has(Const.media) *****");
+
+						tweetModel.setMediaImagerUrl("");
+
+					}
+
+					MainSingleTon.loadedtweets.add(tweetModel);
 
 					myprint(tweetModel);
 
@@ -427,14 +456,13 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 				if (FragmentTimeLine.this.getActivity() != null) {
 
-					twtAdpr = new TweetsAdapter(MainSingleTon.listMyfollowers,
-							getActivity());
+					twtAdpr = new TweetsAdapter(MainSingleTon.loadedtweets,
+							FragmentTimeLine.this.getActivity());
 
 					listView.setAdapter(twtAdpr);
 
 					myprint("listView.setAdapter(twtAdpr);");
 
-					
 					isAlreadyScrolling = false;
 
 				}
@@ -467,7 +495,7 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 				try {
 
 					JSONObject jsonObjectk2 = jsonArray.getJSONObject(i);
-  
+
 					tweetModel
 							.setTweeet_str(jsonObjectk2.getString(Const.text));
 
@@ -494,8 +522,6 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 					tweetModel.setUserImagerUrl(jsonObject3
 							.getString(Const.profile_image_url));
 
-					tweetModel.setUserimage(null);
-
 					tweetModel.setUserName("@"
 							+ jsonObject3.getString(Const.screen_name));
 
@@ -507,6 +533,43 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 							.getBoolean(Const.following));
 
 					// listMyfollowers.add(tweetModel);
+
+					System.out.println("***** jsonObjectk2  *****"
+							+ jsonObjectk2);
+
+					if (jsonObjectk2.has("extended_entities")) {
+
+						JSONObject jsonObjectEntities = jsonObjectk2
+								.getJSONObject("extended_entities");
+
+						System.out.println("***** jsonObjectEntities  *****"
+								+ jsonObjectEntities);
+
+						System.out
+								.println("***** jsonObjectk2.has(Const.media) *****");
+
+						JSONArray jsonArray2Media = jsonObjectEntities
+								.getJSONArray(Const.media);
+
+						System.out.println("***** jsonArray2Media *****");
+
+						JSONObject jsonObjectMedia = jsonArray2Media
+								.getJSONObject(0);
+
+						System.out.println("***** jsonObjectMedia *****"
+								+ jsonObjectMedia);
+
+						tweetModel.setMediaImagerUrl(jsonObjectMedia
+								.getString(Const.media_url));
+
+					} else {
+
+						System.out
+								.println("***** Noooooo jsonObjectk2.has(Const.media) *****");
+
+						tweetModel.setMediaImagerUrl("");
+
+					}
 
 					handler.post(new Runnable() {
 
@@ -522,9 +585,9 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 								listView.setScrollY(listCount);
 
 								twtAdpr.notifyDataSetChanged();
-								
-								MainSingleTon.listMyfollowers = twtAdpr.tweetModels;
-								
+
+								MainSingleTon.loadedtweets = twtAdpr.tweetModels;
+
 							}
 						}
 					});
@@ -560,7 +623,7 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 				try {
 
 					JSONObject jsonObjectk2 = jsonArray.getJSONObject(i);
-  
+
 					tweetModel
 							.setTweeet_str(jsonObjectk2.getString(Const.text));
 
@@ -587,8 +650,6 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 					tweetModel.setUserImagerUrl(jsonObject3
 							.getString(Const.profile_image_url));
 
-					tweetModel.setUserimage(null);
-
 					tweetModel.setUserName("@"
 							+ jsonObject3.getString(Const.screen_name));
 
@@ -600,6 +661,43 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 							.getBoolean(Const.following));
 
 					// listMyfollowers.add(tweetModel);
+
+					System.out.println("***** jsonObjectk2  *****"
+							+ jsonObjectk2);
+
+					if (jsonObjectk2.has("extended_entities")) {
+
+						JSONObject jsonObjectEntities = jsonObjectk2
+								.getJSONObject("extended_entities");
+
+						System.out.println("***** jsonObjectEntities  *****"
+								+ jsonObjectEntities);
+
+						System.out
+								.println("***** jsonObjectk2.has(Const.media) *****");
+
+						JSONArray jsonArray2Media = jsonObjectEntities
+								.getJSONArray(Const.media);
+
+						System.out.println("***** jsonArray2Media *****");
+
+						JSONObject jsonObjectMedia = jsonArray2Media
+								.getJSONObject(0);
+
+						System.out.println("***** jsonObjectMedia *****"
+								+ jsonObjectMedia);
+
+						tweetModel.setMediaImagerUrl(jsonObjectMedia
+								.getString(Const.media_url));
+
+					} else {
+
+						System.out
+								.println("***** Noooooo jsonObjectk2.has(Const.media) *****");
+
+						tweetModel.setMediaImagerUrl("");
+
+					}
 
 					final int indexed = i;
 
@@ -642,12 +740,12 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 	void myToastS(final String toastMsg) {
 
-		Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_SHORT).show();
+		Toast.makeText(FragmentTimeLine.this.getActivity(), toastMsg, Toast.LENGTH_SHORT).show();
 	}
 
 	void myToastL(final String toastMsg) {
 
-		Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+		Toast.makeText(FragmentTimeLine.this.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
 	}
 
 	public void myprint(Object msg) {
@@ -659,7 +757,6 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 	void showProgress() {
 
 		MainActivity.HideActionBarProgress();
-
 
 	}
 
@@ -697,13 +794,19 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 				isAlreadyScrolling = true;
 
-				String madMaxId = ""
-						+ twtAdpr.getItem(twtAdpr.getCount() - 1).getTweetId();
+				if (twtAdpr.getCount() != 0) {
 
-				myprint(twtAdpr.getItem(twtAdpr.getCount() - 1));
+					String madMaxId = "" + twtAdpr.getItem(twtAdpr.getCount() - 1).getTweetId();
 
-				new FetchTimelinePaged().execute(madMaxId);
+					myprint(twtAdpr.getItem(twtAdpr.getCount() - 1));
 
+					FetchTimelinePaged(madMaxId);
+
+				} else {
+
+					myprint("twtAdpr.getCount() == 0 -->" + twtAdpr.getCount());
+
+				}
 			}
 
 		} else {

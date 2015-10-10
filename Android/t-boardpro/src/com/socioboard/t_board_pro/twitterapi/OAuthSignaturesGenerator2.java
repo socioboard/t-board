@@ -85,7 +85,7 @@ public class OAuthSignaturesGenerator2 {
 				+"&" + OAUTH_TOKEN               +"="   + URLEncoder.encode(getAccesToken() )  
 				+"&" + OAUTH_VERSION             +"="   + URLEncoder.encode(VERSION_1_0 );
 		
-		System.out.println("GeneratedPerams = "+ GeneratedPerams);
+		//System.out.println("GeneratedPerams = "+ GeneratedPerams);
 
 		return GeneratedPerams;
 	}
@@ -94,11 +94,11 @@ public class OAuthSignaturesGenerator2 {
 
 		String baseString = null;
 
-		System.out.println("URLEncoder.encode("+url+") = "+ URLEncoder.encode(url ));
+		//System.out.println("URLEncoder.encode("+url+") = "+ URLEncoder.encode(url ));
 
 		baseString = method+"&"+URLEncoder.encode(url )+"&"+URLEncoder.encode(peramsUrl );
 
-		System.out.println("baseString = "+ baseString);
+		//System.out.println("baseString = "+ baseString);
 
 		return baseString;
 	}	
@@ -109,7 +109,7 @@ public class OAuthSignaturesGenerator2 {
 
 		singningKey = URLEncoder.encode(cSecret )+"&"+URLEncoder.encode(tokenSecret );
 
-		System.out.println("genrateSigningKey = "+ singningKey);
+		//System.out.println("genrateSigningKey = "+ singningKey);
 
 		return singningKey;
 	} 
@@ -188,7 +188,7 @@ public class OAuthSignaturesGenerator2 {
 			// perencoded
 			// oAuthSignature = URLEncoder.encode(noUrlEncoding,"ISO-8859-1");    
 			
- 			System.out.println("getCalcShaHash = "+ oAuthSignature);
+ 			//System.out.println("getCalcShaHash = "+ oAuthSignature);
 
 		} catch (Exception e) {
 

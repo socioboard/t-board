@@ -21,8 +21,7 @@ public class Viewpageradapter extends PagerAdapter {
 	Context mContext;
 	LayoutInflater mLayoutInflater;
 	boolean showDeatils = true;
-	IntroViewPagerModel model;
-	ArrayList<IntroViewPagerModel> imageList;
+ 	ArrayList<IntroViewPagerModel> imageList;
 
 	public Viewpageradapter(Context context,
 			ArrayList<IntroViewPagerModel> imageList) {
@@ -47,6 +46,9 @@ public class Viewpageradapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
+		
+		IntroViewPagerModel model;
+
 		model = imageList.get(position);
 		
 		View itemView = mLayoutInflater.inflate(R.layout.intro_viewpager_item, container,
@@ -55,7 +57,7 @@ public class Viewpageradapter extends PagerAdapter {
 		ImageView intro_imageView = (ImageView) itemView
 				.findViewById(R.id.introImage);
 
-		TextView itro_text=(TextView) itemView.findViewById(R.id.introText);
+		TextView itro_text= (TextView) itemView.findViewById(R.id.introText);
 		
 		intro_imageView.setImageResource(model.getDrawable());
 		

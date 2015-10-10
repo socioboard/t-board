@@ -37,12 +37,19 @@ import com.socioboard.tboardpro.R;
 public class FragmentProfile extends Fragment {
 
 	View rootView;
+	
 	Activity aActivity;
+	
 	RelativeLayout reloutProgress;
+	
 	FullUserDetailModel userDatas;
+	
 	Bitmap userBitmap;
+	
 	TboardproLocalData localData;
+	
 	ImageView imageView1Banner, profile;
+	
 	Button buttonTweet;
 
 	TextView textView1Name, textView1UserName, textView1Tweets,
@@ -61,11 +68,9 @@ public class FragmentProfile extends Fragment {
 
 		aActivity = getActivity();
 
-		localData = new TboardproLocalData(FragmentProfile.this.getActivity()
-				.getApplicationContext());
+		localData = new TboardproLocalData(FragmentProfile.this.getActivity().getApplicationContext());
 
-		rootView = inflater
-				.inflate(R.layout.fragment_profile, container, false);
+		rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
 		textView1Name = (TextView) rootView.findViewById(R.id.textView1Name);
 
@@ -78,12 +83,11 @@ public class FragmentProfile extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-				ShowTweetComposeDialog showTweetComposeDialog = new ShowTweetComposeDialog(
-						getActivity(), "");
+				ShowTweetComposeDialog showTweetComposeDialog = new ShowTweetComposeDialog(getActivity(), "",handler);
 
 				showTweetComposeDialog.showThis();
 
-			}
+ 			}
 		});
 
 		String userStringImage = MainSingleTon.currentUserModel.getUserimage();
@@ -96,11 +100,9 @@ public class FragmentProfile extends Fragment {
 
 		}
 
-		textView1UserName = (TextView) rootView
-				.findViewById(R.id.textView1UserName);
+		textView1UserName = (TextView) rootView.findViewById(R.id.textView1UserName);
 
-		reloutProgress = (RelativeLayout) rootView
-				.findViewById(R.id.reloutProgress);
+		reloutProgress = (RelativeLayout) rootView.findViewById(R.id.reloutProgress);
 
 		textView1UserName.setText("@"
 				+ MainSingleTon.currentUserModel.getUsername());
@@ -121,7 +123,9 @@ public class FragmentProfile extends Fragment {
 		if (MainSingleTon.bitmapBanner != null) {
 			imageView1Banner.setImageBitmap(MainSingleTon.bitmapBanner);
 		}
+		
 		showProgress();
+		
 		TwitterUserShowRequest userShowRequest = new TwitterUserShowRequest(
 				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
 
@@ -144,8 +148,7 @@ public class FragmentProfile extends Fragment {
 					}
 				});
 
-		userShowRequest.executeThisRequest(MainSingleTon.currentUserModel
-				.getUsername());
+		userShowRequest.executeThisRequest(MainSingleTon.currentUserModel.getUsername());
 
 		return rootView;
 	}

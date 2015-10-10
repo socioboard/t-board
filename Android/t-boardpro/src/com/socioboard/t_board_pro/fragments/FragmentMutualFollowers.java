@@ -75,16 +75,14 @@ public class FragmentMutualFollowers extends Fragment implements OnScrollListene
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 
-		viewGroup = (ViewGroup) inflater.inflate(R.layout.progress_layout,
-				listView, false);
+		viewGroup = (ViewGroup) inflater.inflate(R.layout.progress_layout, listView, false);
 
 		listView.addFooterView(viewGroup);
 
 		myprint("addFooterView++++++++++++++++++++++++++++++++++++++++++++++ DONt LOad");
 
 	}
-
-
+ 
 	public class FanFollowing extends AsyncTask<Void, Void, Void> {
 
 		@Override

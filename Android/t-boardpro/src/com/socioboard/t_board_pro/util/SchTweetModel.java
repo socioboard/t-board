@@ -14,6 +14,23 @@ public class SchTweetModel {
 
 	ModelUserDatas userDatas;
 
+	int tweetType;
+
+	@Override
+	public String toString() {
+		return "SchTweetModel [tweet=" + tweet + ", tweettime=" + tweettime
+				+ ", userID=" + userID + ", tweetId=" + tweetId
+				+ ", userDatas=" + userDatas + ", tweetType=" + tweetType + "]";
+	}
+
+	public int getTweetType() {
+		return tweetType;
+	}
+
+	public void setTweetType(int tweetType) {
+		this.tweetType = tweetType;
+	}
+
 	public SchTweetModel() {
 
 	}
@@ -33,7 +50,7 @@ public class SchTweetModel {
 	public void setUserDatas(ModelUserDatas userDatas) {
 
 		System.out.println("setUserDatas " + userDatas);
-		
+
 		this.userDatas = userDatas;
 	}
 

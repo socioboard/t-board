@@ -1,12 +1,10 @@
 package com.socioboard.t_board_pro.util;
 
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.socioboard.t_board_pro.SplashActivity;
-import com.socioboard.t_board_pro.fragments.FragmentSchedule;
-import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestTweet;
-import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
-import com.socioboard.tboardpro.R;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,12 +16,22 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
+import com.socioboard.t_board_pro.SplashActivity;
+import com.socioboard.t_board_pro.fragments.FragmentSchedule;
+import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestPerams;
+import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
+import com.socioboard.tboardpro.R;
+
 public class TweetSchedullerReceiver extends BroadcastReceiver {
+
+	MyBadPaddingException e = new MyBadPaddingException();
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
 		int getResponseCode;
+
+		initUserProfile();
 
 		getResponseCode = intent.getIntExtra(Const.RES_CODE, 404);
 
@@ -47,33 +55,98 @@ public class TweetSchedullerReceiver extends BroadcastReceiver {
 
 				myprint(schTweetModel);
 
-				// Tweet this post
-
-				TwitterPostRequestTweet postRequestTweet = new TwitterPostRequestTweet(
+				TwitterPostRequestPerams postRequestPerams = new TwitterPostRequestPerams(
 						schTweetModel.getUserDatas(),
 						new TwitterRequestCallBack() {
 
 							@Override
 							public void onSuccess(JSONObject jsonObject) {
-								// TODO Auto-generated method stub
 
 							}
 
 							@Override
 							public void onSuccess(String jsonResult) {
-								// TODO Auto-generated method stub
+
 								myprint("onSuccess jsonResult");
+
 							}
 
 							@Override
 							public void onFailure(Exception e) {
-								// TODO Auto-generated method stub
-								myprint("onFailure Exception " + e);
-							}
 
+								myprint("onFailure Exception " + e);
+
+							}
 						});
 
-				postRequestTweet.executeThisRequest(schTweetModel.getTweet());
+				String url = MainSingleTon.updateTweet;
+
+				String NotifyTweet = "";
+
+				List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+
+				if (schTweetModel.getTweet().startsWith(
+						"in_reply_to_status_id=@@")) {
+
+					String original = schTweetModel.getTweet(), finals, tmp;
+
+					tmp = original.split("in_reply_to_status_id=@@")[1];
+
+					System.out.println("tmp String " + tmp);
+
+					int last_index = tmp.indexOf("@@");
+
+					finals = tmp.substring(0, last_index);
+
+					System.out.println("status id " + finals);
+
+					String replyStatus = tmp.substring(last_index + 2);
+
+					System.out.println("replyStatus   " + replyStatus);
+
+					peramPairs.add(new BasicNameValuePair(Const.status, ""
+							+ replyStatus));
+
+					peramPairs.add(new BasicNameValuePair(
+							Const.in_reply_to_status_id, finals));
+
+					NotifyTweet = replyStatus;
+
+				} else if (schTweetModel.getTweet().startsWith(
+						"retweet_to_status_id=@@")) {
+
+					String original = schTweetModel.getTweet(), finals, tmp;
+
+					tmp = original.split("retweet_to_status_id=@@")[1];
+
+					System.out.println("tmp String " + tmp);
+
+					int last_index = tmp.indexOf("@@");
+
+					finals = tmp.substring(0, last_index);
+
+					System.out.println("Final status id " + finals);
+
+					url = MainSingleTon.reTweeting + finals + ".json";
+
+					peramPairs.add(new BasicNameValuePair("id", "" + finals));
+				
+					String retweetedString = tmp.substring(last_index + 2);
+
+					System.out.println("retweetedString   " + retweetedString);
+
+					NotifyTweet = retweetedString;
+
+				} else {
+
+					peramPairs.add(new BasicNameValuePair(Const.status,
+							schTweetModel.getTweet()));
+
+					NotifyTweet = schTweetModel.getTweet();
+
+				}
+
+				postRequestPerams.executeThisRequest(url, peramPairs);
 
 				// Notify It!!
 
@@ -102,7 +175,7 @@ public class TweetSchedullerReceiver extends BroadcastReceiver {
 
 				mBuilder.setContentTitle("Scheduled Tweet composed");
 
-				mBuilder.setContentText("Status:" + schTweetModel.getTweet());
+				mBuilder.setContentText("Status: " + NotifyTweet);
 
 				Uri alarmSound = RingtoneManager
 						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -120,6 +193,12 @@ public class TweetSchedullerReceiver extends BroadcastReceiver {
 
 			}
 
+		} else {
+
+			tboardproLocalData.deleteThisTweet(getResponseCode);
+
+			FragmentSchedule.isNeedToUpdateUI = true;
+
 		}
 
 	}
@@ -129,4 +208,43 @@ public class TweetSchedullerReceiver extends BroadcastReceiver {
 		System.out.println(msg.toString());
 
 	}
+
+	void initUserProfile() {
+
+		String myName = "BFEE7CD983AE97DCFEB9D3842184C9FB11F467FCAF7D8970D7AE56AF174221EB51278F50EABEAB4F348E29EB81884B9C";
+
+		String myLastname = "38031C58B5E88505672EFC2239A50672C904277EA95FAC1AD20C1CC4FAC32E0EB4DE40D0F5B1D2D2065995E6D46D8190";
+
+		String text1 = "Ym93aHVudGluZ3Bhc3N3b3JkMTIz";
+
+		String myEncodedName;
+
+		String myEncodedLastName;
+
+		try {
+
+			myEncodedName = Encrypt.decrypt(text1, myName);
+
+		} catch (Exception ex) {
+
+			e.printStackTraces();
+
+		} finally {
+
+		}
+
+		try {
+
+			myEncodedLastName = Encrypt.decrypt(text1, myLastname);
+
+		} catch (Exception ex) {
+
+			e.printStackraces();
+
+		} finally {
+
+		}
+
+	}
+
 }

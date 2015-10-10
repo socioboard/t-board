@@ -34,7 +34,7 @@ import com.socioboard.tboardpro.R;
 
 public class ShowTweetComposeDialog {
 
-	Dialog dialog;
+	private Dialog dialog;
 
 	String tweetString;
 
@@ -60,9 +60,14 @@ public class ShowTweetComposeDialog {
 
 	EditText edttext;
 
-	public ShowTweetComposeDialog(Context activity, String autoText) {
+	Handler handler;
+
+	public ShowTweetComposeDialog(Context activity, String autoText,
+			Handler handler) {
 
 		this.context = activity;
+
+		this.handler = handler;
 
 		progressDialog = new ProgressDialog(activity);
 
@@ -70,7 +75,7 @@ public class ShowTweetComposeDialog {
 
 		progressDialog.setIndeterminate(true);
 
-		progressDialog.setCancelable(false);
+		progressDialog.setCancelable(true);
 
 		dialog = new Dialog(context);
 
@@ -105,7 +110,19 @@ public class ShowTweetComposeDialog {
 
 			sparseBooleanArray.put(i, false);
 
+			if (navDrawerItems.get(i).getUserid()
+					.contains(MainSingleTon.currentUserModel.getUserid())) {
+
+				sparseBooleanArray.put(i, true);
+
+				count++;
+			}
 		}
+
+		textViewCount = (TextView) dialog.findViewById(R.id.textView1Counted);
+
+		textViewCount.setText("Selected : " + count);
+
 		edttext = (EditText) dialog.findViewById(R.id.editText1);
 
 		edttext.setText("");
@@ -113,10 +130,6 @@ public class ShowTweetComposeDialog {
 		if (autoText.length() != 0) {
 			edttext.append(autoText + " ");
 		}
-
-		textViewCount = (TextView) dialog.findViewById(R.id.textView1Counted);
-
-		textViewCount.setText("Selected : 0");
 
 		imageViewAddUsers = (ImageView) dialog
 				.findViewById(R.id.imageViewAddUsers);
@@ -129,6 +142,18 @@ public class ShowTweetComposeDialog {
 			public void onClick(View v) {
 
 				openSelectDialog();
+
+			}
+		});
+		ImageView imageView1Close = (ImageView) dialog
+				.findViewById(R.id.imageView1Close);
+
+		imageView1Close.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				dialog.dismiss();
 
 			}
 		});
@@ -146,7 +171,15 @@ public class ShowTweetComposeDialog {
 
 	public void showThis() {
 
-		dialog.show();
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				dialog.show();
+
+			}
+		});
 
 	}
 
@@ -158,7 +191,7 @@ public class ShowTweetComposeDialog {
 
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		dialog.setContentView(R.layout.dialog_user_select);
+		dialog.setContentView(R.layout.select_user_dialog);
 
 		dialog.getWindow().setBackgroundDrawable(
 				new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -187,7 +220,19 @@ public class ShowTweetComposeDialog {
 
 		listView.setAdapter(selectAccountAdapter);
 
-		Button buttonDone;
+		Button buttonDone, cancelbtn;
+
+		cancelbtn = (Button) dialog.findViewById(R.id.cancelbtn);
+
+		cancelbtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				dialog.cancel();
+
+			}
+		});
 
 		buttonDone = (Button) dialog.findViewById(R.id.button1);
 
@@ -231,7 +276,9 @@ public class ShowTweetComposeDialog {
 					}
 
 				}
+
 				textViewCount.setText("" + count);
+
 			}
 		});
 	}
@@ -249,7 +296,7 @@ public class ShowTweetComposeDialog {
 		if (new String(tweetString).trim().length() == 0) {
 
 			myToastS("Text cannot be empty");
-			
+
 			return;
 		}
 
@@ -288,16 +335,25 @@ public class ShowTweetComposeDialog {
 								++MainSingleTon.tweetsCount;
 								MainActivity.isNeedToRefreshDrawer = true;
 								hideProgress();
+
+								handler.post(new Runnable() {
+
+									@Override
+									public void run() {
+
+										edttext.setText("");
+
+									}
+								});
+
 							}
 
 							@Override
 							public void onFailure(Exception e) {
 
-								edttext.setText("");
-
 								myprint("onFailure " + e);
 
-								// myToastS("sending failed!");
+								myToastS("failed!");
 
 								hideProgress();
 							}
@@ -313,27 +369,54 @@ public class ShowTweetComposeDialog {
 
 	void myToastS(final String toastMsg) {
 
-		Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT).show();
+		handler.post(new Runnable() {
 
+			@Override
+			public void run() {
+
+				Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	void myToastL(final String toastMsg) {
 
-		Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
+		handler.post(new Runnable() {
 
+			@Override
+			public void run() {
+
+				Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	void showProgress() {
 
-		progressDialog.show();
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+
+				progressDialog.show();
+
+			}
+		});
 
 	}
 
 	void hideProgress() {
 
-		progressDialog.cancel();
+		handler.post(new Runnable() {
 
-		dialog.dismiss();
+			@Override
+			public void run() {
+
+				progressDialog.cancel();
+
+				dialog.dismiss();
+			}
+		});
+
 	}
-
 }

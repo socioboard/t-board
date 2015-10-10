@@ -20,8 +20,9 @@
         android:ellipsize="end"
         android:paddingLeft="80dp"
         android:paddingRight="@dimen/drawer_right"
+        android:text="profile"
         android:textColor="@color/text"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/item_count"

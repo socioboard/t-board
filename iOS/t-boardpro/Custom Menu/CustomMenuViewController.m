@@ -251,7 +251,7 @@
     [viewLogo addSubview:accountLbl];
     //------------------
     UIButton * addAccount=[[UIButton alloc]init];
-    addAccount.frame=CGRectMake(screenSize.size.width-140,screenSize.size.height-80,140,29);
+    addAccount.frame=CGRectMake(screenSize.size.width-140,screenSize.size.height-80,121,29);
     [addAccount setBackgroundImage:[UIImage imageNamed:@"add_aacount.png"] forState:UIControlStateNormal];
     [addAccount addTarget:self action:@selector(addAccount) forControlEvents:UIControlEventTouchUpInside];
     [self.view insertSubview:addAccount belowSubview:self.mainsubView];

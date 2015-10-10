@@ -110,7 +110,7 @@ public class TwitterUserGETRequest2 {
 			
 			System.out.println("urlMade : " + urlMade);
 
-			System.out.println("authData : " + authData);
+			//System.out.println("authData : " + authData);
 
 			URL obj = new URL(urlMade);
 

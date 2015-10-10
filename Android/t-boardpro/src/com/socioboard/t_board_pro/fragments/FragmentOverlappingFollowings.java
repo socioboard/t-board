@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -49,11 +51,12 @@ public class FragmentOverlappingFollowings extends Fragment implements
 	public ToFollowingAdapter toFollowingAdp;
 	RelativeLayout reloutProgress;
 	Activity aActivity;
-	Button buttonAdd, button1Remove;
+	Button button1Remove;
+	ImageView buttonAdd;
 	EditText editTextUserName;
 	ProgressDialog progressDialog;
 	ImageView profile_pic, profile_picorlpAcc;
-	RelativeLayout reloutorlpAcc, datasheet;
+	RelativeLayout reloutorlpAcc, datasheet, tmprelBack;
 
 	TextView textView1Name, textView1UserName, TextView01Followings,
 			TextView0FollowedBy;
@@ -91,20 +94,24 @@ public class FragmentOverlappingFollowings extends Fragment implements
 
 		imageLoader = new ImageLoader(getActivity());
 
-		rootView = inflater.inflate(R.layout.fragment_ovlp_following,container, false);
+		rootView = inflater.inflate(R.layout.fragment_ovlp_following, container, false);
 
-		reloutProgress = (RelativeLayout) rootView.findViewById(R.id.reloutProgress);
+		reloutProgress = (RelativeLayout) rootView
+				.findViewById(R.id.reloutProgress);
+
+		tmprelBack = (RelativeLayout) rootView.findViewById(R.id.rel);
 
 		datasheet = (RelativeLayout) rootView.findViewById(R.id.datasheet);
 
 		prgsBar = (ProgressBar) rootView.findViewById(R.id.progressBar1);
 
-		textView3Counts = (TextView) rootView.findViewById(R.id.textView3Counts);
+		textView3Counts = (TextView) rootView
+				.findViewById(R.id.textView3Counts);
 
 		nomoreData = (TextView) rootView.findViewById(R.id.loadingText);
-		
+
 		nomoreData.setText("loading Followings...");
-		
+
 		listView = (ListView) rootView.findViewById(R.id.listViewToFollowing);
 
 		profile_pic = (ImageView) rootView.findViewById(R.id.profile_pic);
@@ -144,7 +151,7 @@ public class FragmentOverlappingFollowings extends Fragment implements
 		editTextUserName = (EditText) rootView
 				.findViewById(R.id.editText1HashTagSearch);
 
-		buttonAdd = (Button) rootView.findViewById(R.id.button1Go);
+		buttonAdd = (ImageView) rootView.findViewById(R.id.button1Go);
 
 		button1Remove = (Button) rootView.findViewById(R.id.button1Remove);
 
@@ -158,6 +165,16 @@ public class FragmentOverlappingFollowings extends Fragment implements
 					return;
 				}
 				
+				View view = getActivity().getCurrentFocus();
+
+				if (view != null) {
+
+					InputMethodManager imm = (InputMethodManager) getActivity()
+							.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+				}
+
 				showProgressBar("Fetching User...");
 
 				new LoadthisUserData().execute();
@@ -165,25 +182,26 @@ public class FragmentOverlappingFollowings extends Fragment implements
 			}
 		});
 
+		toFollowingAdp = new ToFollowingAdapter(getActivity(), ovlpFollwers,
+				aActivity);
+
 		button1Remove.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+
+				isAlreadyScrolling = true;
+
 				datasheet.setVisibility(View.GONE);
 
 				button1Remove.setVisibility(View.GONE);
 
- 				reloutorlpAcc.setVisibility(View.GONE);
-
-				editTextUserName.setVisibility(View.VISIBLE);
-				
-				buttonAdd.setVisibility(View.VISIBLE);
+				reloutorlpAcc.setVisibility(View.GONE);
 
 				editTextUserName.setText("");
 
 				editTextUserName.requestFocus();
 
- 				mutalFolloersIds.clear();
+				mutalFolloersIds.clear();
 
 				ovlpFollwers.clear();
 
@@ -192,7 +210,6 @@ public class FragmentOverlappingFollowings extends Fragment implements
 				toFollowingAdp.tweetModels.clear();
 
 				toFollowingAdp.notifyDataSetChanged();
-
 
 			}
 		});
@@ -282,10 +299,12 @@ public class FragmentOverlappingFollowings extends Fragment implements
 
 			peramPairs.add(new BasicNameValuePair(Const.screen_name,
 					edTextUserName));
-			
-			peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
 
-			twitterShowUserJSon.executeThisRequest(MainSingleTon.userAccountData, peramPairs);
+			peramPairs.add(new BasicNameValuePair(Const.include_entities,
+					"false"));
+
+			twitterShowUserJSon.executeThisRequest(
+					MainSingleTon.userAccountData, peramPairs);
 
 			return null;
 		}
@@ -300,14 +319,11 @@ public class FragmentOverlappingFollowings extends Fragment implements
 
 				myprint(fullUserDetailModel);
 
-				editTextUserName.setVisibility(View.GONE);
-
-				buttonAdd.setVisibility(View.GONE);
-
 				reloutorlpAcc.setVisibility(View.VISIBLE);
 
 				textView1Nameovlp.setText(fullUserDetailModel.getFullName());
-
+				
+				
 				textView1UserNameovlp.setText("@"
 						+ fullUserDetailModel.getUserName());
 
@@ -320,12 +336,14 @@ public class FragmentOverlappingFollowings extends Fragment implements
 				TextView0FollowedByovlp.setText(fullUserDetailModel
 						.getNoFollowers());
 
-				imageLoader.DisplayImage( fullUserDetailModel.getUserImagerUrl(), profile_picorlpAcc);
+				imageLoader.DisplayImage(
+						fullUserDetailModel.getUserImagerUrl(),
+						profile_picorlpAcc);
 
 				showProgress();
 
 				loadfollowings();
-				
+
 			}
 		});
 
@@ -362,9 +380,12 @@ public class FragmentOverlappingFollowings extends Fragment implements
 
 							}
 
-							ArrayList<String> CopyThirdPartyUserFolloersIds = (ArrayList<String>) thirdPartyUserFolloersIds.clone();
+							ArrayList<String> CopyThirdPartyUserFolloersIds = (ArrayList<String>) thirdPartyUserFolloersIds
+									.clone();
 
-							mutalFolloersIds = (ArrayList<String>) intersection( CopyThirdPartyUserFolloersIds, MainSingleTon.toFollowingModelsIDs);
+							mutalFolloersIds = (ArrayList<String>) intersection(
+									CopyThirdPartyUserFolloersIds,
+									MainSingleTon.toFollowingModelsIDs);
 
 							myprint("mutalFolloersIds " + mutalFolloersIds);
 
@@ -403,7 +424,6 @@ public class FragmentOverlappingFollowings extends Fragment implements
 					}
 				});
 
-		
 		String url = MainSingleTon.i_am_following_to_ids;
 
 		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
@@ -412,11 +432,11 @@ public class FragmentOverlappingFollowings extends Fragment implements
 
 		peramPairs.add(new BasicNameValuePair(Const.count, "5000"));
 
-		peramPairs.add(new BasicNameValuePair(Const.user_id, fullUserDetailModel.getId()));
+		peramPairs.add(new BasicNameValuePair(Const.user_id,
+				fullUserDetailModel.getId()));
 
 		userGETRequest.executeThisRequest(url, peramPairs);
 
-		
 	}
 
 	public <T> List<T> intersection(List<T> list1, List<T> list2) {
@@ -552,8 +572,9 @@ public class FragmentOverlappingFollowings extends Fragment implements
 
 				peramPairs.add(new BasicNameValuePair(Const.user_id,
 						userswithComma));
-			
-				peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
+
+				peramPairs.add(new BasicNameValuePair(Const.include_entities,
+						"false"));
 
 				twitterUserGETRequest.executeThisRequest(
 						MainSingleTon.userShowIds, peramPairs);
@@ -576,6 +597,8 @@ public class FragmentOverlappingFollowings extends Fragment implements
 			public void run() {
 
 				viewGroup.setVisibility(View.INVISIBLE);
+				
+				button1Remove.setVisibility(View.VISIBLE);
 
 			}
 		});
@@ -736,8 +759,9 @@ public class FragmentOverlappingFollowings extends Fragment implements
 
 				peramPairs.add(new BasicNameValuePair(Const.user_id,
 						userswithComma));
-			
-				peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
+
+				peramPairs.add(new BasicNameValuePair(Const.include_entities,
+						"false"));
 
 				twitterUserGETRequest.executeThisRequest(
 						MainSingleTon.userShowIds, peramPairs);

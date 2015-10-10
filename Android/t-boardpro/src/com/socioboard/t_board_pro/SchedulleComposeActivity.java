@@ -3,7 +3,6 @@ package com.socioboard.t_board_pro;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -13,10 +12,13 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -40,7 +42,7 @@ import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.TweetSchedullerReceiver;
 import com.socioboard.tboardpro.R;
 
-public class SchedulleComposeActivity extends Activity {
+public class SchedulleComposeActivity extends ActionBarActivity {
 
 	Button tweetButton;
 	EditText edttext;
@@ -56,13 +58,28 @@ public class SchedulleComposeActivity extends Activity {
 	CheckBox chkBox;
 	ImageView imgimageView1Cal;
 	ImageView imageView2Time, imageViewAddUsers;
-	
+
 	public SparseBooleanArray sparseBooleanArray;
 
 	int count = 0;
 	int year;
 	int month;
 	int day;
+
+	@Override
+	protected void onDestroy() {
+
+		super.onDestroy();
+
+		MainSingleTon.insertedText = "";
+
+		MainSingleTon.in_reply_to_status_id = "";
+
+		MainSingleTon.retweet_to_status_id = "";
+
+		myprint("* * * * SchedulleComposeActivity * * * * * * On destroyed * * * * *");
+
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +105,6 @@ public class SchedulleComposeActivity extends Activity {
 
 		chkBox = (CheckBox) findViewById(R.id.checkBox1);
 
-		textViewCount.setText("Selected : " + 0);
-
 		tbDAta = new TboardproLocalData(getApplicationContext());
 
 		navDrawerItems = tbDAta.getAllUsersDataArlist();
@@ -100,7 +115,16 @@ public class SchedulleComposeActivity extends Activity {
 
 			sparseBooleanArray.put(i, false);
 
+			if (navDrawerItems.get(i).getUserid()
+					.contains(MainSingleTon.currentUserModel.getUserid())) {
+
+				sparseBooleanArray.put(i, true);
+
+				count++;
+			}
 		}
+
+		textViewCount.setText("Selected : " + count);
 
 		myprint(navDrawerItems);
 
@@ -118,7 +142,18 @@ public class SchedulleComposeActivity extends Activity {
 
 		edttext = (EditText) findViewById(R.id.editText1);
 
+		if (!MainSingleTon.retweet_to_status_id.isEmpty()) {
+
+			edttext.setVisibility(View.GONE);
+
+		} else {
+
+			edttext.append(MainSingleTon.insertedText);
+
+		}
+
 		tweetButton.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 
@@ -150,6 +185,55 @@ public class SchedulleComposeActivity extends Activity {
 			}
 		});
 
+		textViewDate.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Calendar c = Calendar.getInstance();
+				final int cyear = c.get(Calendar.YEAR);
+				final int cmonth = c.get(Calendar.MONTH);
+				final int cday = c.get(Calendar.DAY_OF_MONTH);
+
+				runOnUiThread(new Runnable() {
+
+					public void run() {
+
+						new DatePickerDialog(SchedulleComposeActivity.this,
+								pickerListener, cyear, cmonth, cday).show();
+
+					}
+				});
+
+			}
+		});
+
+		textViewTime.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Calendar c = Calendar.getInstance();
+
+				final int currenthour = c.get(Calendar.HOUR_OF_DAY);
+
+				final int currentminute = c.get(Calendar.MINUTE);
+
+				runOnUiThread(new Runnable() {
+
+					public void run() {
+
+						TimePickerDialog tdialog = new TimePickerDialog(
+								SchedulleComposeActivity.this, timelistner,
+								currenthour, currentminute, false);
+
+						tdialog.show();
+
+					}
+				});
+
+			}
+		});
 		imageView2Time.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -173,9 +257,46 @@ public class SchedulleComposeActivity extends Activity {
 
 					}
 				});
+
 			}
 		});
 
+		int actionBarTitleId = getResources().getIdentifier("action_bar_title",
+				"id", "android");
+
+		if (actionBarTitleId > 0) {
+
+			TextView title = (TextView) findViewById(actionBarTitleId);
+
+			if (title != null) {
+
+				title.setTextColor(Color.WHITE);
+
+				title.setText("Schedule");
+
+			}
+		}
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+		getSupportActionBar().setBackgroundDrawable(
+				new ColorDrawable(getResources().getColor(R.color.myBlue)));
+
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		// Respond to the action bar's Up/Home button
+		case android.R.id.home:
+			finish();
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	protected void openSelectDialog() {
@@ -186,7 +307,7 @@ public class SchedulleComposeActivity extends Activity {
 
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		dialog.setContentView(R.layout.dialog_user_select);
+		dialog.setContentView(R.layout.select_user_dialog);
 
 		dialog.getWindow().setBackgroundDrawable(
 				new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -215,7 +336,19 @@ public class SchedulleComposeActivity extends Activity {
 
 		listView.setAdapter(selectAccountAdapter);
 
-		Button buttonDone;
+		Button buttonDone, cancelbtn;
+
+		cancelbtn = (Button) dialog.findViewById(R.id.cancelbtn);
+
+		cancelbtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				dialog.cancel();
+
+			}
+		});
 
 		buttonDone = (Button) dialog.findViewById(R.id.button1);
 
@@ -254,13 +387,14 @@ public class SchedulleComposeActivity extends Activity {
 
 				for (int i = 0; i < navDrawerItems.size(); ++i) {
 
- 					if (sparseBooleanArray.get(i)) {
+					if (sparseBooleanArray.get(i)) {
 						++count;
 						myprint("dialog.setOnCancel"
 								+ sparseBooleanArray.get(i));
 					}
 
 				}
+
 				textViewCount.setText("" + count);
 			}
 		});
@@ -273,14 +407,21 @@ public class SchedulleComposeActivity extends Activity {
 		if (count == 0) {
 
 			myToastS("Select User first!");
+
 			return;
 		}
 
-		if (tweetString.length() == 0) {
+		if (!MainSingleTon.retweet_to_status_id.isEmpty()) {
 
-			myToastS("Text can Not be Empty");
+		} else {
 
-			return;
+			if (tweetString.length() == 0) {
+
+				myToastS("Text can Not be Empty");
+
+				return;
+			}
+
 		}
 
 		// check everything filled by user or not
@@ -305,22 +446,51 @@ public class SchedulleComposeActivity extends Activity {
 
 						myprint(i + " time = " + tweetTime);
 
-						SchTweetModel schTweetModel = new SchTweetModel(navDrawerItems.get(i).getUserid(), tweetString, tweetTime);
+						SchTweetModel schTweetModel = new SchTweetModel(
+								navDrawerItems.get(i).getUserid(), tweetString,
+								tweetTime);
 
 						myprint(schTweetModel);
+
+						if (!MainSingleTon.in_reply_to_status_id.isEmpty()) {
+
+							myprint("************ in_reply_to_status_id "
+									+ MainSingleTon.in_reply_to_status_id);
+
+							String newTweetString = "in_reply_to_status_id=@@"
+									+ MainSingleTon.in_reply_to_status_id
+									+ "@@" + tweetString;
+
+							schTweetModel.setTweet(newTweetString);
+
+						} else if (!MainSingleTon.retweet_to_status_id
+								.isEmpty()) {
+
+							String newTweetString = "retweet_to_status_id=@@"
+									+ MainSingleTon.retweet_to_status_id + "@@"
+									+ MainSingleTon.insertedText;
+
+							schTweetModel.setTweet(newTweetString);
+
+							myprint("*********** retweet_to_status_id "
+									+ MainSingleTon.retweet_to_status_id);
+
+						} else {
+
+							myprint(" Normal Composing tweet ");
+
+						}
 
 						tbDAta.addNewSchedulledTweet(schTweetModel);
 
 						setAlarmThisTweet(schTweetModel);
-						
+
 					}
 
 				}
 
 				myToastS("Tweet Schedulled !");
-				
-				++MainSingleTon.schedulecount;
-				
+
 				MainActivity.isNeedToRefreshDrawer = true;
 
 				finish();

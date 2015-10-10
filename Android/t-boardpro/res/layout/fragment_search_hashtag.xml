@@ -4,18 +4,30 @@
     android:layout_height="match_parent"
     android:background="@drawable/container_down_full_dark" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/timelineListView"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
+        android:background="@color/myBlue" >
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/timelineListView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/viewTmp"
+        android:layout_below="@+id/rel"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/ab_share_pack_holo_light"
         android:divider="@android:color/transparent"
-        android:dividerHeight="3dp" />
+        android:dividerHeight="3dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" />
 
     <RelativeLayout
         android:id="@+id/reloutProgress"
@@ -33,39 +45,43 @@
             android:layout_centerVertical="true" />
     </RelativeLayout>
 
-    <EditText
-        android:id="@+id/editText1HashTagSearch"
+    <RelativeLayout
+        android:id="@+id/rel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/button1Go"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
         android:background="@drawable/editbox_background_normal"
-        android:hint="#trendingTopic"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:textColor="@color/black" >
-    </EditText>
+        android:padding="2dp" >
 
-    <View
-        android:id="@+id/viewTmp"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:layout_below="@+id/button1Go"
-        android:layout_marginTop="10dp" />
+        <EditText
+            android:id="@+id/editText1HashTagSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="15dp"
+            android:layout_toLeftOf="@+id/button1Go"
+            android:background="@android:color/transparent"
+            android:hint="#trends"
+            android:lines="1"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:padding="3dp"
+            android:textColor="@color/black" >
+        </EditText>
 
-    <Button
-        android:id="@+id/button1Go"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/myBlue"
-        android:text="Go"
-        android:textColor="@color/White" />
+        <ImageView
+            android:id="@+id/button1Go"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/tc_bg_paper"
+            android:src="@drawable/ic_search_category_default" />
+    </RelativeLayout>
 
 </RelativeLayout>

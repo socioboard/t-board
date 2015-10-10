@@ -15,21 +15,29 @@ public class MainSingleTon {
 
 	public static long favoritesCount = -1;
 
-	public static long fansCount = -1;
+	public static long notificationInterval = 3600000;
 
-	public static long mutualfansCount = -1;
-
-	public static long NOnfollowersCount = -1;
-
-	public static long schedulecount = 0;
+	public static long recentsFollowersCount = -1;
 
 	public static boolean signedInStatus = false;
+
+	public static boolean primaryCountLoaded = false;
+
+	public static boolean isNeedTOstopFollowing = false;
+
+	public static boolean isNeedTOstopFollowersIdRequest = false;
+
+	public static boolean secondaryCountLoaded = false;
+
+	public static boolean autodm = false;
+
+	public static String autoDmfirstime;
 
 	public static ModelUserDatas currentUserModel;
 
 	public static ConnectionDetector connectionDetector;
 
-	public static ArrayList<TweetModel> listMyfollowers = new ArrayList<TweetModel>();
+	public static ArrayList<TweetModel> loadedtweets = new ArrayList<TweetModel>();
 
 	public static ArrayList<String> listMyfollowersIDs = new ArrayList<String>();
 
@@ -65,15 +73,23 @@ public class MainSingleTon {
 
 	public static ArrayList<String> allUserIDs = new ArrayList<String>();
 
+	// + + + + + + + + + +
+	
+	public static String insertedText = "";
+
+	public static String in_reply_to_status_id = "";
+
+	public static String retweet_to_status_id = "";
+
 	// + + + + + + + + + + URLS + + + + + + + + + + + + + + + TwtBoardPro
 
 	public static String twitterUrls = "";
 
 	public static String keyHash, bearerToken;
 
-	public static String TWITTER_KEY = "xxxxxxxxxxxxxxxxxxxxxx";
+	public static String TWITTER_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
-	public static String TWITTER_SECRET = "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy";
+	public static String TWITTER_SECRET = "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy";
 
 	public static String reqTokenResourceURL = "https://api.twitter.com/oauth/request_token";
 
@@ -120,16 +136,22 @@ public class MainSingleTon {
 	public static String update_with_media = "https://api.twitter.com/1.1/statuses/update_with_media.json";
 
 	public static String uploadMedia = "https://upload.twitter.com/1.1/media/upload.json";
-
+ 
 	public static String createMessage = "https://api.twitter.com/1.1/direct_messages/new.json";
 
+	public static String mentions_timeline = "https://api.twitter.com/1.1/statuses/mentions_timeline.json";
+	
+	public static String user_timeline = "https://api.twitter.com/1.1/statuses/user_timeline.json";
+	
+	public static String direct_messages = "https://api.twitter.com/1.1/direct_messages/new.json";
+		
 	public static String broadcataction = "com.socioboard.action";
 
 	public static void resetSigleTon() {
 
 		fullUserDetailModel = new FullUserDetailModel();
 
-		listMyfollowers.clear();
+		loadedtweets.clear();
 
 		listMyfollowersIDs.clear();
 
@@ -153,23 +175,26 @@ public class MainSingleTon {
 
 		favoritesCount = -1;
 
-		fansCount = -1;
-
-		mutualfansCount = -1;
-
-		NOnfollowersCount = -1;
-  
 		searchDetailModel = new SearchDetailModel();
 
 		followingNextCursor = "-1";
 
 		myfollowersNextCursor = "-1";
 
+		primaryCountLoaded = false;
+
+		secondaryCountLoaded = false;
+
+		recentsFollowersCount = -1;
+		
 	}
 
-	public static String introtext1 = "Check who all following you";
-	public static String introtext2 = "Manage your multiple account in one place ";
-	public static String introtext3 = "You can schedule your post";
-	public static String introtext4 = "Get instant feeds";
+	public static String introtext1 = "Manage your twitter accounts & Grow your Twitter followers.";
+	public static String introtext2 = "Start Following searched user's Followers";
+	public static String introtext3 = "Check Overlapping Followers/Followings with any user.";
+	public static String introtext4 = "Send DM to your FollowBack users";
+	public static String introtext5 = "Analyse your daily followers. Including all kind of respective followers";
+	public static String introtext6 = "You can schedule your post";
+	public static String introtext7 = "Get instant feeds";
 
 }

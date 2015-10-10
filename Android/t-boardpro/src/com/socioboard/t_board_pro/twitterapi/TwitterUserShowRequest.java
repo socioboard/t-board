@@ -86,7 +86,7 @@ public class TwitterUserShowRequest {
 
 			System.out.println("url : " + url);
 
-			System.out.println("authData : " + authData);
+			//System.out.println("authData : " + authData);
 
 			URL obj = new URL(url);
 

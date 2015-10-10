@@ -34,10 +34,11 @@ public class TwitterUserGETRequest {
 		this.userDatas = userDatas;
 
 	}
-	
-	public void executeThisRequest(String url,List<BasicNameValuePair> peramPairs) {
 
-		new RequestAsync().execute(url,peramPairs);
+	public void executeThisRequest(String url,
+			List<BasicNameValuePair> peramPairs) {
+
+		new RequestAsync().execute(url, peramPairs);
 
 	}
 
@@ -47,10 +48,10 @@ public class TwitterUserGETRequest {
 		protected Void doInBackground(Object... params) {
 
 			String url = params[0].toString();
-			
-			List<BasicNameValuePair> peramPairs =(List<BasicNameValuePair>) params[1];
-			
-			myDoInBackground(url,peramPairs);
+
+			List<BasicNameValuePair> peramPairs = (List<BasicNameValuePair>) params[1];
+
+			myDoInBackground(url, peramPairs);
 
 			return null;
 		}
@@ -63,35 +64,39 @@ public class TwitterUserGETRequest {
 
 	}
 
-	public void myDoInBackground(String url,List<BasicNameValuePair> peramPairs) {
+	public void myDoInBackground(String url, List<BasicNameValuePair> peramPairs) {
 
-		oAuthSignaturesGenerator = new OAuthSignaturesGeneratorSorted(userDatas.getUserAcessToken(), userDatas.getUsersecretKey(),MainSingleTon.TWITTER_KEY, MainSingleTon.TWITTER_SECRET, "GET");
+		oAuthSignaturesGenerator = new OAuthSignaturesGeneratorSorted(
+				userDatas.getUserAcessToken(), userDatas.getUsersecretKey(),
+				MainSingleTon.TWITTER_KEY, MainSingleTon.TWITTER_SECRET, "GET");
 
 		String jsonString = null;
-		
-		String urlMade = url;
-		
-		if(peramPairs.size()>0){
-			  
-   		     for( int i = 0 ;i<peramPairs.size();++i){
 
- 				if(i==0){
- 					
- 		 		 urlMade = urlMade + "?"+peramPairs.get(0).getName()+"=" +   URLEncoder.encode(peramPairs.get(0).getValue()) ;
- 
- 				}else{
- 				 
- 					urlMade = urlMade  +"&" +peramPairs.get(i).getName()+"=" +  URLEncoder.encode(peramPairs.get(i).getValue()) ;
- 				}
- 				
- 			}
-  		
-		}else{
- 			  
- 			  urlMade = url ;
- 			  
- 		}
-		
+		String urlMade = url;
+
+		if (peramPairs.size() > 0) {
+
+			for (int i = 0; i < peramPairs.size(); ++i) {
+
+				if (i == 0) {
+
+					urlMade = urlMade + "?" + peramPairs.get(0).getName() + "="
+							+ URLEncoder.encode(peramPairs.get(0).getValue());
+
+				} else {
+
+					urlMade = urlMade + "&" + peramPairs.get(i).getName() + "="
+							+ URLEncoder.encode(peramPairs.get(i).getValue());
+				}
+
+			}
+
+		} else {
+
+			urlMade = url;
+
+		}
+
 		try {
 
 			// HOME
@@ -99,10 +104,10 @@ public class TwitterUserGETRequest {
 			String authData = getAuthDAta(url, peramPairs);
 
 			System.out.println("url : " + url);
-			
+
 			System.out.println("urlMade : " + urlMade);
 
-			System.out.println("authData : " + authData);
+			// System.out.println("authData : " + authData);
 
 			URL obj = new URL(urlMade);
 
@@ -112,7 +117,7 @@ public class TwitterUserGETRequest {
 
 			con.setRequestMethod("GET");
 
- 			con.addRequestProperty("Authorization", authData);
+			con.addRequestProperty("Authorization", authData);
 
 			con.addRequestProperty("Host", "api.twitter.com");
 
@@ -127,6 +132,10 @@ public class TwitterUserGETRequest {
 			if (jsonString == null) {
 
 				twitterRequestCallBack.onFailure(null);
+
+			} else if (jsonString.startsWith("429")) {
+
+				twitterRequestCallBack.onFailure(new Exception("429"));
 
 			} else {
 
@@ -156,8 +165,10 @@ public class TwitterUserGETRequest {
 					+ responseCode);
 
 			String jsonString = null;
-			
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+
+			if (responseCode == 429) {
+				jsonString = "429";
+			} else if (responseCode == HttpURLConnection.HTTP_OK) {
 
 				InputStream linkinStream = connection.getInputStream();
 
@@ -179,7 +190,7 @@ public class TwitterUserGETRequest {
 
 			// myprint("readResponse jsonString   " + jsonString);
 
-			return jsonString ;
+			return jsonString;
 
 		} catch (IOException e) {
 

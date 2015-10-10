@@ -1,6 +1,7 @@
 package com.socioboard.t_board_pro.fragments;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,7 +19,6 @@ import android.widget.TextView;
 import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.SchedulleComposeActivity;
 import com.socioboard.t_board_pro.adapters.SchTweetsAdapter;
-import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ModelUserDatas;
 import com.socioboard.t_board_pro.util.SchTweetModel;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
@@ -30,9 +30,7 @@ public class FragmentSchedule extends Fragment {
 
 	SchTweetsAdapter schTweetsAdapter;
 
-	ArrayList<SchTweetModel> tmpSchTweetModels = new ArrayList<SchTweetModel>();
-
-	ArrayList<SchTweetModel> schTweetModels = new ArrayList<SchTweetModel>();
+ 	ArrayList<SchTweetModel> schTweetModels = new ArrayList<SchTweetModel>();
 
 	TboardproLocalData tboardproLocalData;
 
@@ -62,34 +60,9 @@ public class FragmentSchedule extends Fragment {
 		imdNewSchdulle = (ImageView) rootView
 				.findViewById(R.id.imageViewNewTWeet);
 
-		tmpSchTweetModels = tboardproLocalData.getAllSchedulledTweet();
-
 		schTweetModels.clear();
 
-		for (int i = 0; i < tmpSchTweetModels.size(); ++i) {
-
-			ModelUserDatas userDatas = tboardproLocalData
-					.getUserData(tmpSchTweetModels.get(i).getUserID());
-
-			if (userDatas != null) {
-
-				tmpSchTweetModels.get(i).setUserDatas(userDatas);
-
-				SchTweetModel schTweetModel = tmpSchTweetModels.get(i);
-
-				System.out.println("schTweetModel " + schTweetModel);
-
-				schTweetModels.add(tmpSchTweetModels.get(i));
-
-			} else {
-
-				tboardproLocalData.deleteThisTweet(tmpSchTweetModels.get(i).getTweetId());
-
-			}
-			
- 		}
-
-		MainSingleTon.schedulecount = schTweetModels.size();
+		getAllTweets();
 
 		schTweetsAdapter = new SchTweetsAdapter(getActivity(), schTweetModels);
 
@@ -104,6 +77,7 @@ public class FragmentSchedule extends Fragment {
 
 				Intent intent = new Intent(getActivity(),
 						SchedulleComposeActivity.class);
+
 				getActivity().startActivity(intent);
 
 			}
@@ -125,8 +99,7 @@ public class FragmentSchedule extends Fragment {
 
 							int getCont = listview.getCount();
 
-							schTweetModels = tboardproLocalData
-									.getAllSchedulledTweet();
+							getAllTweets();
 
 							schTweetsAdapter = new SchTweetsAdapter(
 									getActivity(), schTweetModels);
@@ -145,36 +118,16 @@ public class FragmentSchedule extends Fragment {
 		}, 1000, 500);
 
 		return rootView;
- 	}
+	}
 
 	@Override
 	public void onResume() {
 
 		super.onResume();
 
-		tmpSchTweetModels = tboardproLocalData.getAllSchedulledTweet();
+		getAllTweets();
 
-		schTweetModels.clear();
-
-		for (int i = 0; i < tmpSchTweetModels.size(); ++i) {
-
-			ModelUserDatas userDatas = tboardproLocalData
-					.getUserData(tmpSchTweetModels.get(i).getUserID());
-
-			tmpSchTweetModels.get(i).setUserDatas(userDatas);
-
-			SchTweetModel schTweetModel = tmpSchTweetModels.get(i);
-
-			System.out.println("schTweetModel " + schTweetModel);
-
-		}
-
-		MainSingleTon.schedulecount = tmpSchTweetModels.size();
-
-		schTweetsAdapter = new SchTweetsAdapter(getActivity(),
-				tmpSchTweetModels);
-
-		txtCount.setText("Scheduled tweets : " + tmpSchTweetModels.size());
+		txtCount.setText("Scheduled tweets : " + schTweetModels.size());
 
 		listview.setAdapter(schTweetsAdapter);
 
@@ -190,4 +143,84 @@ public class FragmentSchedule extends Fragment {
 		timer.cancel();
 
 	}
+
+	void getAllTweets() {
+		
+		ArrayList<SchTweetModel> tmpSchTweetModels = new ArrayList<SchTweetModel>();
+
+		tmpSchTweetModels = tboardproLocalData.getAllSchedulledTweet();
+		
+		schTweetModels.clear();
+		
+		for (int i = 0; i < tmpSchTweetModels.size(); ++i) {
+
+			ModelUserDatas userDatas = tboardproLocalData.getUserData(tmpSchTweetModels.get(i).getUserID());
+
+			if (userDatas != null) {
+
+				tmpSchTweetModels.get(i).setUserDatas(userDatas);
+
+				SchTweetModel schTweetModel = tmpSchTweetModels.get(i);
+
+				System.out.println("schTweetModel " + schTweetModel);
+
+				if (schTweetModel.getTweet().startsWith(
+						"in_reply_to_status_id=@@")) {
+
+					String original = schTweetModel.getTweet(), finals, tmp;
+
+					tmp = original.split("in_reply_to_status_id=@@")[1];
+
+					System.out.println("tmp String " + tmp);
+
+					int last_index = tmp.indexOf("@@");
+
+					finals = tmp.substring(last_index+2);
+
+					System.out.println("Final String " + finals);
+
+					schTweetModel.setTweet(finals);
+
+					schTweetModel.setTweetType(1);
+
+				} else if (schTweetModel.getTweet().startsWith(
+						"retweet_to_status_id=@@")) {
+
+					String original = schTweetModel.getTweet(), finals, tmp;
+
+					tmp = original.split("retweet_to_status_id=@@")[1];
+
+					System.out.println("tmp String " + tmp);
+
+					int last_index = tmp.indexOf("@@");
+
+					finals = tmp.substring(last_index+2);
+
+					System.out.println("Final String " + finals);
+
+					schTweetModel.setTweet(finals);
+
+					schTweetModel.setTweetType(2);
+
+				} else {
+
+					schTweetModel.setTweetType(0);
+
+				}
+
+				schTweetModels.add(schTweetModel);
+
+			} else {
+
+				Collections.reverse(schTweetModels);
+				
+				tboardproLocalData.deleteThisTweet(tmpSchTweetModels.get(i)
+						.getTweetId());
+
+			}
+
+		}
+
+	}
+
 }

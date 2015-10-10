@@ -107,9 +107,9 @@ public class OAuthSignaturesGeneratorSorted {
 		for( int i = 0 ;i<peramPairs.size();++i){
 
 			if(i==0){
-			GeneratedPerams = GeneratedPerams  +peramPairs.get(i).getName()+"=" +  URLEncoder.encode(peramPairs.get(i).getValue().replace("+", "%20")) ;
+			GeneratedPerams = GeneratedPerams  +peramPairs.get(i).getName()+"=" +  URLEncoder.encode(peramPairs.get(i).getValue()).replace("+", "%20") ;
 			}else{
-			GeneratedPerams = GeneratedPerams  +"&" +peramPairs.get(i).getName()+"=" +  URLEncoder.encode(peramPairs.get(i).getValue().replace("+", "%20")) ;
+			GeneratedPerams = GeneratedPerams  +"&" +peramPairs.get(i).getName()+"=" +  URLEncoder.encode(peramPairs.get(i).getValue()).replace("+", "%20") ;
  			}
 			
 		}
@@ -123,11 +123,11 @@ public class OAuthSignaturesGeneratorSorted {
 
 		String baseString = null;
 
-		System.out.println("URLEncoder.encode("+url+") = "+ URLEncoder.encode(url));
+		//System.out.println("URLEncoder.encode("+url+") = "+ URLEncoder.encode(url));
 
 		baseString = method+"&"+URLEncoder.encode(url )+"&"+URLEncoder.encode(peramsUrl );
 
-		System.out.println("baseString = "+ baseString);
+		//System.out.println("baseString = "+ baseString);
 
 		return baseString;
 
@@ -139,7 +139,7 @@ public class OAuthSignaturesGeneratorSorted {
 
 		singningKey = URLEncoder.encode(cSecret )+"&"+URLEncoder.encode(tokenSecret );
 
-		System.out.println("genrateSigningKey = "+ singningKey);
+		//System.out.println("genrateSigningKey = "+ singningKey);
 
 		return singningKey;
 
@@ -220,13 +220,13 @@ public class OAuthSignaturesGeneratorSorted {
 			// perencoded
 			// oAuthSignature = URLEncoder.encode(noUrlEncoding,"ISO-8859-1");    
 
-			System.out.println("getCalcShaHash = "+ oAuthSignature);
+			//System.out.println("getCalcShaHash = "+ oAuthSignature);
 
 		} catch (Exception e) {
 
 			e.printStackTrace(); 
 
-			System.out.println("Exception = "+ e);
+			//System.out.println("Exception = "+ e);
 
 		}       
 

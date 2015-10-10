@@ -1,21 +1,25 @@
 package com.socioboard.t_board_pro;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -34,7 +38,6 @@ import com.socioboard.t_board_pro.util.FullUserDetailModel;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ModelUserDatas;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
-import com.socioboard.t_board_pro.util.TweetModel;
 import com.socioboard.tboardpro.R;
 
 public class AnyUserProfileDialog {
@@ -77,15 +80,30 @@ public class AnyUserProfileDialog {
 
 	private Button buttonFollow;
 
-	public AnyUserProfileDialog(Context activity, String userName, String userId) {
+	TboardproLocalData tboardproLocalData;
+
+	ArrayList<String> sendingids;
+
+	ArrayList<String> sentIds;
+
+	public AnyUserProfileDialog(Context activity, String userName,
+			final String userId) {
 
 		myprint("onCreateView  FragmentProfile");
 
 		this.activity = activity;
 
 		this.userName = userName;
-		
+
 		this.userId = userId;
+
+		tboardproLocalData = new TboardproLocalData(activity);
+
+		sendingids = tboardproLocalData
+				.getAllSendingIDs(MainSingleTon.currentUserModel.getUserid());
+
+		sentIds = tboardproLocalData
+				.getAllSentIDs(MainSingleTon.currentUserModel.getUserid());
 
 		imageLoader = new ImageLoader(activity);
 
@@ -105,6 +123,7 @@ public class AnyUserProfileDialog {
 
 		dialog.getWindow().setBackgroundDrawable(
 				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
 		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 
 		Window window = dialog.getWindow();
@@ -127,6 +146,19 @@ public class AnyUserProfileDialog {
 
 		buttonTweet.setText("Reply");
 
+		ImageView imageView1Close = (ImageView) dialog
+				.findViewById(R.id.imageView1Close);
+
+		imageView1Close.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				dialog.dismiss();
+
+			}
+		});
+
 		buttonTweet.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -134,7 +166,7 @@ public class AnyUserProfileDialog {
 
 				ShowTweetComposeDialog showTweetComposeDialog = new ShowTweetComposeDialog(
 						AnyUserProfileDialog.this.activity, "@"
-								+ AnyUserProfileDialog.this.userName);
+								+ AnyUserProfileDialog.this.userName, handler);
 
 				showTweetComposeDialog.showThis();
 
@@ -160,8 +192,10 @@ public class AnyUserProfileDialog {
 
 		TextView01Followings = (TextView) dialog
 				.findViewById(R.id.TextView01Followings);
+
 		TextView0FollowedBy = (TextView) dialog
 				.findViewById(R.id.TextView0FollowedBy);
+
 		TextView03CreatedAT = (TextView) dialog
 				.findViewById(R.id.TextView03CreatedAT);
 
@@ -169,7 +203,8 @@ public class AnyUserProfileDialog {
 
 		textViewFavs = (TextView) dialog.findViewById(R.id.textViewFavs);
 
-		imageView1Banner = (ImageView) dialog.findViewById(R.id.imageView1Banner);
+		imageView1Banner = (ImageView) dialog
+				.findViewById(R.id.imageView1Banner);
 
 		TwitterUserShowRequest userShowRequest = new TwitterUserShowRequest(
 				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
@@ -184,7 +219,7 @@ public class AnyUserProfileDialog {
 					@Override
 					public void onSuccess(String jsonResult) {
 						cancelProgres();
-						
+
 						myToastS("Failed ti load");
 					}
 
@@ -202,58 +237,69 @@ public class AnyUserProfileDialog {
 			@Override
 			public void onClick(View v) {
 
-				progressDialog.setMessage(AnyUserProfileDialog.this.userName
-						+ " Following...");
-				progressDialog.show();
+				if (MainSingleTon.isNeedTOstopFollowing) {
 
-				TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
-						MainSingleTon.currentUserModel,
-						new TwitterRequestCallBack() {
+					myToastS("You have Exceeded Follow Limit Today");
 
-							@Override
-							public void onSuccess(JSONObject jsonObject) {
+				} else {
 
-							}
+					progressDialog
+							.setMessage(AnyUserProfileDialog.this.userName
+									+ " Following...");
 
-							@Override
-							public void onSuccess(String jsonResult) {
+					progressDialog.show();
 
-								progressDialoghideProgress();
+					TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
+							MainSingleTon.currentUserModel,
+							new TwitterRequestCallBack() {
 
-								myprint("buttonFollow onSuccess");
+								@Override
+								public void onSuccess(JSONObject jsonObject) {
 
-								TweetsAdapter.handler.post(new Runnable() {
+								}
 
-									@Override
-									public void run() {
+								@Override
+								public void onSuccess(String jsonResult) {
 
-										buttonFollow
-												.setVisibility(View.INVISIBLE);
+									progressDialoghideProgress();
 
-										buttonUnfollow
-												.setVisibility(View.VISIBLE);
+									addDMStatus(AnyUserProfileDialog.this.userId);
 
-										fullUserDetailModel
-												.setFollowingStatus(true);
+									myprint("buttonFollow onSuccess");
 
-									}
-								});
+									TweetsAdapter.handler.post(new Runnable() {
 
-							}
+										@Override
+										public void run() {
 
-							@Override
-							public void onFailure(Exception e) {
+											buttonFollow
+													.setVisibility(View.INVISIBLE);
 
-								myprint("buttonFollow onFailure" + e);
+											buttonUnfollow
+													.setVisibility(View.VISIBLE);
 
-								progressDialoghideProgress();
+											fullUserDetailModel
+													.setFollowingStatus(true);
 
-							}
+										}
+									});
 
-						});
+								}
 
-				twitterPostRequestFollow.executeThisRequest(AnyUserProfileDialog.this.userId);
+								@Override
+								public void onFailure(Exception e) {
 
+									myprint("buttonFollow onFailure" + e);
+
+									progressDialoghideProgress();
+
+								}
+
+							});
+
+					twitterPostRequestFollow
+							.executeThisRequest(AnyUserProfileDialog.this.userId);
+				}
 			}
 		});
 
@@ -264,7 +310,7 @@ public class AnyUserProfileDialog {
 
 				progressDialog.setMessage(AnyUserProfileDialog.this.userName
 						+ " UnFollowing...");
-				
+
 				progressDialog.show();
 
 				TwitterPostRequestUnFollow twitterPostRequestUnFollow = new TwitterPostRequestUnFollow(
@@ -313,8 +359,8 @@ public class AnyUserProfileDialog {
 
 				twitterPostRequestUnFollow
 						.executeThisRequest(AnyUserProfileDialog.this.userId);
-
 			}
+
 		});
 
 		button1FollowByAll.setOnClickListener(new OnClickListener() {
@@ -322,68 +368,80 @@ public class AnyUserProfileDialog {
 			@Override
 			public void onClick(View v) {
 
-				TboardproLocalData localData = new TboardproLocalData(
-						AnyUserProfileDialog.this.activity);
+				if (MainSingleTon.isNeedTOstopFollowing) {
 
-				List<ModelUserDatas> listDatas = localData.getAllUsersDataArlist();
+					myToastS("You have Exceeded Follow Limit Today");
 
-				allSize = listDatas.size();
+				} else {
 
-				progressDialog.setMessage(AnyUserProfileDialog.this.userName
-						+ " Following by..." + allSize);
+					TboardproLocalData localData = new TboardproLocalData(
+							AnyUserProfileDialog.this.activity);
 
-				progressDialog.show();
+					List<ModelUserDatas> listDatas = localData
+							.getAllUsersDataArlist();
 
-				for (int i = 0; i < listDatas.size(); i++) {
+					allSize = listDatas.size();
 
-					TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
-							listDatas.get(i), new TwitterRequestCallBack() {
+					progressDialog
+							.setMessage(AnyUserProfileDialog.this.userName
+									+ " Following by..." + allSize);
 
-								@Override
-								public void onSuccess(JSONObject jsonObject) {
+					progressDialog.show();
 
-								}
+					for (int i = 0; i < listDatas.size(); i++) {
 
-								@Override
-								public void onSuccess(String jsonResult) {
+						TwitterPostRequestFollow twitterPostRequestFollow = new TwitterPostRequestFollow(
+								listDatas.get(i), new TwitterRequestCallBack() {
 
-									myprint("buttonFollow onSuccess");
+									@Override
+									public void onSuccess(JSONObject jsonObject) {
 
-									TweetsAdapter.handler.post(new Runnable() {
+									}
 
-										@Override
-										public void run() {
+									@Override
+									public void onSuccess(String jsonResult) {
 
-											fullUserDetailModel
-													.setFollowingStatus(true);
+										myprint("buttonFollow onSuccess");
 
-											buttonFollow
-													.setVisibility(View.INVISIBLE);
+										TweetsAdapter.handler
+												.post(new Runnable() {
 
-											buttonUnfollow
-													.setVisibility(View.VISIBLE);
+													@Override
+													public void run() {
 
-											button1FollowByAll
-													.setText("Followed By All");
+														fullUserDetailModel
+																.setFollowingStatus(true);
 
-										}
-									});
-									
-									progressDialog.cancel();
-									
-								}
+														buttonFollow
+																.setVisibility(View.INVISIBLE);
 
-								@Override
-								public void onFailure(Exception e) {
+														buttonUnfollow
+																.setVisibility(View.VISIBLE);
 
-									myprint("buttonFollow onFailure" + e);
-									progressDialog.cancel();
+														button1FollowByAll
+																.setText("Followed By All");
 
-								}
-							});
+													}
+												});
 
-					twitterPostRequestFollow
-							.executeThisRequest(AnyUserProfileDialog.this.userId);
+										progressDialog.cancel();
+
+									}
+
+									@Override
+									public void onFailure(Exception e) {
+
+										myprint("buttonFollow onFailure" + e);
+
+										progressDialog.cancel();
+									}
+								});
+
+						twitterPostRequestFollow
+								.executeThisRequest(AnyUserProfileDialog.this.userId);
+
+					}
+
 				}
 			}
 		});
@@ -391,8 +449,6 @@ public class AnyUserProfileDialog {
 		buttonFollow.setVisibility(View.INVISIBLE);
 
 		buttonUnfollow.setVisibility(View.INVISIBLE);
-
-		button1FollowByAll.setVisibility(View.INVISIBLE);
 
 	}
 
@@ -441,21 +497,27 @@ public class AnyUserProfileDialog {
 			fullUserDetailModel.setFollowingStatus(jsonResult.getString(
 					Const.following).contains("true"));
 
-			fullUserDetailModel.setFollowingStatus(jsonResult.getString(Const.following).contains("true"));
+			fullUserDetailModel.setFollowingStatus(jsonResult.getString(
+					Const.following).contains("true"));
 
 			fullUserDetailModel.setId(jsonResult.getString(Const.id_str));
 
 			fullUserDetailModel.setFullName(jsonResult.getString(Const.name));
 
-			fullUserDetailModel.setUserName(jsonResult.getString(Const.screen_name));
+			fullUserDetailModel.setUserName(jsonResult
+					.getString(Const.screen_name));
 
-			fullUserDetailModel.setNoFollowers(jsonResult.getString(Const.followers_count));
+			fullUserDetailModel.setNoFollowers(jsonResult
+					.getString(Const.followers_count));
 
-			fullUserDetailModel.setNoToFollowing(jsonResult.getString(Const.friends_count));
+			fullUserDetailModel.setNoToFollowing(jsonResult
+					.getString(Const.friends_count));
 
-			fullUserDetailModel.setNoTweets(jsonResult.getString(Const.statuses_count));
+			fullUserDetailModel.setNoTweets(jsonResult
+					.getString(Const.statuses_count));
 
-			fullUserDetailModel.setUserImagerUrl(jsonResult.getString(Const.profile_image_url));
+			fullUserDetailModel.setUserImagerUrl(jsonResult
+					.getString(Const.profile_image_url));
 
 			if (jsonResult.has(Const.profile_banner_url)) {
 
@@ -505,7 +567,7 @@ public class AnyUserProfileDialog {
 
 					}
 
-					button1FollowByAll.setVisibility(View.VISIBLE);
+					// button1FollowByAll.setVisibility(View.VISIBLE);
 
 				}
 			});
@@ -590,6 +652,96 @@ public class AnyUserProfileDialog {
 	}
 
 	// + + + + + + + + + + +
+	private void addDMStatus(final String id) {
+
+		if (MainSingleTon.autoDmfirstime.contains("yes")) {
+
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+
+					new AlertDialog.Builder(activity)
+							.setTitle("Direct Message")
+							.setMessage(
+									"A thanks message will be sent to those users. who are following you back!")
+							.setPositiveButton(android.R.string.yes,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+
+											Editor editor = activity
+													.getSharedPreferences(
+															"twtboardpro",
+															Context.MODE_PRIVATE)
+													.edit();
+											editor.putString("autoDmfirstime",
+													"no");
+
+											editor.putBoolean("autodm", true);
+
+											MainSingleTon.autodm = true;
+
+											MainSingleTon.autoDmfirstime = "no";
+
+											editor.commit();
+											
+											addDMStatus(id);
+
+										}
+									})
+							.setNegativeButton(android.R.string.no,
+									new DialogInterface.OnClickListener() {
+
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+
+											Editor editor = activity
+													.getSharedPreferences(
+															"twtboardpro",
+															Context.MODE_PRIVATE)
+													.edit();
+
+											editor.putString("autoDmfirstime",
+													"no");
+
+											editor.putBoolean("autodm", false);
+
+											editor.commit();
+
+											MainSingleTon.autoDmfirstime = "no";
+
+											MainSingleTon.autodm = false;
+
+										}
+
+									}).setIcon(R.drawable.ic_launcher).show();
+				}
+			});
+
+		} else {
+
+			myprint("Not to diss[ay fvnefisdfnvko nvkjn");
+
+			if (MainSingleTon.autodm) {
+
+				if (sendingids.contains(id) || sentIds.contains(id)) {
+
+				} else {
+
+					tboardproLocalData.addNewDMsendingId(id,
+							MainSingleTon.currentUserModel.getUserid());
+
+					sendingids.add(id);
+				}
+
+			} else {
+
+			}
+		}
+	}
 
 	private void progressDialogShowProgress() {
 
@@ -597,7 +749,9 @@ public class AnyUserProfileDialog {
 
 			@Override
 			public void run() {
+
 				progressDialog.cancel();
+
 			}
 		});
 	}
@@ -608,8 +762,13 @@ public class AnyUserProfileDialog {
 
 			@Override
 			public void run() {
+
 				progressDialog.cancel();
+
 			}
+
 		});
+
 	}
+
 }

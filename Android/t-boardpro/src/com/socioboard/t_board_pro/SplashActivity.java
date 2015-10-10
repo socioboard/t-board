@@ -1,36 +1,44 @@
 package com.socioboard.t_board_pro;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Base64;
 
+import com.appnext.appnextsdk.AppnextTrack;
+import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
+import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
 import com.socioboard.t_board_pro.util.Encrypt;
+import com.socioboard.t_board_pro.util.FollowersNotificationReceiver;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ModelUserDatas;
+import com.socioboard.t_board_pro.util.MyBadPaddingException;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.tboardpro.R;
 
 public class SplashActivity extends Activity {
 
 	// Local DataBase
+
 	TboardproLocalData twiterManyLocalData;
 
 	SharedPreferences preferences;
+
+	MyBadPaddingException e = new MyBadPaddingException();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +47,13 @@ public class SplashActivity extends Activity {
 
 		setContentView(R.layout.activity_splash);
 
+		AppnextTrack.track(this);
+
 		twiterManyLocalData = new TboardproLocalData(getApplicationContext());
 
 		twiterManyLocalData.CreateTable();
+
+		MainSingleTon.resetSigleTon();
 
 		MainSingleTon.allUserdetails = twiterManyLocalData.getAllUsersData();
 
@@ -68,6 +80,19 @@ public class SplashActivity extends Activity {
 			preferences = getSharedPreferences("twtboardpro",
 					Context.MODE_PRIVATE);
 
+			Editor editor = getSharedPreferences("twtboardpro",
+					Context.MODE_PRIVATE).edit();
+
+			MainSingleTon.autodm = preferences.getBoolean("autodm", false);
+
+			MainSingleTon.autoDmfirstime = preferences.getString(
+					"autoDmfirstime", "yes");
+
+			System.out.println("autodm  = " + MainSingleTon.autodm);
+
+			System.out.println("autoDmfirstime  = "
+					+ MainSingleTon.autoDmfirstime);
+
 			String userId = preferences.getString("userid", null);
 
 			if (userId != null) {
@@ -75,16 +100,14 @@ public class SplashActivity extends Activity {
 				MainSingleTon.currentUserModel = MainSingleTon.allUserdetails
 						.get(userId);
 
-				System.out.println(MainSingleTon.currentUserModel + " currentUserModel");
+				System.out.println(MainSingleTon.currentUserModel
+						+ " currentUserModel");
 
- 				Intent in = new Intent(SplashActivity.this, MainActivity.class);
+				Intent in = new Intent(SplashActivity.this, MainActivity.class);
 				startActivity(in);
 				SplashActivity.this.finish();
 
 			} else {
-
-				Editor editor = getSharedPreferences("twtboardpro",
-						Context.MODE_PRIVATE).edit();
 
 				editor.putString("userid",
 						MainSingleTon.currentUserModel.getUserid());
@@ -102,18 +125,76 @@ public class SplashActivity extends Activity {
 				Intent in = new Intent(SplashActivity.this, MainActivity.class);
 				startActivity(in);
 				SplashActivity.this.finish();
-				
- 			}
+
+			}
+
+			String dateStr = preferences.getString("date", "***");
+
+			System.out.println("dateStr " + dateStr); // 2014/08/06 15:59:48
+
+			if (dateStr.contains("***")) {
+
+				//
+				System.out
+						.println("*************** Schedulle it FirstTime ********* "
+								+ dateStr);
+
+				// 2014/08/06
+
+				// 15:59:48
+
+				// **************************************
+
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+				Date date = new Date();
+
+				System.out.println(dateFormat.format(date)); // 2014/08/06
+																// 15:59:48
+				editor.putString("date", dateFormat.format(date));
+
+				editor.commit();
+
+				AlarmManager alarmManagers;
+
+				alarmManagers = (AlarmManager) getApplicationContext()
+						.getSystemService(getApplicationContext().ALARM_SERVICE);
+
+				Intent myIntent = new Intent(SplashActivity.this,
+						FollowersNotificationReceiver.class);
+
+				PendingIntent pendingIntent = PendingIntent.getBroadcast(
+						SplashActivity.this, 465, myIntent,
+						PendingIntent.FLAG_UPDATE_CURRENT);
+
+				Calendar calendar = Calendar.getInstance();
+
+				calendar.add(Calendar.DATE, 1);
+
+				calendar.set(Calendar.HOUR_OF_DAY, 9);
+
+				calendar.set(Calendar.MINUTE, 0);
+
+				calendar.set(Calendar.SECOND, 0);
+
+				alarmManagers.setRepeating(AlarmManager.RTC_WAKEUP,
+						calendar.getTimeInMillis(), 43200000, pendingIntent);
+
+				System.out.println("Notification Schedulle Calender is "
+						+ calendar);
+
+				// **************************************
+
+			} else {
+
+				System.out.println(" Not dont set It second  time ");
+
+			}
 
 		}
-		
-		MainSingleTon.schedulecount = twiterManyLocalData.getAllSchedulledTweet().size();
-		
-		System.out.println("MainSingleTon.schedulecount "+MainSingleTon.schedulecount);
 
 	}
 
-	
 	void initUserProfile() {
 
 		String myName = "BFEE7CD983AE97DCFEB9D3842184C9FB11F467FCAF7D8970D7AE56AF174221EB51278F50EABEAB4F348E29EB81884B9C";
@@ -130,9 +211,9 @@ public class SplashActivity extends Activity {
 
 			myEncodedName = Encrypt.decrypt(text1, myName);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			MainSingleTon.TWITTER_KEY = "XXXXXXXXXXXXXXXXXXXX";
+		} catch (Exception ex) {
+
+			e.printStackTraces();
 
 		} finally {
 
@@ -142,16 +223,14 @@ public class SplashActivity extends Activity {
 
 			myEncodedLastName = Encrypt.decrypt(text1, myLastname);
 
-		} catch (Exception e) {
+		} catch (Exception ex) {
 
-			e.printStackTrace();
-			MainSingleTon.TWITTER_SECRET = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+			e.printStackraces();
 
 		} finally {
 
 		}
 
 	}
-
 
 }

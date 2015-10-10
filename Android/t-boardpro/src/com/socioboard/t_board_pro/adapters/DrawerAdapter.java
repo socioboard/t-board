@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.socioboard.t_board_pro.ui.Items;
 import com.socioboard.t_board_pro.util.MainSingleTon;
+import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.Utils;
 import com.socioboard.tboardpro.R;
 
@@ -24,10 +25,12 @@ public class DrawerAdapter extends BaseAdapter {
 
 	private Context context;
 	private ArrayList<Items> navDrawerItems;
+	TboardproLocalData tboardproLocalData;
 
 	public DrawerAdapter(Context context, ArrayList<Items> navDrawerItems) {
 		this.context = context;
 		this.navDrawerItems = navDrawerItems;
+		tboardproLocalData = new TboardproLocalData(context);
 	}
 
 	@Override
@@ -49,11 +52,24 @@ public class DrawerAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		if (convertView == null) {
+		TextView text;
+
+		TextView item_count;
+
+		if (position == 0) {
+
+			LayoutInflater mInflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = mInflater.inflate(R.layout.drawer_list_item_profile,
+					parent, false);
+
+		} else {
+
 			LayoutInflater mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = mInflater.inflate(R.layout.drawer_list_item, parent,
 					false);
+
 		}
 
 		ProgressBar progressBar = (ProgressBar) convertView
@@ -61,10 +77,11 @@ public class DrawerAdapter extends BaseAdapter {
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.item_icon);
 
-		TextView text = (TextView) convertView.findViewById(R.id.item_text);
+		text = (TextView) convertView.findViewById(R.id.item_text);
 
-		TextView item_count = (TextView) convertView
-				.findViewById(R.id.item_count);
+		text.setText(navDrawerItems.get(position).getTitle());
+
+		item_count = (TextView) convertView.findViewById(R.id.item_count);
 
 		if (position == 0) {
 
@@ -80,6 +97,14 @@ public class DrawerAdapter extends BaseAdapter {
 
 			}
 
+			text.setText("@"+MainSingleTon.currentUserModel.getUsername());
+
+			TextView textFullName = (TextView) convertView
+					.findViewById(R.id.textView1);
+
+			textFullName.setText(MainSingleTon.fullUserDetailModel
+					.getFullName());
+
 		} else {
 
 			image.setImageResource(navDrawerItems.get(position).getIcon());
@@ -89,9 +114,6 @@ public class DrawerAdapter extends BaseAdapter {
 		switch (position) {
 
 		case 0:
-			progressBar.setVisibility(View.INVISIBLE);
-			item_count.setVisibility(View.INVISIBLE);
-			item_count.setText("");
 			break;
 
 		case 1:
@@ -100,13 +122,12 @@ public class DrawerAdapter extends BaseAdapter {
 
 				progressBar.setVisibility(View.VISIBLE);
 				item_count.setVisibility(View.INVISIBLE);
-
+				
 			} else {
 
 				progressBar.setVisibility(View.INVISIBLE);
 				item_count.setVisibility(View.VISIBLE);
 				item_count.setText("" + MainSingleTon.tweetsCount);
-
 			}
 
 			break;
@@ -128,6 +149,7 @@ public class DrawerAdapter extends BaseAdapter {
 			break;
 
 		case 4:
+
 			if (MainSingleTon.myfollowersCount == -1) {
 				progressBar.setVisibility(View.VISIBLE);
 				item_count.setVisibility(View.INVISIBLE);
@@ -139,12 +161,32 @@ public class DrawerAdapter extends BaseAdapter {
 			break;
 
 		case 5:
+
+			if (MainSingleTon.recentsFollowersCount == -1) {
+				progressBar.setVisibility(View.VISIBLE);
+				item_count.setVisibility(View.INVISIBLE);
+			} else {
+				progressBar.setVisibility(View.INVISIBLE);
+				item_count.setVisibility(View.VISIBLE);
+				item_count.setText("" + MainSingleTon.recentsFollowersCount);
+			}
+			break;
+
+		case 6:
+
+			progressBar.setVisibility(View.INVISIBLE);
+			item_count.setVisibility(View.INVISIBLE);
+			item_count.setText("");
+			break;
+		case 7:
+
 			progressBar.setVisibility(View.INVISIBLE);
 			item_count.setVisibility(View.INVISIBLE);
 			item_count.setText("");
 			break;
 
-		case 6:
+		case 8:
+
 			if (MainSingleTon.favoritesCount == -1) {
 				progressBar.setVisibility(View.VISIBLE);
 				item_count.setVisibility(View.INVISIBLE);
@@ -155,55 +197,46 @@ public class DrawerAdapter extends BaseAdapter {
 			}
 			break;
 
-		case 7:
-			progressBar.setVisibility(View.INVISIBLE);
-			item_count.setVisibility(View.INVISIBLE);
-			item_count.setText("");
-			break;
-
-		case 8:
-			progressBar.setVisibility(View.INVISIBLE);
-			item_count.setVisibility(View.INVISIBLE);
-			item_count.setText("");
-			break;
-
 		case 9:
-			if (MainSingleTon.fansCount == -1) {
-				progressBar.setVisibility(View.VISIBLE);
-				item_count.setVisibility(View.INVISIBLE);
-			} else {
-				progressBar.setVisibility(View.INVISIBLE);
-				item_count.setVisibility(View.VISIBLE);
-				item_count.setText("" + MainSingleTon.fansCount);
-			}
+
+			progressBar.setVisibility(View.INVISIBLE);
+			item_count.setVisibility(View.INVISIBLE);
+			item_count.setText("");
 			break;
 
 		case 10:
-			if (MainSingleTon.mutualfansCount == -1) {
+
+			if (!MainSingleTon.secondaryCountLoaded) {
 				progressBar.setVisibility(View.VISIBLE);
 				item_count.setVisibility(View.INVISIBLE);
 			} else {
 				progressBar.setVisibility(View.INVISIBLE);
 				item_count.setVisibility(View.VISIBLE);
-				item_count.setText("" + MainSingleTon.mutualfansCount);
+				item_count.setText("" + MainSingleTon.fansIds.size());
 			}
+
 			break;
 
 		case 11:
-			if (MainSingleTon.NOnfollowersCount == -1) {
+			if (!MainSingleTon.secondaryCountLoaded) {
 				progressBar.setVisibility(View.VISIBLE);
 				item_count.setVisibility(View.INVISIBLE);
 			} else {
 				progressBar.setVisibility(View.INVISIBLE);
 				item_count.setVisibility(View.VISIBLE);
-				item_count.setText("" + MainSingleTon.NOnfollowersCount);
+				item_count.setText("" + MainSingleTon.mutualsIds.size());
 			}
 			break;
 
 		case 12:
-			progressBar.setVisibility(View.INVISIBLE);
-			item_count.setVisibility(View.INVISIBLE);
-			item_count.setText("");
+			if (!MainSingleTon.secondaryCountLoaded) {
+				progressBar.setVisibility(View.VISIBLE);
+				item_count.setVisibility(View.INVISIBLE);
+			} else {
+				progressBar.setVisibility(View.INVISIBLE);
+				item_count.setVisibility(View.VISIBLE);
+				item_count.setText("" + MainSingleTon.nonFollowersIds.size());
+			}
 			break;
 
 		case 13:
@@ -213,22 +246,23 @@ public class DrawerAdapter extends BaseAdapter {
 			break;
 
 		case 14:
+			progressBar.setVisibility(View.INVISIBLE);
+			item_count.setVisibility(View.VISIBLE);
+			item_count.setText(""
+					+ tboardproLocalData.getAllSchedulledTweet().size());
 
-			if (MainSingleTon.schedulecount == -1) {
-				progressBar.setVisibility(View.VISIBLE);
-				item_count.setVisibility(View.INVISIBLE);
-			} else {
-				progressBar.setVisibility(View.INVISIBLE);
-				item_count.setVisibility(View.VISIBLE);
-				item_count.setText("" + MainSingleTon.schedulecount);
-			}
+			break;
+			
+		case 15:
+			progressBar.setVisibility(View.INVISIBLE);
+			item_count.setVisibility(View.INVISIBLE);
+			item_count.setText("");
 
 			break;
 
 		default:
-		}
 
-		text.setText(navDrawerItems.get(position).getTitle());
+		}
 
 		return convertView;
 	}

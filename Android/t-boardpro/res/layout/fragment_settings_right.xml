@@ -13,18 +13,6 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/card" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="15dp"
-            android:text="Direct message for FollowBack Users."
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
         <View
             android:id="@+id/view1"
             android:layout_width="match_parent"
@@ -51,9 +39,10 @@
             android:id="@+id/editText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_alignRight="@+id/view1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/textView2"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/editbox_dropdown_background"
@@ -61,7 +50,8 @@
             android:hint="Internal text"
             android:lines="4"
             android:maxLength="95"
-            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="10dp"
             android:textColor="@color/black"
             android:textSize="11sp" >
 
@@ -83,6 +73,27 @@
             android:layout_height="1dp"
             android:layout_below="@+id/textView3"
             android:layout_marginTop="10dp" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/switch1"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@+id/switch1"
+            android:text="Direct message for FollowBack Users."
+            android:textSize="12sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <Button

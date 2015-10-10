@@ -61,7 +61,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@+id/username"
                 android:background="@color/semiWhite"
-                android:src="@drawable/ic_settings"
+                android:src="@drawable/delete_account_icon"
                 android:visibility="invisible" />
         </RelativeLayout>
     </RelativeLayout>

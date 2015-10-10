@@ -18,37 +18,37 @@ public class TwitterSignIn {
 
 	}
 
-	public String postForRequestToken() { 
+	public String postForRequestToken() {
 
- 		String response = null;
- 		
+		String response = null;
+
 		try {
 
-			//perams
-			String urlTimeline = MainSingleTon.reqTokenResourceURL ;
-			
+			// perams
+			String urlTimeline = MainSingleTon.reqTokenResourceURL;
+
 			String authData = getAuthDAta(urlTimeline);
 
 			myprint("url : " + urlTimeline);
 
-			myprint("authData : " + authData);
+			// myprint("authData : " + authData);
 
 			URL obj = new URL(urlTimeline);
 
 			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
- 			con.setRequestMethod("POST");
-			
- 			con.addRequestProperty("Authorization", authData);
+			con.setRequestMethod("POST");
+
+			con.addRequestProperty("Authorization", authData);
 
 			con.addRequestProperty("Host", "api.twitter.com");
 
 			con.addRequestProperty("User-Agent", "twtboardpro");
 
 			con.addRequestProperty("Accept", "*/*");
-  
-			response =  readResponse(con);
-			
+
+			response = readResponse(con);
+
 			myprint("jsonString response = " + response);
 
 		} catch (Exception e) {
@@ -60,82 +60,114 @@ public class TwitterSignIn {
 		}
 
 		return response;
-	
- 	}
+
+	}
+
 	// Reads a response for a given connection and returns it as a string.
-		public String readResponse(HttpsURLConnection connection) {
+	public String readResponse(HttpsURLConnection connection) {
 
-			try {
+		try {
 
-				int responseCode = connection.getResponseCode();
+			myprint("readResponse getting   ");
 
-				myprint("readResponse connection.getResponseCode()   "
-						+ responseCode);
+			int responseCode = connection.getResponseCode();
 
-				String jsonString = null;
+			myprint("readResponse connection.getResponseCode()   "
+					+ responseCode);
 
-				if (responseCode == HttpURLConnection.HTTP_OK) {
+			String jsonString = null;
 
-					InputStream linkinStream = connection.getInputStream();
+			if (responseCode == HttpURLConnection.HTTP_OK) {
 
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				InputStream linkinStream = connection.getInputStream();
 
-					int j = 0;
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-					while ((j = linkinStream.read()) != -1) {
+				int j = 0;
 
-						baos.write(j);
+				while ((j = linkinStream.read()) != -1) {
 
-					}
-
-					byte[] data = baos.toByteArray();
-
-					jsonString = new String(data);
+					baos.write(j);
 
 				}
 
-				// myprint("readResponse jsonString   " + jsonString);
-				
-				return jsonString;
+				byte[] data = baos.toByteArray();
 
-			} catch (IOException e) {
+				jsonString = new String(data);
 
-				//twitterRequestCallBack.onFailure(e);
-
-				e.printStackTrace();
-
-				myprint("readResponse IOExceptionException   " + e);
-
-				return null;
 			}
 
+			// myprint("readResponse jsonString   " + jsonString);
+
+			return jsonString;
+
+		} catch (IOException e) {
+
+			// twitterRequestCallBack.onFailure(e);
+
+			e.printStackTrace();
+
+			myprint("readResponse IOExceptionException   " + e);
+
+			return null;
 		}
+
+	}
+
 	private String getAuthDAta(String urlTimeline) {
 
-		AuthSignaturesGeneratorRequestToken oAuthSignaturesGenerator = new AuthSignaturesGeneratorRequestToken
-				(MainSingleTon.TWITTER_KEY, MainSingleTon.TWITTER_SECRET, "POST" );
-		
+		AuthSignaturesGeneratorRequestToken oAuthSignaturesGenerator = new AuthSignaturesGeneratorRequestToken(
+				MainSingleTon.TWITTER_KEY, MainSingleTon.TWITTER_SECRET, "POST");
+
 		oAuthSignaturesGenerator.setUrl(MainSingleTon.reqTokenResourceURL);
-		
-		String GeneratedPerams =  null;
-		
+
+		String GeneratedPerams = null;
+
 		try {
-			
-			GeneratedPerams =  				       
-					"OAuth " + oAuthSignaturesGenerator.OAUTH_CALLBACK 	                +"=\""	  + URLEncoder.encode(MainSingleTon.oauth_callbackURL,"ISO-8859-1")
- 					+"\", "  + oAuthSignaturesGenerator.OAUTH_CONSUMER_KEY  	        +"=\""	  + URLEncoder.encode(oAuthSignaturesGenerator.getcKey(),"ISO-8859-1")
-					+"\", "  + oAuthSignaturesGenerator.OAUTH_NONCE     			    +"=\""	  + URLEncoder.encode(oAuthSignaturesGenerator.currentOnonce,"ISO-8859-1")
-					+"\", "  + oAuthSignaturesGenerator.OAUTH_SIGNATURE                 +"=\""    + URLEncoder.encode(oAuthSignaturesGenerator.getOauthSignature(),"ISO-8859-1")
-					+"\", "  + oAuthSignaturesGenerator.OAUTH_SIGNATURE_METHOD	  		+"=\""	  + URLEncoder.encode(oAuthSignaturesGenerator.HMAC_SHA1,"ISO-8859-1")
-					+"\", "  + oAuthSignaturesGenerator.OAUTH_TIMESTAMP           	    +"=\""    + URLEncoder.encode(oAuthSignaturesGenerator.currentTimeStamp,"ISO-8859-1") 
- 					+"\", "  + oAuthSignaturesGenerator.OAUTH_VERSION             		+"=\""    + URLEncoder.encode(oAuthSignaturesGenerator.VERSION_1_0,"ISO-8859-1")
-					+"\"" ;
+
+			GeneratedPerams = "OAuth "
+					+ oAuthSignaturesGenerator.OAUTH_CALLBACK
+					+ "=\""
+					+ URLEncoder.encode(MainSingleTon.oauth_callbackURL,
+							"ISO-8859-1")
+					+ "\", "
+					+ oAuthSignaturesGenerator.OAUTH_CONSUMER_KEY
+					+ "=\""
+					+ URLEncoder.encode(oAuthSignaturesGenerator.getcKey(),
+							"ISO-8859-1")
+					+ "\", "
+					+ oAuthSignaturesGenerator.OAUTH_NONCE
+					+ "=\""
+					+ URLEncoder.encode(oAuthSignaturesGenerator.currentOnonce,
+							"ISO-8859-1")
+					+ "\", "
+					+ oAuthSignaturesGenerator.OAUTH_SIGNATURE
+					+ "=\""
+					+ URLEncoder.encode(
+							oAuthSignaturesGenerator.getOauthSignature(),
+							"ISO-8859-1")
+					+ "\", "
+					+ oAuthSignaturesGenerator.OAUTH_SIGNATURE_METHOD
+					+ "=\""
+					+ URLEncoder.encode(oAuthSignaturesGenerator.HMAC_SHA1,
+							"ISO-8859-1")
+					+ "\", "
+					+ oAuthSignaturesGenerator.OAUTH_TIMESTAMP
+					+ "=\""
+					+ URLEncoder.encode(
+							oAuthSignaturesGenerator.currentTimeStamp,
+							"ISO-8859-1")
+					+ "\", "
+					+ oAuthSignaturesGenerator.OAUTH_VERSION
+					+ "=\""
+					+ URLEncoder.encode(oAuthSignaturesGenerator.VERSION_1_0,
+							"ISO-8859-1") + "\"";
 
 		} catch (UnsupportedEncodingException e) {
 
 			e.printStackTrace();
 
-			myprint("GeneratedPerams UnsupportedEncodingException "+ e);
+			myprint("GeneratedPerams UnsupportedEncodingException " + e);
 
 		}
 
@@ -146,9 +178,10 @@ public class TwitterSignIn {
 		return authData;
 
 	}
+
 	public void myprint(Object msg) {
 
- 	System.out.println(msg.toString());
+		System.out.println(msg.toString());
 
 	}
 

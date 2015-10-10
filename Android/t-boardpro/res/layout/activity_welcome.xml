@@ -3,9 +3,20 @@
     xmlns:indicator="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:app1="http://schemas.android.com/apk/res/com.socioboard.t_board_pro"
+    xmlns:app2="http://schemas.android.com/apk/res/com.socioboard.tboardpro"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white" >
+    android:background="@drawable/pager_bg" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/indicator"
+        android:background="@color/semiBlack" >
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -36,32 +47,18 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         app:radius="6dp"
-        />
+        app2:fillColor="#003366" />
 
     <ImageView
         android:id="@+id/loginbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView_privacy_prompt"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/twitter_sign_in"
         android:contentDescription="Facebook Sign In."
         android:gravity="center" />
-
-    <TextView
-        android:id="@+id/textView_privacy_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:clickable="true"
-        android:drawablePadding="10dp"
-        android:gravity="center"
-        android:onClick="showPrivacy"
-        android:padding="20dp"
-        android:text="@string/twitter_text"
-        android:textSize="12dp" >
-    </TextView>
 
 </RelativeLayout>

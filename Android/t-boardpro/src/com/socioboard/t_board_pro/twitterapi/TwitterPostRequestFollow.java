@@ -33,6 +33,7 @@ public class TwitterPostRequestFollow {
 		this.twitterRequestCallBack = twitterRequestCallBack;
 
 		this.userDatas = userDatas;
+
 	}
 
 	public void executeThisRequest(String id) {
@@ -69,7 +70,7 @@ public class TwitterPostRequestFollow {
 
 		String jsonString = null;
 
-		String url = MainSingleTon.followUrl ;
+		String url = MainSingleTon.followUrl;
 
 		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
@@ -85,7 +86,7 @@ public class TwitterPostRequestFollow {
 
 			System.out.println("authData : " + authData);
 
- 			URL obj = new URL(url);
+			URL obj = new URL(url);
 
 			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
@@ -103,7 +104,7 @@ public class TwitterPostRequestFollow {
 
 			boolean tmp;
 
-			tmp = writeRequest(con, "user_id="+id);
+			tmp = writeRequest(con, "user_id=" + id);
 
 			if (tmp) {
 
@@ -116,12 +117,12 @@ public class TwitterPostRequestFollow {
 					twitterRequestCallBack.onSuccess(jsonString);
 
 				}
-			}else{
-				
+			} else {
+
 				twitterRequestCallBack.onFailure(new Exception());
 
 			}
-			
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -134,21 +135,21 @@ public class TwitterPostRequestFollow {
 
 	}
 
-	boolean writeRequest(HttpsURLConnection con , String textBody) {
+	boolean writeRequest(HttpsURLConnection con, String textBody) {
 
 		try {
-			 
+
 			System.out.println("writeRequest     " + textBody);
-			
+
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 			wr.writeBytes(textBody);
 			wr.flush();
 			wr.close();
-			
- 			return true;
-			
+
+			return true;
+
 		} catch (IOException e) {
-			
+
 			System.out.println("writeRequest IOException   " + e);
 
 			return false;
@@ -162,13 +163,11 @@ public class TwitterPostRequestFollow {
 
 			int responseCode = connection.getResponseCode();
 
-			myprint("readResponse connection.getResponseCode()   "
-					+ responseCode);
+			myprint("readResponse connection.getResponseCode()   "+ responseCode);
 
 			String jsonString = null;
 
-			if (responseCode == HttpURLConnection.HTTP_OK
-					|| responseCode == 403) {
+			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == 403) {
 
 				InputStream linkinStream = connection.getInputStream();
 
@@ -186,7 +185,13 @@ public class TwitterPostRequestFollow {
 
 				jsonString = new String(data);
 
-			}
+			}else if (responseCode == 429) {
+
+				System.out.println("--*------** Need to stop isNeedTOstopFollowing Due to invalid responses  *--*-*-*-*-*-*-*-*-*-*- ");
+
+				MainSingleTon.isNeedTOstopFollowing = true;
+
+			}  
 
 			// myprint("readResponse jsonString   " + jsonString);
 
@@ -202,7 +207,7 @@ public class TwitterPostRequestFollow {
 
 			return null;
 		}
-		
+
 	}
 
 	private String getAuthDAta(String url, List<BasicNameValuePair> peramPairs) {
@@ -211,13 +216,35 @@ public class TwitterPostRequestFollow {
 
 		String GeneratedPerams = null;
 
-		GeneratedPerams = "OAuth " + authSignaturesGenerator3.OAUTH_CONSUMER_KEY 	+ "=\"" + URLEncoder.encode(authSignaturesGenerator3.getcKey())
-				+ "\", " + authSignaturesGenerator3.OAUTH_NONCE 					+ "=\"" + URLEncoder.encode(authSignaturesGenerator3.currentOnonce)
-				+ "\", " + authSignaturesGenerator3.OAUTH_SIGNATURE_METHOD			+ "=\"" + URLEncoder.encode(authSignaturesGenerator3.HMAC_SHA1)
-				+ "\", " + authSignaturesGenerator3.OAUTH_TIMESTAMP 			 	+ "=\"" + URLEncoder.encode(authSignaturesGenerator3.currentTimeStamp)
-				+ "\", " + authSignaturesGenerator3.OAUTH_TOKEN 					+ "=\"" + URLEncoder.encode(authSignaturesGenerator3.getAccesToken())
-				+ "\", " + authSignaturesGenerator3.OAUTH_VERSION 					+ "=\"" + URLEncoder.encode(authSignaturesGenerator3.VERSION_1_0)
-				+ "\", " + authSignaturesGenerator3.OAUTH_SIGNATURE 				+ "=\"" + URLEncoder.encode(authSignaturesGenerator3 .getOauthSignature(peramPairs)) + "\"";
+		GeneratedPerams = "OAuth "
+				+ authSignaturesGenerator3.OAUTH_CONSUMER_KEY
+				+ "=\""
+				+ URLEncoder.encode(authSignaturesGenerator3.getcKey())
+				+ "\", "
+				+ authSignaturesGenerator3.OAUTH_NONCE
+				+ "=\""
+				+ URLEncoder.encode(authSignaturesGenerator3.currentOnonce)
+				+ "\", "
+				+ authSignaturesGenerator3.OAUTH_SIGNATURE_METHOD
+				+ "=\""
+				+ URLEncoder.encode(authSignaturesGenerator3.HMAC_SHA1)
+				+ "\", "
+				+ authSignaturesGenerator3.OAUTH_TIMESTAMP
+				+ "=\""
+				+ URLEncoder.encode(authSignaturesGenerator3.currentTimeStamp)
+				+ "\", "
+				+ authSignaturesGenerator3.OAUTH_TOKEN
+				+ "=\""
+				+ URLEncoder.encode(authSignaturesGenerator3.getAccesToken())
+				+ "\", "
+				+ authSignaturesGenerator3.OAUTH_VERSION
+				+ "=\""
+				+ URLEncoder.encode(authSignaturesGenerator3.VERSION_1_0)
+				+ "\", "
+				+ authSignaturesGenerator3.OAUTH_SIGNATURE
+				+ "=\""
+				+ URLEncoder.encode(authSignaturesGenerator3
+						.getOauthSignature(peramPairs)) + "\"";
 
 		String authenticateString = GeneratedPerams;
 

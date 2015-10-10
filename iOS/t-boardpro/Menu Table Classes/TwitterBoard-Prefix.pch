@@ -1,0 +1,45 @@
+//
+//  TwitterBoard-Prefix.pch
+//  TwitterBoard
+//
+//  Created by GLB-254 on 4/20/15.
+//  Copyright (c) 2015 globussoft. All rights reserved.
+//
+
+#ifndef TwitterBoard_TwitterBoard_Prefix_pch
+#define TwitterBoard_TwitterBoard_Prefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#define AppdelegateObject (AppDelegate*)[UIApplication sharedApplication].delegate
+#define GCDBackgroundThread dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+#define ThemeColor [UIColor colorWithRed:0.0f/255.0f green:3.0f/255.0f blue:54.0f/255.0f alpha:1.0f]
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
+//Condtions for iPhone
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IS_IPHONE_4_OR_LESS (IS_IPHONE && SCREEN_MAX_LENGTH < 568.0)
+#define IS_IPHONE_5 (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
+#define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
+#define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
+#define Header_Text_Color [UIColor colorWithRed:(CGFloat)84/255 green:(CGFloat)143/255 blue:(CGFloat)195/255 alpha:1]
+#define TwitterSecretKey @"xxxxxxxxxxxxxxxxxxxxxxx"
+#define TwiterConsumerKey @"xxxxxxxxxxxxxxx"
+//------------------------------Feed Constant
+#define FeedDescription @"Description"
+#define FeedImageUser @"Userimage"
+#define FeedId @"FollowerId"
+#define FeedUserScreenName @"ScreenName"
+#define FeedFavouriteCount @"FavouriteCount"
+#define FeedFavouriteSet @"BooleanFavourite"
+#define FeedRetweetCount @"RetweetCount"
+#define FeedRetweetSet @"BooleanRetweeted"
+//Nsuser Default Constants
+#define MainuserLogin @"MainUserLogin"
+#define TwitterUserScreenName @"Twitter Name"
+#import "AppDelegate.h"
+
+
+#endif

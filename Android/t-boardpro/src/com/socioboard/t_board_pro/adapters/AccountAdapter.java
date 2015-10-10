@@ -57,16 +57,16 @@ public class AccountAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
-			LayoutInflater mInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater.inflate(R.layout.account_item, parent,
-					false);
+			
+			LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			convertView = mInflater.inflate(R.layout.account_item, parent,false);
+			
 		}
 
-		ImageView profilePic = (ImageView) convertView
-				.findViewById(R.id.profile_pic);
-		ImageView settingspic = (ImageView) convertView
-				.findViewById(R.id.settings);
+		ImageView profilePic = (ImageView) convertView.findViewById(R.id.profile_pic);
+		
+		ImageView settingspic = (ImageView) convertView.findViewById(R.id.settings);
 
 		TextView text = (TextView) convertView.findViewById(R.id.user_name);
 
@@ -82,7 +82,7 @@ public class AccountAdapter extends BaseAdapter {
 
 		}
 
-		settingspic.setImageResource(R.drawable.ic_settings);
+		settingspic.setImageResource(R.drawable.delete_account_icon);
 
 		text.setText(navDrawerItems.get(position).getUsername());
 

@@ -3,7 +3,10 @@ package com.socioboard.t_board_pro;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,11 +20,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -69,22 +75,23 @@ import android.widget.Toast;
 import com.flurry.android.FlurryAgent;
 import com.socioboard.t_board_pro.adapters.AccountAdapter;
 import com.socioboard.t_board_pro.adapters.DrawerAdapter;
+import com.socioboard.t_board_pro.fragments.FragmentCombinedOverlappings;
+import com.socioboard.t_board_pro.fragments.FragmentCombinedSearch;
+import com.socioboard.t_board_pro.fragments.FragmentCombinedTimelines;
 import com.socioboard.t_board_pro.fragments.FragmentCopyFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentFans;
 import com.socioboard.t_board_pro.fragments.FragmentFavourites;
-import com.socioboard.t_board_pro.fragments.FragmentHashTagSearch;
 import com.socioboard.t_board_pro.fragments.FragmentIAMFollowingTo;
 import com.socioboard.t_board_pro.fragments.FragmentMutualFollowers;
-import com.socioboard.t_board_pro.fragments.FragmentNanFollowers;
-import com.socioboard.t_board_pro.fragments.FragmentOverlappingFollowers;
-import com.socioboard.t_board_pro.fragments.FragmentOverlappingFollowings;
+import com.socioboard.t_board_pro.fragments.FragmentNonFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentProfile;
+import com.socioboard.t_board_pro.fragments.FragmentRecentFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentSchedule;
-import com.socioboard.t_board_pro.fragments.FragmentSearch;
 import com.socioboard.t_board_pro.fragments.FragmentSettingsRight;
-import com.socioboard.t_board_pro.fragments.FragmentTimeLine;
 import com.socioboard.t_board_pro.fragments.FragmentTweet;
+import com.socioboard.t_board_pro.fragments.FragmentUnfollowUsers;
 import com.socioboard.t_board_pro.fragments.FragmentUsersFollowingToMe;
+import com.socioboard.t_board_pro.fragments.FragmentsStatistics;
 import com.socioboard.t_board_pro.twitterapi.OAuthSignaturesGenerator;
 import com.socioboard.t_board_pro.twitterapi.TwitterAccessTokenPost;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
@@ -94,10 +101,10 @@ import com.socioboard.t_board_pro.twitterapi.TwitterUserShowRequest;
 import com.socioboard.t_board_pro.ui.Items;
 import com.socioboard.t_board_pro.util.ConnectionDetector;
 import com.socioboard.t_board_pro.util.Const;
+import com.socioboard.t_board_pro.util.EntityModel;
 import com.socioboard.t_board_pro.util.FullUserDetailModel;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ModelUserDatas;
-import com.socioboard.t_board_pro.util.SearchDetailModel;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.TmpCallback;
 import com.socioboard.t_board_pro.util.TweetDMScheduller;
@@ -106,7 +113,7 @@ import com.socioboard.tboardpro.R;
 
 public class MainActivity extends ActionBarActivity {
 
- 	private String[] mDrawerTitles;
+	private String[] mDrawerTitles;
 
 	private TypedArray mDrawerIcons;
 
@@ -123,6 +130,8 @@ public class MainActivity extends ActionBarActivity {
 	private CharSequence mDrawerTitle;
 
 	private CharSequence mTitle;
+
+	int backCount = 0;
 
 	TboardproLocalData twiterManyLocalData;
 
@@ -142,11 +151,11 @@ public class MainActivity extends ActionBarActivity {
 
 	ProgressDialog progressDialog;
 
-	public static ProgressBar toolbarProgressBar;
+	public static ProgressBar toolbarProgressBar, webViewProgress;
 
 	static Handler handler = new Handler();
-	
-	public static Menu yoyo;
+
+	public Menu yoyo;
 
 	public ImageView imageViewSettings;
 
@@ -182,6 +191,22 @@ public class MainActivity extends ActionBarActivity {
 
 		myprint("onCreateMainActivity");
 
+		if (MainSingleTon.currentUserModel == null) {
+			startActivity(new Intent(getApplicationContext(),
+					SplashActivity.class));
+			finish();
+			return;
+		}
+
+		if (MainSingleTon.currentUserModel.getUserid() == null) {
+
+			startActivity(new Intent(getApplicationContext(),
+					SplashActivity.class));
+			finish();
+			return;
+
+		}
+
 		progressDialog = new ProgressDialog(MainActivity.this);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progressDialog.setIndeterminate(true);
@@ -210,8 +235,6 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 
-				// Right Side Menu
-
 				onPrepareOptionsMenu(yoyo);
 
 			}
@@ -236,15 +259,18 @@ public class MainActivity extends ActionBarActivity {
 		IntentFilter intentFilter = new IntentFilter(
 				MainSingleTon.broadcataction);
 
-		MainActivity.this.registerReceiver(myReceiver, intentFilter);
+		if (MainActivity.this != null) {
 
+			MainActivity.this.registerReceiver(myReceiver, intentFilter);
+		}
 	}
 
 	private void loadTHisFragment() {
 
 		fragmentTransaction = fragmentManager.beginTransaction();
 
-		fragmentTransaction.replace(R.id.main_content, new FragmentTimeLine());
+		fragmentTransaction.replace(R.id.main_content,
+				new FragmentCombinedTimelines());
 
 		fragmentTransaction.commit();
 
@@ -285,14 +311,17 @@ public class MainActivity extends ActionBarActivity {
 			fragment = new FragmentProfile();
 			myprint("FragmentProfile");
 			break;
+
 		case 1:
-			fragment = new FragmentTweet();  
+			fragment = new FragmentTweet();
 			myprint("FragmentTweet");
 			break;
+
 		case 2:
-			fragment = new FragmentTimeLine();
-			myprint("FragmentTimeLine");
+			fragment = new FragmentCombinedTimelines();
+			myprint("FragmentCombinedTimelines");
 			break;
+
 		case 3:
 			fragment = new FragmentIAMFollowingTo();
 			myprint("FragmentIAMFollowingTo");
@@ -304,78 +333,104 @@ public class MainActivity extends ActionBarActivity {
 			break;
 
 		case 5:
-			fragment = new FragmentCopyFollowers();
-			myprint("FragmentCopyFollowers");
+			if (!MainSingleTon.secondaryCountLoaded) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentRecentFollowers();
+				myprint("FragmentRecentFollowers");
+			}
 			break;
 
 		case 6:
+			if (!MainSingleTon.secondaryCountLoaded) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentCopyFollowers();
+				myprint("FragmentCopyFollowers");
+			}
+			break;
+		case 7:
+			if (!MainSingleTon.secondaryCountLoaded) {
+				myToastS("Please wait");
+				return;
+			} else {
+				fragment = new FragmentUnfollowUsers();
+				myprint("FragmentUnfollowUsers");
+			}
+			break;
+
+		case 8:
 			fragment = new FragmentFavourites();
 			myprint("FragmentFavourites");
 			break;
 
-		case 7:
-			fragment = new FragmentSearch();
-			myprint("FragmentSearch");
-			break;
-
-		case 8:
-			fragment = new FragmentHashTagSearch();
-			myprint("FragmentHashTagSearch");
-			break;
-
 		case 9:
-			
-			if (MainSingleTon.fansCount == -1) {
-				myToastS("Please wait");
-				return;
-			} else {
-				fragment = new FragmentFans();
-				myprint("FragmentFans");
-			}
+			fragment = new FragmentCombinedSearch();
+			myprint("FragmentCombinedSearch");
 			break;
 
 		case 10:
-			
-			if (MainSingleTon.mutualfansCount == -1) {
+
+			if (!MainSingleTon.secondaryCountLoaded) {
+
 				myToastS("Please wait");
+
 				return;
+
 			} else {
-				fragment = new FragmentMutualFollowers();
-				myprint("FragmentMutualFans");
+
+				fragment = new FragmentFans();
+
+				myprint("FragmentFans");
 			}
+
 			break;
 
 		case 11:
-	
-			if (MainSingleTon.fansCount == -1) {
+
+			if (!MainSingleTon.secondaryCountLoaded) {
+
 				myToastS("Please wait");
+
 				return;
+
 			} else {
-				fragment = new FragmentNanFollowers();
-				myprint("FragmentNanFollowers");
+
+				fragment = new FragmentMutualFollowers();
+
+				myprint("FragmentMutualFans");
 			}
+
 			break;
 
 		case 12:
 
-			if (MainSingleTon.fansCount == -1) {
+			if (!MainSingleTon.secondaryCountLoaded) {
+
 				myToastS("Please wait");
+
 				return;
+
 			} else {
-				fragment = new FragmentOverlappingFollowers();
-				myprint("FragmentOverlappingFollowers");
+
+				fragment = new FragmentNonFollowers();
+
+				myprint("FragmentNanFollowers");
+
 			}
 
 			break;
 
 		case 13:
 
-			if (MainSingleTon.fansCount == -1) {
+			if (!MainSingleTon.secondaryCountLoaded) {
 				myToastS("Please wait");
 				return;
 			} else {
-				fragment = new FragmentOverlappingFollowings();
-				myprint("FragmentOverlappingFollowings");
+				fragment = new FragmentCombinedOverlappings();
+				myprint("FragmentCombinedOverlappings");
 			}
 
 			break;
@@ -385,10 +440,15 @@ public class MainActivity extends ActionBarActivity {
 			myprint("FragmentSchedule");
 			break;
 
+		case 15:
+			fragment = new FragmentsStatistics();
+			myprint("FragmentsStatistics");
+			break;
+
 		default:
 			myprint("default: ");
 			break;
-		
+
 		}
 
 		if (fragment != null) {
@@ -401,37 +461,37 @@ public class MainActivity extends ActionBarActivity {
 
 			fragmentTransaction.commit();
 
-		}
+			// Highlight the selected item, update the title, and close the
+			// drawer
 
-		// Highlight the selected item, update the title, and close the drawer
+			if (mDrawerList_Left.isEnabled()) {
 
-		if (mDrawerList_Left.isEnabled()) {
+				mDrawerList_Left.setItemChecked(position, true);
 
-			mDrawerList_Left.setItemChecked(position, true);
+				if (position != 0) {
 
-			if (position != 0) {
+					setTitle(mDrawerTitles[position]);
 
-				setTitle(mDrawerTitles[position]);
+				}
+
+				mDrawerLayout.closeDrawer(mDrawerList_Left);
+
+			} else {
+
+				mDrawerList_Right.setItemChecked(position, true);
+
+				if (position != 0) {
+
+					setTitle(mDrawerTitles[position]);
+
+				}
+
+				mDrawerLayout.closeDrawer(mDrawerList_Right);
 
 			}
 
-			mDrawerLayout.closeDrawer(mDrawerList_Left);
-
-		} else {
-
-			mDrawerList_Right.setItemChecked(position, true);
-
-			if (position != 0) {
-
-				setTitle(mDrawerTitles[position]);
-
-			}
-
-			mDrawerLayout.closeDrawer(mDrawerList_Right);
-
+			title_textview.setText(mDrawerTitles[position]);
 		}
-
-		title_textview.setText(mDrawerTitles[position]);
 
 	}
 
@@ -733,7 +793,9 @@ public class MainActivity extends ActionBarActivity {
 				myprint("relOutAdAccount");
 
 				CookieSyncManager.createInstance(getApplicationContext());
+
 				CookieManager cookieManager = CookieManager.getInstance();
+
 				cookieManager.removeAllCookie();
 
 				progressDialog.setMessage("Signing in to Twitter..");
@@ -971,6 +1033,9 @@ public class MainActivity extends ActionBarActivity {
 
 				myprint("webLoadSignInUrl = " + webLoadSignInUrl);
 
+				webViewProgress = (ProgressBar) webDialog
+						.findViewById(R.id.progressBar1);
+
 				webView = (WebView) webDialog
 						.findViewById(R.id.dialogue_web_view);
 
@@ -1050,6 +1115,8 @@ public class MainActivity extends ActionBarActivity {
 
 			Log.d(TAG, "Page error: " + description);
 
+			webViewProgress.setVisibility(View.INVISIBLE);
+
 			super.onReceivedError(view, errorCode, description, failingUrl);
 
 			myprint("onReceivedError errorCode  " + errorCode);
@@ -1061,13 +1128,35 @@ public class MainActivity extends ActionBarActivity {
 
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
 			Log.d(TAG, "Loading URL: " + url);
 
 			super.onPageStarted(view, url, favicon);
 
+			webViewProgress.setVisibility(View.VISIBLE);
+
+			if (url.startsWith("https://twitter.com/login/error?")) {
+
+				new AlertDialog.Builder(MainActivity.this)
+						.setTitle("SignIn failed!")
+						.setMessage(
+								"The username and password you entered did not match our records. Please double-check and try again.")
+						.setPositiveButton("Ok",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+
+										webDialog.dismiss();
+									}
+								}).setIcon(android.R.drawable.ic_dialog_alert)
+						.show().setCancelable(false);
+
+			} else {
+
+			}
+
 			myprint("onPageStarted favicon " + favicon);
 
-			// mSpinner.show();
 		}
 
 		@Override
@@ -1077,6 +1166,8 @@ public class MainActivity extends ActionBarActivity {
 			Log.d(TAG, "onPageFinished URL: " + url);
 
 			myprint("onPageFinished title " + view.getTitle());
+
+			webViewProgress.setVisibility(View.INVISIBLE);
 
 		}
 
@@ -1151,7 +1242,7 @@ public class MainActivity extends ActionBarActivity {
 
 		if (twiterManyLocalData.getUserData(addNewAccountModel.getUserid()) != null) {
 
-			myToastL("You are already Added");
+			myToastL("Account is already Added");
 
 		} else {
 
@@ -1192,8 +1283,7 @@ public class MainActivity extends ActionBarActivity {
 
 	void myToastS(final String toastMsg) {
 
-		Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT)
-				.show();
+		Toast.makeText(getApplicationContext(), toastMsg, 500).show();
 	}
 
 	void myToastL(final String toastMsg) {
@@ -1287,6 +1377,16 @@ public class MainActivity extends ActionBarActivity {
 
 		}
 
+		if (twiterManyLocalData.getAllIds().size() == 1) {
+
+			imageViewSettings.setVisibility(View.VISIBLE);
+
+		} else {
+
+			imageViewSettings.setVisibility(View.INVISIBLE);
+
+		}
+
 		AccountAdapter temAadapter = new AccountAdapter(accountList,
 				MainActivity.this);
 
@@ -1302,14 +1402,23 @@ public class MainActivity extends ActionBarActivity {
 
 		myprint(MainSingleTon.currentUserModel);
 
+		//
+
 		Editor editor = getSharedPreferences("twtboardpro",
 				Context.MODE_PRIVATE).edit();
 
 		editor.putString("userid", MainSingleTon.currentUserModel.getUserid());
 
+		editor.putString("autoDmfirstime", "yes");
+
+		editor.commit();
+
+		//
+
 		myprint("editor " + editor.commit());
 
-		textViewUserName.setText(MainSingleTon.currentUserModel.getUsername());
+		textViewUserName.setText("@"
+				+ MainSingleTon.currentUserModel.getUsername());
 
 		String userStringImage = MainSingleTon.currentUserModel.getUserimage();
 
@@ -1426,6 +1535,12 @@ public class MainActivity extends ActionBarActivity {
 								setRightSideDrawer();
 							}
 						});
+					}
+
+					@Override
+					public void onsuccess() {
+						// TODO Auto-generated method stub
+
 					}
 
 				});
@@ -1593,12 +1708,14 @@ public class MainActivity extends ActionBarActivity {
 									MainSingleTon.myfollowersCount = jsonObject
 											.getInt(Const.followers_count);
 
+									MainSingleTon.primaryCountLoaded = true;
+
 									isNeedToRefreshDrawer = true;
 
 									new DownloadMineIamge().execute(jsonObject
 											.getString(Const.profile_image_url));
 
-									loadOtherEntity();
+									loadusers_following_to_me_Ids();
 
 								} catch (JSONException e) {
 
@@ -1624,13 +1741,14 @@ public class MainActivity extends ActionBarActivity {
 								.getUsername());
 
 			}
+
 		}, 3000);
 
 	}
 
-	private void loadOtherEntity() {
+	private void loadusers_following_to_me_Ids() {
 
-		myprint("@@@@@@@ loadOtherEntity @@@@@@@@");
+		myprint("@@@@@@@ loadOtherEntity users_following_to_me_Ids @@@@@@@@");
 
 		TwitterUserGETRequest userGETRequest = new TwitterUserGETRequest(
 				MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
@@ -1643,6 +1761,11 @@ public class MainActivity extends ActionBarActivity {
 
 					@Override
 					public void onSuccess(String jsonResult) {
+
+						MainSingleTon.listMyfollowersIDs.clear();
+
+						myprint("MainSingleTon.listMyfollowersIDs.size"
+								+ MainSingleTon.listMyfollowersIDs.size());
 
 						myprint("jsonResult" + jsonResult);
 
@@ -1660,7 +1783,7 @@ public class MainActivity extends ActionBarActivity {
 								for (int i = 0; i < jsonArray.length(); ++i) {
 
 									MainSingleTon.listMyfollowersIDs
-											.add(jsonArray.getString(i));
+											.add(jsonArray.getString(i).trim());
 
 								}
 
@@ -1669,10 +1792,109 @@ public class MainActivity extends ActionBarActivity {
 								e.printStackTrace();
 							}
 
+							myprint("MainSingleTon.listMyfollowersIDs.size"
+									+ MainSingleTon.listMyfollowersIDs.size());
+
 							loadfollowings();
 
+							SharedPreferences prefs = getSharedPreferences(
+									"twtboardpro", Context.MODE_PRIVATE);
+
+							boolean isThisUsersFollowersLoaded = prefs
+									.getBoolean(MainSingleTon.currentUserModel
+											.getUserid(), false);
+
+							if (isThisUsersFollowersLoaded) {
+
+								myprint("*************** YES ThisUsersFollowersLoaded "
+										+ MainSingleTon.currentUserModel
+												.getUsername());
+
+							} else {
+
+								myprint("Loading the followers of this User "
+										+ MainSingleTon.currentUserModel
+												.getUsername());
+
+								Editor editor = prefs.edit();
+
+								editor.putBoolean(
+										MainSingleTon.currentUserModel
+												.getUserid(), true);
+
+								editor.commit();
+
+								for (int i = 0; i < MainSingleTon.listMyfollowersIDs
+										.size(); i++) {
+
+									twiterManyLocalData.addNewDMsentId(
+											MainSingleTon.currentUserModel
+													.getUserid(),
+											MainSingleTon.listMyfollowersIDs
+													.get(i));
+
+								}
+
+							}
+
+							// * * * * * * * * * * * * * * Recent
+
+							String jsonDBResult = twiterManyLocalData
+									.getAllFollowersIDs(MainSingleTon.currentUserModel
+											.getUserid());
+
+							if (jsonDBResult != null) {
+
+								myprint("*********** jsonDBResult Recent jsonDBResult != null "
+										+ jsonDBResult);
+
+								JSONObject jsonObjectTMp = new JSONObject(
+										jsonDBResult);
+
+								JSONArray jsonArrayTmp;
+
+								ArrayList<String> oldIds = new ArrayList<String>();
+
+								try {
+
+									jsonArrayTmp = new JSONArray(jsonObjectTMp
+											.getString("ids"));
+
+									for (int i = 0; i < jsonArrayTmp.length(); ++i) {
+
+										oldIds.add(jsonArrayTmp.getString(i));
+
+									}
+
+								} catch (JSONException e) {
+
+									e.printStackTrace();
+								}
+
+								ArrayList<String> tmpIds = (ArrayList<String>) differenciate(
+										MainSingleTon.listMyfollowersIDs,
+										oldIds);
+
+								MainSingleTon.recentsFollowersCount = tmpIds
+										.size();
+
+							} else {
+
+								myprint("*********** jsonDBResult Recent jsonDBResult ===== null "
+										+ jsonDBResult);
+
+								twiterManyLocalData.addFollwersIds(jsonResult,
+										MainSingleTon.currentUserModel
+												.getUserid());
+
+								MainSingleTon.recentsFollowersCount = 0;
+
+							}
+
 						} catch (JSONException e) {
+
 							e.printStackTrace();
+
 						}
 
 					}
@@ -1682,6 +1904,7 @@ public class MainActivity extends ActionBarActivity {
 						// TODO Auto-generated method stub
 
 					}
+
 				});
 
 		String url = MainSingleTon.users_following_to_me_Ids;
@@ -1693,6 +1916,58 @@ public class MainActivity extends ActionBarActivity {
 		peramPairs.add(new BasicNameValuePair(Const.count, "5000"));
 
 		userGETRequest.executeThisRequest(url, peramPairs);
+
+	}
+
+	protected void saveDailyDetails() {
+
+		SharedPreferences sharedPreferences = getSharedPreferences(
+				"twtboardpro", Context.MODE_PRIVATE);
+
+		Editor editor = sharedPreferences.edit();
+
+		String strDateToday = sharedPreferences.getString("dateToday"
+				+ MainSingleTon.currentUserModel.getUserid(), "****");
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+		Date date = new Date();
+
+		System.out.println(dateFormat.format(date)); // 2014/08/06 15:59:48
+
+		System.out.println("strDateToday == " + strDateToday); // 2014/08/06
+
+		if (dateFormat.format(date).contains(strDateToday)) {
+
+			System.out
+					.println("*****************Todays Entity  data completed"); // 2014/08/06
+
+		} else {
+
+			System.out.println("*****************Saving todays Entity  data"); // 2014/08/06
+
+			EntityModel entityModel = new EntityModel();
+
+			entityModel.setFollowers(MainSingleTon.myfollowersCount);
+
+			entityModel.setFollowings(MainSingleTon.followingCount);
+
+			entityModel.setMutuals(MainSingleTon.mutualsIds.size());
+
+			entityModel.setNonfollwers(MainSingleTon.nonFollowersIds.size());
+
+			entityModel.setMillis(System.currentTimeMillis());
+
+			twiterManyLocalData.addUserEntity(entityModel,
+					MainSingleTon.currentUserModel.getUserid());
+
+			editor.putString(
+					"dateToday" + MainSingleTon.currentUserModel.getUserid(),
+					dateFormat.format(date));
+
+			editor.commit();
+
+		}
 
 	}
 
@@ -1715,6 +1990,11 @@ public class MainActivity extends ActionBarActivity {
 
 						JSONArray jsonArray;
 
+						MainSingleTon.toFollowingModelsIDs.clear();
+
+						myprint("MainSingleTon.toFollowingModelsIDs.size"
+								+ MainSingleTon.toFollowingModelsIDs.size());
+
 						try {
 
 							JSONObject jsonObject = new JSONObject(jsonResult);
@@ -1725,7 +2005,8 @@ public class MainActivity extends ActionBarActivity {
 							for (int i = 0; i < jsonArray.length(); ++i) {
 
 								MainSingleTon.toFollowingModelsIDs
-										.add(jsonArray.getString(i));
+										.add(jsonArray.getString(i).trim());
+
 							}
 
 						} catch (JSONException e) {
@@ -1733,11 +2014,35 @@ public class MainActivity extends ActionBarActivity {
 							e.printStackTrace();
 						}
 
+						myprint("MainSingleTon.toFollowingModelsIDs.size"
+								+ MainSingleTon.toFollowingModelsIDs.size());
+
+						MainSingleTon.secondaryCountLoaded = true;
+
 						determineEntitiesCounts();
 
 						isFirstTimeCountsChecked = true;
 
 						isNeedToRefreshDrawer = true;
+
+						// ...................................................
+
+						Intent intent = new Intent(MainSingleTon.broadcataction);
+
+						if (MainSingleTon.mutualsIds.size() > 0
+								&& MainSingleTon.autodm) {
+
+							myprint(" ********** AutoDM is ON ************ ");
+
+							MainActivity.this.sendBroadcast(intent);
+
+						} else {
+
+							myprint(" ********** AutoDM is OFF ************ ");
+
+						}
+
+						// ..................................................
 
 					}
 
@@ -1765,71 +2070,94 @@ public class MainActivity extends ActionBarActivity {
 
 		// .....................................................................
 
-		ArrayList<String> listMyfollowersIDs = (ArrayList<String>) MainSingleTon.listMyfollowersIDs
-				.clone();
+		MainSingleTon.mutualsIds = (ArrayList<String>) intersection(
+				MainSingleTon.listMyfollowersIDs,
+				MainSingleTon.toFollowingModelsIDs);
 
-		ArrayList<String> toFollowingModelsIDs = (ArrayList<String>) MainSingleTon.toFollowingModelsIDs
-				.clone();
+		// .......................................................................................
 
-		myprint("listMyfollowersIDs  **********  " + listMyfollowersIDs);
+		myprint("recentsFollowersCount  **********  "
+				+ MainSingleTon.recentsFollowersCount);
 
-		myprint("toFollowingModelsIDs  **********  " + toFollowingModelsIDs);
+		myprint("mutualsIds  **********  " + MainSingleTon.mutualsIds.size());
 
-		toFollowingModelsIDs.removeAll(listMyfollowersIDs);
+		myprint("listMyfollowersIDs  **********  "
+				+ MainSingleTon.listMyfollowersIDs.size());
 
-		MainSingleTon.nonFollowersIds = toFollowingModelsIDs;
+		myprint("toFollowingModelsIDs  **********  "
+				+ MainSingleTon.toFollowingModelsIDs.size());
 
-		myprint("MainSingleTon.nonFollowersIds  **********  "
-				+ MainSingleTon.nonFollowersIds);
+		// .......................................................................................
 
-		MainSingleTon.NOnfollowersCount = MainSingleTon.nonFollowersIds.size();
+		MainSingleTon.nonFollowersIds = (ArrayList<String>) differenciate(
+				MainSingleTon.toFollowingModelsIDs,
+				MainSingleTon.listMyfollowersIDs);
 
-		// NOn followers are here
+		myprint("nonFollowersIds  **********  "
+				+ MainSingleTon.nonFollowersIds.size());
 
-		toFollowingModelsIDs = (ArrayList<String>) MainSingleTon.toFollowingModelsIDs
-				.clone();
+		myprint("listMyfollowersIDs  **********  "
+				+ MainSingleTon.listMyfollowersIDs.size());
 
-		toFollowingModelsIDs.removeAll(MainSingleTon.nonFollowersIds);
+		myprint("toFollowingModelsIDs  **********  "
+				+ MainSingleTon.toFollowingModelsIDs.size());
 
-		MainSingleTon.mutualsIds = toFollowingModelsIDs;
+		// .......................................................................................
 
-		MainSingleTon.mutualfansCount = MainSingleTon.mutualsIds.size();
-		// NOn followers are here
+		MainSingleTon.fansIds = (ArrayList<String>) differenciate(
+				MainSingleTon.listMyfollowersIDs,
+				MainSingleTon.toFollowingModelsIDs);
 
-		toFollowingModelsIDs = MainSingleTon.toFollowingModelsIDs;
+		// .......................................................................................
 
-		listMyfollowersIDs.removeAll(toFollowingModelsIDs);
+		MainSingleTon.followingCount = MainSingleTon.toFollowingModelsIDs
+				.size();
 
-		MainSingleTon.fansIds = listMyfollowersIDs;
+		MainSingleTon.myfollowersCount = MainSingleTon.listMyfollowersIDs
+				.size();
 
-		// fans are here
+		myprint("fansIds  **********  " + MainSingleTon.fansIds.size());
 
-		// .....................................................................
+		myprint("followingCounts  **********  " + MainSingleTon.followingCount);
 
-		MainSingleTon.fansCount = MainSingleTon.fansIds.size();
+		myprint("myfollowersCount  **********  "
+				+ MainSingleTon.myfollowersCount);
 
-		myprint("MainSingleTon.fansCount  **********  "
-				+ MainSingleTon.fansCount);
+		saveDailyDetails();
 
-		myprint("MainSingleTon.mutualfansCount  **********  "
-				+ MainSingleTon.mutualfansCount);
+	}
 
-		myprint("MainSingleTon.NOnfollowersCount  **********  "
-				+ MainSingleTon.NOnfollowersCount);
+	public List<String> differenciate(List<String> a, List<String> b) {
 
-		Intent intent = new Intent(MainSingleTon.broadcataction);
+		// difference a-b
+		List<String> c = new ArrayList<String>(a.size());
+		c.addAll(a);
+		c.removeAll(b);
 
-		if (MainSingleTon.mutualsIds.size() > 0) {
-		
-			MainActivity.this.sendBroadcast(intent);
-		
+		return c;
+	}
+
+	public <T> List<T> intersection(List<T> list1, List<T> list2) {
+
+		List<T> list = new ArrayList<T>();
+
+		for (T t : list1) {
+
+			if (list2.contains(t)) {
+
+				list.add(t);
+
+			}
+
 		}
+
+		return list;
 	}
 
 	@Override
 	public void onBackPressed() {
 
-		super.onBackPressed();
+		// super.onBackPressed();
 
 		if (webDialog != null) {
 
@@ -1838,6 +2166,33 @@ public class MainActivity extends ActionBarActivity {
 				webDialog.dismiss();
 
 			}
+
+		} else {
+
+			backCount++;
+
+			if (backCount == 2) {
+
+				System.out.println(" EXIT backCount " + backCount);
+
+				Intent startMain = new Intent(Intent.ACTION_MAIN);
+				startMain.addCategory(Intent.CATEGORY_HOME);
+				startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(startMain);
+
+			} else {
+				myToastS("Press again to exit");
+			}
+
+			handler.postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					backCount = 0;
+				}
+			}, 2000);
+
 		}
 
 	}
@@ -1952,9 +2307,7 @@ public class MainActivity extends ActionBarActivity {
 
 				MainSingleTon.currentUserModel = null;
 
-				MainSingleTon.searchDetailModel = new SearchDetailModel();
-
-				MainSingleTon.listMyfollowers.clear();
+				MainSingleTon.resetSigleTon();
 
 				startActivity(new Intent(getApplicationContext(),
 						WelcomeActivity.class));
@@ -2047,6 +2400,7 @@ public class MainActivity extends ActionBarActivity {
 		});
 
 		myprint("Saved");
+
 	}
 
 	public static void showActionBarProgress() {
@@ -2055,6 +2409,7 @@ public class MainActivity extends ActionBarActivity {
 
 			@Override
 			public void run() {
+
 				toolbarProgressBar.setVisibility(View.VISIBLE);
 			}
 		});
@@ -2067,7 +2422,9 @@ public class MainActivity extends ActionBarActivity {
 
 			@Override
 			public void run() {
+
 				toolbarProgressBar.setVisibility(View.INVISIBLE);
+
 			}
 		});
 

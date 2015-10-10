@@ -38,8 +38,12 @@ public class Const {
  	public static final String media  = "media";
  	public static final String count  = "count";
  	public static final String statuses  = "statuses";
+ 	public static final String status    = "status";
  	public static final String entities  = "entities";
  	public static final String user_mentions  = "user_mentions";
  	public static final String include_entities  = "include_entities";
+ 	public static final String geocode  = "geocode";
+ 	public static final String media_url  = "media_url";
+ 	public static final String in_reply_to_status_id  = "in_reply_to_status_id";
  	
  }

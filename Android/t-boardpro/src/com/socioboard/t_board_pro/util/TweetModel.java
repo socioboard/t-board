@@ -1,20 +1,12 @@
 package com.socioboard.t_board_pro.util;
 
-import java.util.Arrays;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.graphics.Bitmap;
-
 public class TweetModel {
-
-	Bitmap userimage;
 
 	String tweeet_str;
 
 	String userImagerUrl;
+
+	String mediaImagerUrl;
 
 	String userName;
 
@@ -35,16 +27,28 @@ public class TweetModel {
 	boolean isRetweeted;
 
 	boolean isFollowing;
+ 	
+ 	@Override
+	public String toString() {
+		return "TweetModel [tweeet_str=" + tweeet_str + ", userImagerUrl="
+				+ userImagerUrl + ", mediaImagerUrl=" + mediaImagerUrl
+				+ ", userName=" + userName + ", fullName=" + fullName
+				+ ", userID=" + userID + ", tweetTime=" + tweetTime
+				+ ", tweetId=" + tweetId + ", favCount=" + favCount
+				+ ", retweetCount=" + retweetCount + ", isfavourated="
+				+ isfavourated + ", isRetweeted=" + isRetweeted
+				+ ", isFollowing=" + isFollowing + "]";
+	}
 
-	public TweetModel(Bitmap userimage, String tweeet_str,
-			String userImagerUrl, String userName, String fullName,
+	public TweetModel(String tweeet_str, String userImagerUrl,
+			String mediaImagerUrl, String userName, String fullName,
 			String userID, String tweetTime, String tweetId, long favCount,
 			long retweetCount, boolean isfavourated, boolean isRetweeted,
 			boolean isFollowing) {
 		super();
-		this.userimage = userimage;
 		this.tweeet_str = tweeet_str;
 		this.userImagerUrl = userImagerUrl;
+		this.mediaImagerUrl = mediaImagerUrl;
 		this.userName = userName;
 		this.fullName = fullName;
 		this.userID = userID;
@@ -55,6 +59,14 @@ public class TweetModel {
 		this.isfavourated = isfavourated;
 		this.isRetweeted = isRetweeted;
 		this.isFollowing = isFollowing;
+	}
+
+	public String getMediaImagerUrl() {
+		return mediaImagerUrl;
+	}
+
+	public void setMediaImagerUrl(String mediaImagerUrl) {
+		this.mediaImagerUrl = mediaImagerUrl;
 	}
 
 	public String getTweetId() {
@@ -128,17 +140,7 @@ public class TweetModel {
 		return userImagerUrl;
 	}
 
-	@Override
-	public String toString() {
-		return "TweetModel [tweeet_str=" + tweeet_str + ", userImagerUrl="
-				+ userImagerUrl + ", userName=" + userName + ", fullName="
-				+ fullName + ", userID=" + userID + ", tweetTime=" + tweetTime
-				+ ", tweetId=" + tweetId + ", favCount=" + favCount
-				+ ", retweetCount=" + retweetCount + ", isfavourated="
-				+ isfavourated + ", isRetweeted=" + isRetweeted
-				+ ", isFollowing=" + isFollowing + "]";
-	}
-
+	 
 	public String getUserID() {
 		return userID;
 	}
@@ -157,14 +159,6 @@ public class TweetModel {
 
 	public void setUserImagerUrl(String userImagerUrl) {
 		this.userImagerUrl = userImagerUrl;
-	}
-
-	public Bitmap getUserimage() {
-		return userimage;
-	}
-
-	public void setUserimage(Bitmap userimage) {
-		this.userimage = userimage;
 	}
 
 	public String getTweeet_str() {

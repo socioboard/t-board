@@ -191,8 +191,8 @@
             
             
          
-            char *twitterId = (char *) sqlite3_column_text(stmt,2);
-            NSString *strTwitterId= [NSString  stringWithUTF8String:twitterId];
+        //    char *twitterId = (char *) sqlite3_column_text(stmt,2);
+            //NSString *strTwitterId= [NSString  stringWithUTF8String:twitterId];
             char *image= (char *) sqlite3_column_blob(stmt, 4);
             int rawdatalength=sqlite3_column_bytes(stmt, 4);
             NSData*data=[NSData dataWithBytes:image length:rawdatalength];

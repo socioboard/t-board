@@ -76,7 +76,7 @@ public class TwitterMediaUpload {
 
 			System.out.println("url : " + reqUrl);
 
-			System.out.println("authData : " + authData);
+			//System.out.println("authData : " + authData);
 
 			URL obj = new URL(reqUrl);
 
@@ -263,7 +263,7 @@ public class TwitterMediaUpload {
 
 	public static void myprint(Object msg) {
 
-		System.out.println(msg.toString());
+		//System.out.println(msg.toString());
 
 	}
 

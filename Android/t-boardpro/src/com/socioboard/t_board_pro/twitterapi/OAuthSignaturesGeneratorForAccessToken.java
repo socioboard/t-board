@@ -213,7 +213,9 @@ public class OAuthSignaturesGeneratorForAccessToken {
 		}       
 
 		return oAuthSignature;
-	}public void myprint(Object msg) {
+	}
+	
+	public void myprint(Object msg) {
 
 //		System.out.println(msg.toString());
 

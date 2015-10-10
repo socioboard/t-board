@@ -32,7 +32,7 @@ import com.socioboard.t_board_pro.util.TweetModel;
 import com.socioboard.tboardpro.R;
 
 public class FragmentFavourites extends Fragment implements
-		TwitterRequestCallBack , OnScrollListener{
+		TwitterRequestCallBack, OnScrollListener {
 
 	View rootView;
 	ListView listView;
@@ -42,37 +42,38 @@ public class FragmentFavourites extends Fragment implements
 	RelativeLayout reloutProgress;
 	Activity aActivity;
 	Handler handler = new Handler();
- 	ViewGroup viewGroup;
+	ViewGroup viewGroup;
 	boolean isAlreadyScrolling = true;
- 	String  nextCursor ="-1";
+	String nextCursor = "-1";
+	String reqFetchedID = "reqFetchedID";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		rootView = inflater.inflate(R.layout.fragment_favorite, container,false);
+		rootView = inflater.inflate(R.layout.fragment_favorite, container,
+				false);
 
 		aActivity = getActivity();
 
-		reloutProgress = (RelativeLayout) rootView.findViewById(R.id.reloutProgress);
+		reloutProgress = (RelativeLayout) rootView
+				.findViewById(R.id.reloutProgress);
 
 		listView = (ListView) rootView.findViewById(R.id.timelineListView);
-		
+
 		listView.setOnScrollListener(FragmentFavourites.this);
 
 		addFooterView();
-		
+
 		viewGroup.setVisibility(View.INVISIBLE);
-
-		showProgress();
-
 
 		TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(
 				MainSingleTon.currentUserModel, this);
- 		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
- 		peramPairs.add(new BasicNameValuePair(Const.count, "10"));
-		
+		List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
+
+		peramPairs.add(new BasicNameValuePair(Const.count, "10"));
+
 		peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
 
 		twitterUserGETRequest.executeThisRequest(MainSingleTon.twtFavourites,
@@ -126,15 +127,49 @@ public class FragmentFavourites extends Fragment implements
 					tweetModel.setUserImagerUrl(jsonObject3
 							.getString(Const.profile_image_url));
 
-					tweetModel.setUserimage(null);
-
 					tweetModel.setUserName("@"
 							+ jsonObject3.getString(Const.screen_name));
+
+					tweetModel.setUserID(jsonObject3.getString(Const.id));
 
 					tweetModel.setFullName(jsonObject3.getString(Const.name));
 
 					tweetModel.setFollowing(jsonObject3
 							.getBoolean(Const.following));
+
+					if (jsonObjectk2.has("extended_entities")) {
+
+						JSONObject jsonObjectEntities = jsonObjectk2
+								.getJSONObject("extended_entities");
+
+						System.out.println("***** jsonObjectEntities  *****"
+								+ jsonObjectEntities);
+
+						System.out
+								.println("***** jsonObjectk2.has(Const.media) *****");
+
+						JSONArray jsonArray2Media = jsonObjectEntities
+								.getJSONArray(Const.media);
+
+						System.out.println("***** jsonArray2Media *****");
+
+						JSONObject jsonObjectMedia = jsonArray2Media
+								.getJSONObject(0);
+
+						System.out.println("***** jsonObjectMedia *****"
+								+ jsonObjectMedia);
+
+						tweetModel.setMediaImagerUrl(jsonObjectMedia
+								.getString(Const.media_url));
+
+					} else {
+
+						System.out
+								.println("***** Noooooo jsonObjectk2.has(Const.media) *****");
+
+						tweetModel.setMediaImagerUrl("");
+
+					}
 
 					listFavtes.add(tweetModel);
 
@@ -151,42 +186,45 @@ public class FragmentFavourites extends Fragment implements
 			e.printStackTrace();
 		}
 
-		getActivity().runOnUiThread(new Runnable() {
+		if (FragmentFavourites.this.getActivity() != null) {
 
-			@Override
-			public void run() {
+			getActivity().runOnUiThread(new Runnable() {
 
-				if (FragmentFavourites.this.getActivity() != null) {
-					
-					twtAdpr = new TweetsAdapter(listFavtes, getActivity());
+				@Override
+				public void run() {
+
+					twtAdpr = new TweetsAdapter(listFavtes,
+							FragmentFavourites.this.getActivity());
 
 					listView.setAdapter(twtAdpr);
 
 					myprint("listView.setAdapter(twtAdpr);");
-					
+
 					isAlreadyScrolling = false;
 
 				}
-			}
-		});
+
+			});
+		}
+
 		cancelProgres();
 
 	}
 
 	protected void parseJsonResultPaged(String jsonResult) {
 
- 		handler.post(new Runnable() {
-			
+		handler.post(new Runnable() {
+
 			@Override
 			public void run() {
-				
+
 				viewGroup.setVisibility(View.INVISIBLE);
-				
- 			}
+
+			}
 		});
-		
+
 		try {
-			 
+
 			JSONArray jsonArray = new JSONArray(jsonResult);
 
 			for (int i = 0; i < jsonArray.length(); ++i) {
@@ -200,11 +238,14 @@ public class FragmentFavourites extends Fragment implements
 					tweetModel
 							.setTweeet_str(jsonObjectk2.getString(Const.text));
 
-					tweetModel.setIsfavourated(jsonObjectk2 .getBoolean(Const.favorited));
+					tweetModel.setIsfavourated(jsonObjectk2
+							.getBoolean(Const.favorited));
 
-					tweetModel.setRetweeted(jsonObjectk2 .getBoolean(Const.retweeted));
+					tweetModel.setRetweeted(jsonObjectk2
+							.getBoolean(Const.retweeted));
 
-					tweetModel.setTweetTime(jsonObjectk2 .getString(Const.created_at));
+					tweetModel.setTweetTime(jsonObjectk2
+							.getString(Const.created_at));
 
 					tweetModel.setFavCount(new Long(jsonObjectk2
 							.getString(Const.favorite_count)));
@@ -220,10 +261,7 @@ public class FragmentFavourites extends Fragment implements
 					tweetModel.setUserImagerUrl(jsonObject3
 							.getString(Const.profile_image_url));
 
-					tweetModel.setUserimage(null);
-
-					tweetModel.setUserName("@"
-							+ jsonObject3.getString(Const.screen_name));
+					tweetModel.setUserName("@"+ jsonObject3.getString(Const.screen_name));
 
 					tweetModel.setUserID(jsonObject3.getString(Const.id));
 
@@ -232,6 +270,39 @@ public class FragmentFavourites extends Fragment implements
 					tweetModel.setFollowing(jsonObject3
 							.getBoolean(Const.following));
 
+					if (jsonObjectk2.has("extended_entities")) {
+
+						JSONObject jsonObjectEntities = jsonObjectk2
+								.getJSONObject("extended_entities");
+
+						System.out.println("***** jsonObjectEntities  *****"
+								+ jsonObjectEntities);
+
+						System.out
+								.println("***** jsonObjectk2.has(Const.media) *****");
+
+						JSONArray jsonArray2Media = jsonObjectEntities
+								.getJSONArray(Const.media);
+
+						System.out.println("***** jsonArray2Media *****");
+
+						JSONObject jsonObjectMedia = jsonArray2Media
+								.getJSONObject(0);
+
+						System.out.println("***** jsonObjectMedia *****"
+								+ jsonObjectMedia);
+
+						tweetModel.setMediaImagerUrl(jsonObjectMedia
+								.getString(Const.media_url));
+
+					} else {
+
+						System.out
+								.println("***** Noooooo jsonObjectk2.has(Const.media) *****");
+
+						tweetModel.setMediaImagerUrl("");
+
+					}
 					// listMyfollowers.add(tweetModel);
 
 					handler.post(new Runnable() {
@@ -248,6 +319,7 @@ public class FragmentFavourites extends Fragment implements
 								listView.setScrollY(listCount);
 
 								twtAdpr.notifyDataSetChanged();
+
 							}
 						}
 					});
@@ -260,17 +332,16 @@ public class FragmentFavourites extends Fragment implements
 				}
 			}
 
-
 		} catch (JSONException e) {
 
 			e.printStackTrace();
 
 		}
-		
+
 		isAlreadyScrolling = false;
 
 	}
-	
+
 	public class FetchReqPaged extends AsyncTask<String, Void, Void> {
 
 		@Override
@@ -292,18 +363,18 @@ public class FragmentFavourites extends Fragment implements
 
 						@Override
 						public void onFailure(Exception e) {
-							
+
 							myprint("onFailure e " + e);
-							
+
 							handler.post(new Runnable() {
-								
+
 								@Override
 								public void run() {
-									
+
 									viewGroup.setVisibility(View.INVISIBLE);
-									
-					 			}
-							}); 
+
+								}
+							});
 						}
 
 						@Override
@@ -314,10 +385,11 @@ public class FragmentFavourites extends Fragment implements
 			List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
 			peramPairs.add(new BasicNameValuePair(Const.max_id, madMaxId));
-			
-	 		peramPairs.add(new BasicNameValuePair(Const.count, "10"));
-			
-			peramPairs.add(new BasicNameValuePair(Const.include_entities, "false"));
+
+			peramPairs.add(new BasicNameValuePair(Const.count, "10"));
+
+			peramPairs.add(new BasicNameValuePair(Const.include_entities,
+					"false"));
 
 			twitterUserGETRequest.executeThisRequest(urlTimeline, peramPairs);
 
@@ -330,14 +402,15 @@ public class FragmentFavourites extends Fragment implements
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 
-		viewGroup = (ViewGroup) inflater.inflate(R.layout.progress_layout, listView, false);
+		viewGroup = (ViewGroup) inflater.inflate(R.layout.progress_layout,
+				listView, false);
 
 		listView.addFooterView(viewGroup);
 
 		myprint("addFooterView++++++++++++++++++++++++++++++++++++++++++++++ DONt LOad");
 
 	}
-	
+
 	void myToastS(final String toastMsg) {
 
 		Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_SHORT).show();
@@ -394,10 +467,21 @@ public class FragmentFavourites extends Fragment implements
 	@Override
 	public void onFailure(Exception e) {
 		// TODO Auto-generated method stub
+
 		myprint("onFailure e " + e);
 
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+
+				viewGroup.setVisibility(View.INVISIBLE);
+
+			}
+		});
+
 	}
-	
+
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
@@ -407,26 +491,35 @@ public class FragmentFavourites extends Fragment implements
 		boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount;
 
 		if (loadMore) {
-			
+
 			myprint("YESSSSSSSSSSSSS load MOOOOOOOOOREE");
-			
+
 			if (isAlreadyScrolling) {
-				
+
 				// DO NOTHING
 				myprint("BUT isAlreadyScrolling ");
-				
+
 			} else {
-				
-				viewGroup.setVisibility(View.VISIBLE);
-				
+
 				isAlreadyScrolling = true;
-				
-				String madMaxId = "" + twtAdpr.getItem(twtAdpr.getCount() - 1).getTweetId();
-				
-				myprint(twtAdpr.getItem(twtAdpr.getCount() - 1));
-				
-				new FetchReqPaged().execute(madMaxId);
-				
+
+				String madMaxId = ""
+						+ twtAdpr.getItem(twtAdpr.getCount() - 1).getTweetId();
+
+				if (reqFetchedID.contains(madMaxId)) {
+
+				} else {
+
+					viewGroup.setVisibility(View.VISIBLE);
+
+					myprint(twtAdpr.getItem(twtAdpr.getCount() - 1));
+
+					new FetchReqPaged().execute(madMaxId);
+
+					reqFetchedID = madMaxId;
+
+				}
+
 			}
 
 		} else {
@@ -439,7 +532,7 @@ public class FragmentFavourites extends Fragment implements
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
- 		
+
 	}
 
 }

@@ -84,7 +84,7 @@
             android:layout_alignLeft="@+id/textView1"
             android:layout_below="@+id/textView1"
             android:layout_marginTop="10dp"
-            android:text="Follwing :"
+            android:text="Following :"
             android:textColor="@color/Gray" />
 
         <TextView

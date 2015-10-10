@@ -11,8 +11,8 @@ public class TweetDMScheduller extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-
-		if (MainActivity.isNeedToSendbroadCast) {
+		
+ 		if (MainActivity.isNeedToSendbroadCast) {
 
 			MainActivity.isNeedToSendbroadCast = false;
 
@@ -23,14 +23,11 @@ public class TweetDMScheduller extends BroadcastReceiver {
 				@Override
 				public void run() {
 
-					myprint("********** StartDM ");
+					myprint("********** StartDM ********* ");
 
-					StartDM startDM = new StartDM(context,
-							MainSingleTon.currentUserModel);
+					StartDM startDM = new StartDM(context, MainSingleTon.currentUserModel, MainSingleTon.mutualsIds);
 
 					startDM.analyseTarget();
-
-					startDM.startSendingMessages();
 
 				}
 
@@ -40,6 +37,7 @@ public class TweetDMScheduller extends BroadcastReceiver {
 
 			myprint("No Dont second timeeeeeeeeeeeeeeee");
 		}
+		
 	}
 
 	public void myprint(Object msg) {

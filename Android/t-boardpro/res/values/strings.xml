@@ -32,16 +32,17 @@
         <item>Feeds</item>
         <item>Following</item>
         <item>Followed By</item>
+        <item>Recent Followers</item>
         <item>Copy Followers</item>
-        <item>Favorites</item>
-        <item>User Search</item>
-        <item>#Tag Search</item>
+        <item>Unfollow</item>
+        <item>Favourite</item>
+        <item>Search Users/Tweets</item>
         <item>Fans</item>
         <item>MutualFollowers</item>
         <item>NonFollowers</item>
-        <item>Overlapping Followers</item>
-        <item>Overlapping Followings</item>
+        <item>Overlapping Users</item>
         <item>Schedule</item>
+        <item>Statistics</item>
     </string-array>
 
     <array name="drawer_icons">
@@ -50,16 +51,17 @@
         <item>@drawable/home_feeds_icon</item>
         <item>@drawable/friends_icon</item>
         <item>@drawable/group</item>
-        <item>@drawable/find_friend</item>
-        <item>@drawable/ic_action_fave_on_focused</item>
-        <item>@drawable/ic_search_api_holo_light</item>
+        <item>@drawable/recent_follower</item>
+        <item>@drawable/copy_follower</item>
+        <item>@drawable/non_followers</item>
+        <item>@drawable/favorite_icon</item>
         <item>@drawable/tagsearch</item>
         <item>@drawable/fans</item>
         <item>@drawable/mutualfollwers</item>
         <item>@drawable/non_followers</item>
         <item>@drawable/overlappingfollowers</item>
-        <item>@drawable/overlappingfollowers</item>
         <item>@drawable/schedule_icon</item>
+        <item>@drawable/statistics</item>
     </array>
 
     <string-array name="footer_titles" translatable="false">

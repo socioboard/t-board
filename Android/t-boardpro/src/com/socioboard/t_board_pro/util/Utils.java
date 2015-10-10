@@ -24,9 +24,9 @@ import android.util.Log;
  */
 
 public class Utils {
-    
+
 	// get Json from given url
-     
+
 	public static String getHTTPResponse(String url, String method) {
 
 		String jsonString = null;
@@ -79,10 +79,9 @@ public class Utils {
 
 		return jsonString;
 	}
-    
-	
+
 	// check whether network is availbale or not
-	
+
 	public static boolean isNetworkAvailable(Activity activity) {
 		ConnectivityManager connectivity = (ConnectivityManager) activity
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -101,27 +100,27 @@ public class Utils {
 		return false;
 	}
 
-	public static String GetLocalDateStringFromUTCString(String utcLongDateTime) 
-	{
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	    String localDateString = null;
+	public static String GetLocalDateStringFromUTCString(String utcLongDateTime) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss");
+		String localDateString = null;
 
-	    long when = 0;
-	    try 
-	    {
-	        when = dateFormat.parse(utcLongDateTime).getTime();
-	    } 
-	    catch (ParseException e) 
-	    {
-	        e.printStackTrace();
-	    }
-	    localDateString = dateFormat.format(new Date(when + TimeZone.getDefault().getRawOffset() + (TimeZone.getDefault().inDaylightTime(new Date()) ? TimeZone.getDefault().getDSTSavings() : 0)));
-	    System.out.println("TIME     : "+localDateString);
-	   
-	    System.out.println("In MILLIES     : "+when);
-	    ///
-	    Calendar date=Calendar.getInstance();
- 		Date d = date.getTime();
+		long when = 0;
+		try {
+			when = dateFormat.parse(utcLongDateTime).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		localDateString = dateFormat.format(new Date(when
+				+ TimeZone.getDefault().getRawOffset()
+				+ (TimeZone.getDefault().inDaylightTime(new Date()) ? TimeZone
+						.getDefault().getDSTSavings() : 0)));
+		System.out.println("TIME     : " + localDateString);
+
+		System.out.println("In MILLIES     : " + when);
+		// /
+		Calendar date = Calendar.getInstance();
+		Date d = date.getTime();
 
 		long different = d.getTime() - when;
 
@@ -185,7 +184,7 @@ public class Utils {
 
 	public static int monthInt(String month) {
 
-		System.out.print("Enter month's number: ");
+		// System.out.print("Enter month's number: ");
 
 		int monthNumber;
 
@@ -211,7 +210,7 @@ public class Utils {
 		case "july":
 			monthNumber = 7;
 			break;
-		case "august":
+		case "aug":
 			monthNumber = 8;
 			break;
 		case "september":
@@ -246,52 +245,61 @@ public class Utils {
 	}
 
 	public static Bitmap decodeBase64(String input) {
-	
+
 		byte[] decodedByte = Base64.decode(input, 0);
-	
-		return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
- 	
+
+		return BitmapFactory
+				.decodeByteArray(decodedByte, 0, decodedByte.length);
+
 	}
 
 	public static void stringToDate() {
 
 		String dtStart = "2010-10-15T09:27:37Z";
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		
+
+		SimpleDateFormat format = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
 		try {
-			
+
 			Date date = format.parse(dtStart);
 
-			//date.g
-			
+			// date.g
+
 			System.out.println(date);
-			
+
 		} catch (ParseException e) {
 
 			e.printStackTrace();
 
 		}
-		
+
 	}
 
 	public static void dateToString() {
 
-		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		
+		SimpleDateFormat dateformat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
 		try {
-			
+
 			Date date = new Date();
-		
+
 			String datetime = dateformat.format(date);
-			
+
 			System.out.println("Current Date Time : " + datetime);
-			
-		} catch ( Exception e) {
- 
+
+		} catch (Exception e) {
+
 			e.printStackTrace();
 
 		}
 	}
-	
+
+	public static void showPrettyTime(long milis) {
+
+		System.out.println(android.text.format.DateUtils.getRelativeTimeSpanString(milis));
+
+	}
+
 }

@@ -55,6 +55,7 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 
 		rootView = inflater.inflate(R.layout.fragment_to_following, container,
 				false);
+
 		reloutProgress = (RelativeLayout) rootView
 				.findViewById(R.id.reloutProgress);
 
@@ -126,7 +127,7 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 			String userswithComma = "";
 
 			if (fans.size() >= MainSingleTon.fansIds.size()) {
-			
+
 				handler.post(new Runnable() {
 
 					@Override
@@ -151,13 +152,14 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 
 						try {
 
-							userswithComma = userswithComma + ","
-									+ MainSingleTon.fansIds.get(i);
+							userswithComma = userswithComma + "," + MainSingleTon.fansIds.get(i);
 
 							myprint(i + "++++++++++ i other " + userswithComma);
 
 						} catch (Exception e) {
+							
 							break;
+
 						}
 
 					}
@@ -166,11 +168,21 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 
 				List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
-				peramPairs.add(new BasicNameValuePair(Const.user_id,
-						userswithComma));
+				peramPairs.add(new BasicNameValuePair(Const.user_id, userswithComma));
 
-				twitterUserGETRequest.executeThisRequest(MainSingleTon.userShowIds, peramPairs);
-
+				if (MainSingleTon.fansIds.size() == 0) {
+				
+					cancelProgres();
+				
+				} else {
+					
+					showProgress();
+					
+					twitterUserGETRequest.executeThisRequest(
+							MainSingleTon.userShowIds, peramPairs);
+				
+				}
+				
 			}
 
 			return null;
@@ -310,7 +322,7 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 
 					}
 				});
- 				
+
 			} else {
 
 				for (int i = fans.size(); i < (fans.size() + 99); ++i) {
@@ -335,9 +347,11 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 
 				List<BasicNameValuePair> peramPairs = new ArrayList<BasicNameValuePair>();
 
-				peramPairs.add(new BasicNameValuePair(Const.user_id, userswithComma));
+				peramPairs.add(new BasicNameValuePair(Const.user_id,
+						userswithComma));
 
-				twitterUserGETRequest.executeThisRequest(MainSingleTon.userShowIds, peramPairs);
+				twitterUserGETRequest.executeThisRequest(
+						MainSingleTon.userShowIds, peramPairs);
 
 			}
 
@@ -384,7 +398,7 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 						+ jsonObject2.getString(Const.screen_name));
 
 				fans.add(followingModel);
-				
+
 				myprint(followingModel);
 
 			}
@@ -459,7 +473,8 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 	}
 
 	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
 
 		/* maybe add a padding */
 
@@ -481,7 +496,7 @@ public class FragmentFans extends Fragment implements OnScrollListener {
 				isAlreadyScrolling = true;
 
 				myprint(toFollowingAdp.getItem(toFollowingAdp.getCount() - 1));
-			
+
 				new FetchReqPaged().execute();
 
 			}

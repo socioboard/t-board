@@ -27,7 +27,6 @@ import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
 
-
 public class MyFollowersAdapter extends BaseAdapter {
 
 	public Context context;

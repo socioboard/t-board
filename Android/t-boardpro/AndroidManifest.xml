@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.socioboard.tboardpro"
-    android:versionCode="12"
-    android:versionName="2.1" >
+    android:versionCode="27"
+    android:versionName="3.6" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -17,6 +17,7 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name="com.socioboard.t_board_pro.Application"
@@ -24,6 +25,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:launchMode="singleTop"
+        android:persistent="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.socioboard.t_board_pro.SplashActivity"
@@ -46,9 +49,21 @@
         <activity
             android:name="com.socioboard.t_board_pro.SchedulleComposeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyTheme" >
+            android:theme="@style/Theme.AppCompat" >
         </activity>
+        
+        <activity
+            android:name="org.achartengine.GraphicalActivity"
+            android:screenOrientation="portrait" />
 
+        <receiver
+            android:name="com.appnext.appnextsdk.ReferralReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.socioboard.t_board_pro.util.FollowersNotificationReceiver" />
         <receiver android:name="com.socioboard.t_board_pro.util.TweetSchedullerReceiver" />
         <receiver android:name="com.socioboard.t_board_pro.util.TweetDMScheduller" >
             <intent-filter>

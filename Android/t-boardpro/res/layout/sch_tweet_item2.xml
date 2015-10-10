@@ -91,6 +91,15 @@
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_action_delete_focused" />
 
+        <TextView
+            android:id="@+id/textViewTweetType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textViewUser"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="Reply"
+            android:textColor="#088A08" />
     </RelativeLayout>
 
     <ImageView

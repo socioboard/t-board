@@ -99,7 +99,7 @@ public class OAuthSignaturesGenerator3 {
 			}
 		}
 		
-		System.out.println("GeneratedPerams = "+ GeneratedPerams);
+		//System.out.println("GeneratedPerams = "+ GeneratedPerams);
 
 		return GeneratedPerams;
 	}
@@ -123,7 +123,7 @@ public class OAuthSignaturesGenerator3 {
 
 		singningKey = URLEncoder.encode(cSecret )+"&"+URLEncoder.encode(tokenSecret );
 
-		System.out.println("genrateSigningKey = "+ singningKey);
+	//	System.out.println("genrateSigningKey = "+ singningKey);
 
 		return singningKey;
 	} 

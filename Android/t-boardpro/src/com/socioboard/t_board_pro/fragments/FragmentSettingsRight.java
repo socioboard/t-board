@@ -10,8 +10,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
+
+import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.tboardpro.R;
 
 public class FragmentSettingsRight extends Fragment {
@@ -24,9 +29,13 @@ public class FragmentSettingsRight extends Fragment {
 
 	SharedPreferences prefs;
 
+	Switch switch1;
+
 	String svedtext;
 
-	@Override
+	Editor editor;
+
+ 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -36,11 +45,44 @@ public class FragmentSettingsRight extends Fragment {
 		prefs = getActivity().getSharedPreferences("twtboardpro",
 				Context.MODE_PRIVATE);
 
-		svedtext = prefs.getString("autodmtext", "");
+ 		svedtext = prefs.getString("autodmtext", "");
 
 		myprint("svedtext " + svedtext);
+		
+		myprint("MainSingleTon.autodm " + MainSingleTon.autodm);
 
 		button = (Button) rootView.findViewById(R.id.button1);
+
+		switch1 = (Switch) rootView.findViewById(R.id.switch1);
+
+		switch1.setChecked(MainSingleTon.autodm);
+
+		switch1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+
+				editor = prefs.edit();
+
+				if (MainSingleTon.autodm) {
+
+					MainSingleTon.autodm = false;
+
+				} else {
+
+					MainSingleTon.autodm = true;
+
+				}
+				
+ 				editor.putBoolean("autodm", MainSingleTon.autodm);
+
+ 				myprint("MainSingleTon.autodm " + MainSingleTon.autodm);
+ 				
+ 				editor.commit();
+
+			}
+		});
 
 		editText = (EditText) rootView.findViewById(R.id.editText1);
 
@@ -56,10 +98,10 @@ public class FragmentSettingsRight extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				button.requestFocus();
 
-				Editor editor = prefs.edit();
+				editor = prefs.edit();
 
 				svedtext = editText.getText().toString();
 

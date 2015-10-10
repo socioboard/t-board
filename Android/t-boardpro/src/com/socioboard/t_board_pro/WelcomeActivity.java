@@ -3,10 +3,13 @@ package com.socioboard.t_board_pro;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -23,6 +26,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.socioboard.t_board_pro.adapters.Viewpageradapter;
@@ -40,17 +44,28 @@ public class WelcomeActivity extends Activity {
 	ImageView loginButton;
 
 	TboardproLocalData twiterManyLocalData;
+
 	public String requestAccessToken, requestAccessSecret;
+
 	boolean callBackConfirm = false;
+
 	Dialog webDialog;
+
 	WebView webView;
+
 	ProgressDialog progressDialog;
+
+	ProgressBar webViewProgress;
+
 	PageIndicator indicator;
+
 	Viewpageradapter viewpageradapter;
+
 	ArrayList<IntroViewPagerModel> arrayList = new ArrayList<IntroViewPagerModel>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_welcome);
@@ -86,11 +101,26 @@ public class WelcomeActivity extends Activity {
 		model4.setIntro_text(MainSingleTon.introtext4);
 		arrayList.add(model4);
 
+		IntroViewPagerModel model5 = new IntroViewPagerModel();
+		model5.setDrawable(R.drawable.intro_screen5);
+		model5.setIntro_text(MainSingleTon.introtext5);
+		arrayList.add(model5);
+
+		IntroViewPagerModel model6 = new IntroViewPagerModel();
+		model6.setDrawable(R.drawable.intro_screen6);
+		model6.setIntro_text(MainSingleTon.introtext6);
+		arrayList.add(model6);
+
+		IntroViewPagerModel model7 = new IntroViewPagerModel();
+		model7.setDrawable(R.drawable.intro_screen7);
+		model7.setIntro_text(MainSingleTon.introtext7);
+		arrayList.add(model7);
+
 		viewpageradapter = new Viewpageradapter(getApplicationContext(),
 				arrayList);
 
 		pager.setAdapter(viewpageradapter);
-
+		
 		indicator.setViewPager(pager);
 
 		twiterManyLocalData = new TboardproLocalData(getApplicationContext());
@@ -112,7 +142,9 @@ public class WelcomeActivity extends Activity {
 		});
 
 		CookieSyncManager.createInstance(getApplicationContext());
+
 		CookieManager cookieManager = CookieManager.getInstance();
+
 		cookieManager.removeAllCookie();
 
 	}
@@ -141,15 +173,19 @@ public class WelcomeActivity extends Activity {
 
 		twiterManyLocalData.addNewUserAccount(MainSingleTon.currentUserModel);
 
-		Editor editor = getSharedPreferences("twtboardpro",
-				Context.MODE_PRIVATE).edit();
+		SharedPreferences preferences = getSharedPreferences("twtboardpro",
+				Context.MODE_PRIVATE);
+
+		Editor editor = preferences.edit();
 
 		editor.putString("userid", MainSingleTon.currentUserModel.getUserid());
 
 		myprint("editor " + editor.commit());
 
-		Intent in = new Intent(WelcomeActivity.this, MainActivity.class);
+		Intent in = new Intent(WelcomeActivity.this, SplashActivity.class);
+
 		startActivity(in);
+
 		WelcomeActivity.this.finish();
 
 	}
@@ -178,6 +214,7 @@ public class WelcomeActivity extends Activity {
 				myToastL("Sorry Unable to process");
 
 				hideProgress();
+
 			} else {
 
 				extractBaseString(responseTokens);
@@ -333,6 +370,9 @@ public class WelcomeActivity extends Activity {
 				webView = (WebView) webDialog
 						.findViewById(R.id.dialogue_web_view);
 
+				webViewProgress = (ProgressBar) webDialog
+						.findViewById(R.id.progressBar1);
+
 				webView.setWebViewClient(new MyWebClient());
 				webView.setVerticalScrollBarEnabled(false);
 				webView.setHorizontalScrollBarEnabled(false);
@@ -384,12 +424,22 @@ public class WelcomeActivity extends Activity {
 
 				}
 
-				String[] oauthtokenrray = tokenarray[0].split("=");
-				String[] oauthverifier = tokenarray[1].split("=");
-				System.out.println("@@@@@@@@@@@@@   " + oauthtokenrray[1]
-						+ "++++++++++++  " + oauthverifier[1]);
-				new GetAccessToken().execute(oauthtokenrray[1],
-						oauthverifier[1]);
+				try {
+
+					String[] oauthtokenrray = tokenarray[0].split("=");
+
+					String[] oauthverifier = tokenarray[1].split("=");
+
+					System.out.println("@@@@@@@@@@@@@   " + oauthtokenrray[1]
+							+ "++++++++++++  " + oauthverifier[1]);
+
+					new GetAccessToken().execute(oauthtokenrray[1],
+							oauthverifier[1]);
+
+				} catch (Exception exception) {
+
+					System.out.println("ex" + exception);
+				}
 
 				webView.destroy();
 
@@ -409,6 +459,8 @@ public class WelcomeActivity extends Activity {
 
 			super.onReceivedError(view, errorCode, description, failingUrl);
 
+			webViewProgress.setVisibility(View.INVISIBLE);
+
 			myprint("onReceivedError errorCode  " + errorCode);
 			myprint("description description " + description);
 			myprint("description failingUrl " + failingUrl);
@@ -424,6 +476,28 @@ public class WelcomeActivity extends Activity {
 
 			myprint("onPageStarted favicon " + favicon);
 
+			webViewProgress.setVisibility(View.VISIBLE);
+
+			if (url.startsWith("https://twitter.com/login/error?")) {
+
+				new AlertDialog.Builder(WelcomeActivity.this)
+						.setTitle("SignIn failed!")
+						.setMessage(
+								"The username and password you entered did not match our records. Please double-check and try again.")
+						.setPositiveButton("Ok",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+
+										webDialog.dismiss();
+									}
+								}).setIcon(android.R.drawable.ic_dialog_alert)
+						.show().setCancelable(false);
+
+			} else {
+
+			}
+
 		}
 
 		@Override
@@ -432,16 +506,12 @@ public class WelcomeActivity extends Activity {
 
 			Log.d(TAG, "onPageFinished URL: " + url);
 
+			webViewProgress.setVisibility(View.INVISIBLE);
+
 			myprint("onPageFinished title " + view.getTitle());
 
 		}
 
-	}
-
-	public interface OAuthDialogListener {
-		public abstract void onComplete(String accessToken);
-
-		public abstract void onError(String error);
 	}
 
 	void myToastS(final String toastMsg) {

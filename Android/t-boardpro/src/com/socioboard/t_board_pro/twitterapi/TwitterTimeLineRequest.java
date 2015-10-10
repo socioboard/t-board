@@ -36,7 +36,7 @@ public class TwitterTimeLineRequest {
 			
 			String authData = getAuthDAta(url);
 
-			myprint("authData : " + authData);
+			//myprint("authData : " + authData);
 
 			URL obj = new URL(url);
 

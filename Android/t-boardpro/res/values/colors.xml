@@ -166,8 +166,8 @@
     <color name="MediumTurquoise">#48D1CC</color>
     <color name="DarkSlateBlue">#483D8B</color>
     <color name="SteelBlue">#4682B4</color>
-    <color name="myBlue">#56A3AE</color>
-    <color name="myBlue2">#65ABED</color>
+    <color name="myBlue">#003366</color>
+    <color name="myBlue2">#0159B1</color>
     <color name="RoyalBlue">#4169E1</color>
     <color name="Turquoise">#40E0D0</color>
     <color name="MediumSeaGreen">#3CB371</color>
@@ -179,6 +179,7 @@
     <color name="DodgerBlue">#1E90FF</color>
     <color name="MidnightBlue">#191970</color>
     <color name="transparentgrey">#696969</color>
+    <color name="semiBlack">#D8000000</color>
     <color name="semiWhite">#70ffffff</color>
     <color name="semiWhite2">#A6FFFFFF</color>
 

@@ -34,7 +34,7 @@ public class TwitterAccessTokenPost {
 
 			myprint("url : " + urlTimeline);
 
-			myprint("authData : " + authData);
+			//myprint("authData : " + authData);
 
 			URL obj = new URL(urlTimeline);
 

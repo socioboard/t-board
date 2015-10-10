@@ -4,13 +4,66 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/viewTmp"
+        android:layout_alignParentTop="true"
+        android:background="@color/myBlue" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/editbox_background_normal" >
+
+        <EditText
+            android:id="@+id/editText1HashTagSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="3dp"
+            android:layout_toLeftOf="@+id/button1Go"
+            android:background="@android:color/transparent"
+            android:hint="username"
+            android:lines="1"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:padding="3dp"
+            android:textColor="@color/black" >
+        </EditText>
+
+        <ImageView
+            android:id="@+id/button1Go"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/tc_bg_paper"
+            android:src="@drawable/ic_search_category_default" />
+
+        <Button
+            android:id="@+id/button1Remove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/myBlue"
+            android:text="   Remove   "
+            android:textColor="@color/White"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/relAccountMine"
+        android:layout_alignRight="@+id/rel"
         android:layout_alignTop="@+id/separator"
         android:layout_marginLeft="2dp"
-        android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/separator"
         android:background="@drawable/section_background" >
 
@@ -24,56 +77,11 @@
             android:textSize="30sp" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/button1Remove"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/myBlue"
-        android:text="   Remove   "
-        android:textColor="@color/White"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/editText1HashTagSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button1Remove"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/button1Go"
-        android:background="@drawable/editbox_background_normal"
-        android:hint="username"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:textColor="@color/black" >
-    </EditText>
-
     <View
         android:id="@+id/viewTmp"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:layout_below="@+id/button1Go"
-        android:layout_marginTop="10dp" />
-
-    <Button
-        android:id="@+id/button1Go"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/button1Remove"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/myBlue"
-        android:text="+Add"
-        android:textColor="@color/White" />
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/rel" />
 
     <RelativeLayout
         android:id="@+id/relAccountMine"
@@ -175,37 +183,10 @@
         android:layout_centerHorizontal="true" />
 
     <RelativeLayout
-        android:id="@+id/reloutProgress"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/reloutorlpAcc"
-        android:layout_marginTop="20dp"
-        android:visibility="gone" >
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-
-        <TextView
-            android:id="@+id/loadingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/progressBar1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="Loading Followers..."
-            android:textColor="@color/Gray"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/reloutorlpAcc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/viewTmp"
+        android:layout_below="@+id/viewTmp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/separator"
@@ -244,7 +225,7 @@
             android:layout_marginRight="7dp"
             android:layout_marginTop="7dp"
             android:src="@drawable/account_image"
-             app:maskDrawable="@drawable/circle_mask"  />
+            app:maskDrawable="@drawable/circle_mask" />
 
         <TextView
             android:id="@+id/textView2orlpAcc"
@@ -300,10 +281,10 @@
         android:id="@+id/datasheet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/reloutorlpAcc"
+        android:layout_below="@+id/relAccountMine"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/viewTmp"
         android:background="@drawable/card_frame_normal"
         android:visibility="gone" >
 
@@ -323,9 +304,12 @@
         android:id="@+id/listViewToFollowing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/datasheet"
         android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/editbox_dropdown_background"
         android:divider="@android:color/transparent"
         android:dividerHeight="3dp"
         android:padding="5dp"
@@ -340,5 +324,32 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:src="@drawable/link" />
+
+    <RelativeLayout
+        android:id="@+id/reloutProgress"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/reloutorlpAcc"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progressBar1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Loading Followers..."
+            android:textColor="@color/Gray"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </RelativeLayout>

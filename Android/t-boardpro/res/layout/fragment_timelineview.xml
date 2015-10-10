@@ -6,15 +6,15 @@
 
     <ListView
         android:id="@+id/timelineListView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:layout_marginTop="5dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="3dp" />
+        android:dividerHeight="3dp"
+        android:paddingTop="5dp" />
 
     <RelativeLayout
         android:id="@+id/reloutProgress"

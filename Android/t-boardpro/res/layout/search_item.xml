@@ -105,7 +105,8 @@
             android:background="@color/myBlue"
             android:text="   + Follow   By   All  "
             android:textColor="@color/White"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonFollow"

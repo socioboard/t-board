@@ -20,14 +20,16 @@ import com.socioboard.tboardpro.R;
 
 public class SelectAccountAdapter extends BaseAdapter implements
 		CompoundButton.OnCheckedChangeListener {
-
+	
 	private Context context;
+	
 	public SparseBooleanArray sparseBooleanArray;
+	
 	public int count = 0;
+	
 	private ArrayList<ModelUserDatas> navDrawerItems;
-
-	public SelectAccountAdapter(ArrayList<ModelUserDatas> navDrawerItems,
-			Context context, SparseBooleanArray sparseBooleanArray) {
+    
+	public SelectAccountAdapter(ArrayList<ModelUserDatas> navDrawerItems, Context context, SparseBooleanArray sparseBooleanArray) {
 
 		this.context = context;
 
@@ -40,8 +42,8 @@ public class SelectAccountAdapter extends BaseAdapter implements
 		}
 
 		this.sparseBooleanArray = sparseBooleanArray;
-
-	}
+		
+ 	}
 
 	@Override
 	public int getCount() {
