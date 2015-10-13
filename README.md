@@ -20,8 +20,7 @@ Features:
 >**Tweet schedule:** You can schedule your message to post on future date.![](http://i.imgur.com/wDhGK5C.png)
  ![](http://i.imgur.com/JQUikXW.png) 
 
->**Search User/Trends:** You search perticular user OR top trending topics here.![](http://i.imgur.com/LqScOR7.png)
-![](http://i.imgur.com/6kEXfw1.png)
+>**Search User/Trends:** You search perticular user OR top trending topics here.![](http://i.imgur.com/6kEXfw1.png)
 
 >**Overlaping Users:** Trace all overlapping followers and followings with another user here.![](http://i.imgur.com/9QQ6gwY.png)
  
