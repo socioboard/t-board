@@ -47,7 +47,13 @@ public class SplashActivity extends Activity {
 
 		setContentView(R.layout.activity_splash);
 
-		AppnextTrack.track(this);
+		// initialize Your Twitter Keys Here
+		// .............................................
+
+		initializeTwitterkeys("xxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxx");
+
+		// .............................................
+ 		// AppnextTrack.track(this);
 
 		twiterManyLocalData = new TboardproLocalData(getApplicationContext());
 
@@ -56,8 +62,6 @@ public class SplashActivity extends Activity {
 		MainSingleTon.resetSigleTon();
 
 		MainSingleTon.allUserdetails = twiterManyLocalData.getAllUsersData();
-
-		initUserProfile();
 
 		System.out.println();
 
@@ -192,6 +196,14 @@ public class SplashActivity extends Activity {
 			}
 
 		}
+
+	}
+
+	private void initializeTwitterkeys(String consumerKey, String consumersecret) {
+
+		MainSingleTon.TWITTER_KEY = consumerKey;
+
+		MainSingleTon.TWITTER_SECRET = consumersecret;
 
 	}
 
