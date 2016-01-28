@@ -14,7 +14,7 @@ public class Application extends android.app.Application {
 
 		// init Flurry
 
-		FlurryAgent.init(this, "JPQF3XP5QY7S9S3TKXFT");
+		FlurryAgent.init(this, "XXXXXXXXXXXXXXXXXXXXX");
 
 	}
 
