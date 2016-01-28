@@ -1,0 +1,285 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/editbox_background_normal" >
+
+            <RelativeLayout
+                android:id="@+id/reloutTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="3dp"
+                android:background="@color/myBlue" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toLeftOf="@+id/imageView2Info"
+                    android:layout_toRightOf="@+id/imageView1"
+                    android:gravity="center"
+                    android:text="Twitter API Credentials"
+                    android:textColor="@color/White"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/imageView2Info"
+                    android:layout_marginRight="5dp"
+                    android:text="(Help)"
+                    android:textColor="@color/White"
+                    android:textSize="9sp" />
+
+                <ImageView
+                    android:id="@+id/imageView2Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/textView1"
+                    android:src="@android:drawable/ic_menu_help" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/reloutmiddle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/reloutTop"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent" >
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Consumer API Key"
+                    android:textColor="@color/myBlue"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/editText1Key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/buttonPaste1"
+                    android:background="@drawable/editbox_dropdown_background"
+                    android:hint="Consumer API Key"
+                    android:maxLines="2"
+                    android:padding="10dp"
+                    android:textSize="10sp" >
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/editText1Key"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Consumer API Secret"
+                    android:textColor="@color/myBlue"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/editText1Secret"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView3"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/buttonPaste2"
+                    android:background="@drawable/editbox_dropdown_background"
+                    android:hint="Consumer API Secret"
+                    android:maxLines="2"
+                    android:padding="10dp"
+                    android:textSize="10sp" >
+
+                    <requestFocus />
+                </EditText>
+
+                <Button
+                    android:id="@+id/buttonPaste1"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/editText1Key"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/textView2"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="4dp"
+                    android:text="Paste"
+                    android:textColor="@color/myBlue"
+                    android:textSize="9sp" />
+
+                <Button
+                    android:id="@+id/buttonPaste2"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/editText1Secret"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/textView3"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="4dp"
+                    android:text="Paste"
+                    android:textColor="@color/myBlue"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/editText1Secret"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Callback URL"
+                    android:textColor="@color/myBlue"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/editTextCallbcak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView5"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/buttonPaste3"
+                    android:background="@drawable/editbox_dropdown_background"
+                    android:hint="Callback URL"
+                    android:maxLines="3"
+                    android:padding="10dp"
+                    android:textSize="10sp" >
+
+                    <requestFocus />
+                </EditText>
+
+                <Button
+                    android:id="@+id/buttonPaste3"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/editTextCallbcak"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/textView5"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="4dp"
+                    android:text="Paste"
+                    android:textColor="@color/myBlue"
+                    android:textSize="9sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/reloutbottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/reloutmiddle"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@color/myBlue" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:text="Use these Keys"
+                    android:textColor="@color/White"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/linkViewTmp"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/relativeLayout1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@color/Gray" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/relativeLayout1"
+            android:layout_alignRight="@+id/relativeLayout1"
+            android:layout_below="@+id/linkViewTmp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/editbox_background_normal" >
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Or"
+                android:textColor="@color/Gray"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:id="@+id/reloutbottom2UseDefaults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView6"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@color/myBlue" >
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:text="Use Default Keys"
+                    android:textColor="@color/White"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

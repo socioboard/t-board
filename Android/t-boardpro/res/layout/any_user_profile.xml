@@ -1,0 +1,258 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup" >
+
+    <ImageView
+        android:id="@+id/imageView1Banner"
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:layout_above="@+id/reloutNames"
+        android:layout_marginBottom="5dp"
+        android:background="@color/black"
+        android:src="@drawable/whitebg_logo" />
+
+    <ImageView
+        android:id="@+id/imageView1Close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imageView1Banner"
+        android:src="@drawable/cross" />
+
+    <ImageView
+        android:id="@+id/imageView1Profile"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_above="@+id/reloutbottom"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/photo_frame"
+        android:paddingBottom="8dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/account_image" />
+
+    <RelativeLayout
+        android:id="@+id/reloutNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1Profile"
+        android:layout_alignRight="@+id/reloutbottom"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/imageView1Profile"
+        android:background="@drawable/section_background" >
+
+        <TextView
+            android:id="@+id/textView1Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView1UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1Name"
+            android:layout_below="@+id/textView1Name"
+            android:layout_marginTop="5dp"
+            android:text="#himanshuglobuss"
+            android:textColor="@color/Gray" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reloutbottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1Profile"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/card" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="14dp"
+            android:text="Tweets :"
+            android:textColor="@color/Gray" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="10dp"
+            android:text="Following :"
+            android:textColor="@color/Gray" />
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView01"
+            android:layout_below="@+id/TextView01"
+            android:layout_marginTop="10dp"
+            android:text="FollowedBy :"
+            android:textColor="@color/Gray" />
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView01"
+            android:layout_below="@+id/TextView02"
+            android:layout_marginTop="10dp"
+            android:text="Created at :"
+            android:textColor="@color/Gray" />
+
+        <TextView
+            android:id="@+id/textView1Tweets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="18dp"
+            android:layout_toRightOf="@+id/textView1"
+            android:text=""
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextView01Followings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/TextView01"
+            android:layout_alignBottom="@+id/TextView01"
+            android:layout_alignLeft="@+id/textView1Tweets"
+            android:text=""
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextView0FollowedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/TextView02"
+            android:layout_alignBottom="@+id/TextView02"
+            android:layout_alignLeft="@+id/TextView01Followings"
+            android:text=""
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextView03CreatedAT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/TextView03"
+            android:layout_alignBottom="@+id/TextView03"
+            android:layout_alignLeft="@+id/TextView0FollowedBy"
+            android:text=""
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/reloutbottom"
+        android:layout_alignRight="@+id/reloutbottom"
+        android:layout_below="@+id/reloutbottom"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/section_background" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Favourites"
+            android:textColor="@color/Gray" />
+
+        <TextView
+            android:id="@+id/textViewFavs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignRight="@+id/textView2"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="5dp"
+            android:text="" />
+
+        <Button
+            android:id="@+id/button1FollowByAll"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignBaseline="@+id/textViewFavs"
+            android:layout_alignBottom="@+id/textViewFavs"
+            android:layout_centerHorizontal="true"
+            android:background="@color/myBlue"
+            android:text="   + Follow   By   All  "
+            android:textColor="@color/White"
+            android:textSize="10sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/buttonUnfollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView2"
+            android:layout_marginRight="10dp"
+            android:background="@color/myBlue"
+            android:text="UnFollow"
+            android:textColor="@color/White"
+            android:textSize="10sp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/buttonFollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView2"
+            android:layout_marginRight="10dp"
+            android:background="@color/myBlue"
+            android:text=" +Follow   "
+            android:textColor="@color/White"
+            android:textSize="10sp"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button1Tweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/relativeLayout1"
+        android:layout_alignRight="@+id/relativeLayout1"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/myBlue"
+        android:text="Tweet"
+        android:textColor="@color/white" />
+
+    <RelativeLayout
+        android:id="@+id/reloutProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+</RelativeLayout>

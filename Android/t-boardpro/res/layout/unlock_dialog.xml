@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/reg_button_normal"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/headerDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/warningImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/delete_account_icon" />
+
+        <TextView
+            android:id="@+id/myUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/warningImage"
+            android:text="#girish"
+            android:textColor="#049DEF"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+        <View
+            android:id="@+id/myline"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/myUserName"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#049DEF" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tweetView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerDialog"
+        android:layout_margin="20dp"
+        android:text="dhbdf aerfg serg rtg trbftt sdtrfhbf bgd          drgdrged rgt" >
+    </TextView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweetView" >
+
+        <View
+            android:id="@+id/myline"
+            android:layout_width="fill_parent"
+            android:layout_height="1.5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/Silver" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/unlockButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/footer"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/myBlue"
+        android:text="   Remove   "
+        android:textColor="@color/White" />
+
+    <View
+        android:id="@+id/textView1"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/unlockButton"
+        android:layout_below="@+id/unlockButton"
+        android:layout_marginTop="3dp" />
+
+</RelativeLayout>

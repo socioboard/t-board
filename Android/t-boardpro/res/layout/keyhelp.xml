@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/transparentgrey" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="25dp"
+        android:background="@color/White" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="60dp"
+            android:autoLink="all"
+            android:text="Users can make their Own twitter App using t-boardpro. \n Here are the Steps to create App and get your twitter credentials.\n\n1. Log In to    https://apps.twitter.com \n\n2. Create New App with required details and callBack URL. \nexample: \nhttps://www.socioboard.com\n \n3. Click On ''Keys and Acces Token'' Tab to get Consumer Key and Secret."
+            android:textSize="13sp"  />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/cancel" />
+
+</RelativeLayout>

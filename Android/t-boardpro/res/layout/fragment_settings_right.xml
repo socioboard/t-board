@@ -1,0 +1,257 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ab_solid_light_holo" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/reloutKeys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/receipt_background" >
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Twitter API Credentials"
+                android:textSize="14sp" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/textView5"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/Silver" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/view2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Consumer Key -"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView7Key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/textView6"
+                android:text="5+55+5+5+5+5+5+5+5+5"
+                android:textColor="@color/Gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textView7Key"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Consumer Key -"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView7Secret"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView7Key"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/textView7"
+                android:text="494964964949c49sc49s4c9s4cc1s49c4s9c49ss4c9s4c9s4s9c49s4"
+                android:textColor="@color/Gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textView7Secret"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Consumer Key -"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textViewCallBackUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView7Secret"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/textView8"
+                android:text="www.google.com/"
+                android:textColor="@color/Gray"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/textViewCallBackUrl"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/button2Remove"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/myBlue"
+                android:text="   Remove   "
+                android:textColor="@color/White" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reloutKeys"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card" >
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/textView1"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/Silver" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/view1"
+                android:layout_below="@+id/view1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Thanks for Following me :)"
+                android:textColor="@color/Gray"
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/textView2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/editbox_dropdown_background"
+                android:gravity="start"
+                android:hint="Internal text"
+                android:lines="4"
+                android:maxLength="95"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="11sp" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/editText1"
+                android:layout_below="@+id/editText1"
+                android:layout_marginTop="5dp"
+                android:text="-via @socioboard"
+                android:textColor="@color/Gray" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/textView3"
+                android:layout_marginTop="10dp" />
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/switch1"
+                android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@+id/switch1"
+                android:text="Direct message for FollowBack Users."
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/relativeLayout1"
+            android:layout_alignRight="@+id/relativeLayout1"
+            android:layout_below="@+id/relativeLayout1"
+            android:layout_marginTop="14dp"
+            android:background="@color/myBlue"
+            android:text="Save"
+            android:textColor="@color/White" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button1"
+            android:layout_alignRight="@+id/button1"
+            android:layout_below="@+id/button1"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/popup_reply_input_field" >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="In Direct message feature, the users who are following me back will going to receive above message.\n*Note: Direct message feature works for only current main account."
+                android:textSize="12sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
