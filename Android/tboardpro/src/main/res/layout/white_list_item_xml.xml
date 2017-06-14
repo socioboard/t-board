@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_white_xml" >
+
+    <com.socioboard.t_board_pro.ui.AccountImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="7dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/account_image"
+        app:maskDrawable="@drawable/circle_mask" />
+
+        <TextView
+            android:id="@+id/followerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:text="@string/testaccount"
+            android:textColor="@color/SteelBlue"
+            android:textSize="15sp" />
+
+
+        <Button
+            android:id="@+id/buttonRemove"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_blue_matte"
+            android:text=" Remove   "
+            android:layout_centerVertical="true"
+            android:textColor="@color/White"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+</LinearLayout>

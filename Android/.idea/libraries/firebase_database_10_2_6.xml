@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="firebase-database-10.2.6">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/tboardpro/build/intermediates/exploded-aar/com.google.firebase/firebase-database/10.2.6/res" />
+      <root url="jar://$PROJECT_DIR$/tboardpro/build/intermediates/exploded-aar/com.google.firebase/firebase-database/10.2.6/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

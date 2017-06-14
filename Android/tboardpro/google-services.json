@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "669051772131",
+    "firebase_url": "https://tboardpro-4a5f9.firebaseio.com",
+    "project_id": "tboardpro-4a5f9",
+    "storage_bucket": "tboardpro-4a5f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669051772131:android:6c816522d9b17d73",
+        "android_client_info": {
+          "package_name": "com.socioboard.tboardpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669051772131-uqq10ulijnrot8c5m85450ojurm31bs5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw8zDFV14ywots2HO5jntqlSBFzEzh3PI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
