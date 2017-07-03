@@ -29,7 +29,35 @@
             android:background="@drawable/btn_blue_matte"
             android:text="UnFollow"
             android:textColor="@color/White"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/textUnfollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="UnFollow"
+            android:textColor="@color/myBlue"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textFollow"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Follow"
+            android:textColor="@color/myBlue"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/buttonFollow"
@@ -41,7 +69,8 @@
             android:background="@drawable/btn_blue_matte"
             android:text=" +Follow   "
             android:textColor="@color/White"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="invisible"/>
         <Button
             android:id="@+id/buttonFollow1"
             android:layout_below="@+id/buttonFollow"
@@ -55,6 +84,39 @@
             android:textColor="@color/White"
             android:textSize="10sp"
             android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/textWhitelist"
+            android:layout_below="@+id/textUnfollow"
+            android:layout_width="65dp"
+            android:gravity="center"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:text="White List"
+            android:textColor="@color/SkyBlue"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/textBlacklist"
+            android:layout_below="@+id/textUnfollow"
+            android:layout_width="65dp"
+            android:gravity="center"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:text="Black List"
+            android:textColor="@color/SkyBlue"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
         <Button
             android:id="@+id/buttonBlackList"
             android:layout_below="@+id/buttonFollow"
@@ -68,6 +130,8 @@
             android:textColor="@color/White"
             android:textSize="10sp"
             android:visibility="gone"/>
+
+
         <TextView
             android:id="@+id/followerName"
             android:layout_width="wrap_content"

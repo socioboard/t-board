@@ -49,4 +49,7 @@ public class Const {
 	public static final String Unfollowuser_id  = "user_id";//13/06/2017
 	public static final String unfollowinclude_entities  = "unfollowinclude_entities";
 
+	public static final String sourcename  =  "source_screen_name";
+	public static final String targetname  =  "target_screen_name";
+
  }

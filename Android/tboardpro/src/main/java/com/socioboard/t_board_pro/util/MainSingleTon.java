@@ -1,9 +1,9 @@
 package com.socioboard.t_board_pro.util;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import android.graphics.Bitmap;
 
 public class MainSingleTon {
 
@@ -91,17 +91,17 @@ public class MainSingleTon {
 
 	public static String keyHash, bearerToken;
 
-	public static String TWITTER_KEY = "xxxxxxxxxxxxxxxxxxxxxxxx";
+	public static String TWITTER_KEY = "4iRakzuGt9VUHCK3YwDAUxIz4";
 
-	public static String TWITTER_SECRET = "xxxxxxxxxxxxxxxxxxxxxxxxxxx";
+	public static String TWITTER_SECRET = "iVLXFUOTzRPTtwe0VnGpxalddVyUdOyiPLuoLVPkbbl9hkJhUY";
 
 	public static String oauth_callbackURL = "http://www.twtboardpro.com/";
 
 	public static String reqTokenResourceURL = "https://api.twitter.com/oauth/request_token";
 
-	public static String T_KEY = "xxxxxxxxxxxxxxxx";
+	public static String T_KEY = "4iRakzuGt9VUHCK3YwDAUxIz4";
 
-	public static String T_SECRET = "xxxxxxxxxx";
+	public static String T_SECRET = "iVLXFUOTzRPTtwe0VnGpxalddVyUdOyiPLuoLVPkbbl9hkJhUY";
 
 	public static String T_oauth_callbackURL = "T_oauth_callbackURL";
 
@@ -156,6 +156,8 @@ public class MainSingleTon {
 	public static String direct_messages = "https://api.twitter.com/1.1/direct_messages/new.json";
 
 	public static String broadcataction = "com.socioboard.action";
+
+	public static String get_friendships = "https://api.twitter.com/1.1/friendships/show.json";
 
 	public static void resetSigleTon() {
 
@@ -225,4 +227,9 @@ public class MainSingleTon {
 	public static final String twitter_Connection="Connection";
 
 	public static long recentsUnFollowersCount = 0;//13/06/2017
+	public static ArrayList<LocationModel> KeywordsDatas=new ArrayList<>();//15/06/2017
+	public static String location_current=" Global ";
+
+	public static ArrayList<LocationModel> locationModels=new ArrayList<>();//17/06/2017
+	public static int current_location_id;
 }

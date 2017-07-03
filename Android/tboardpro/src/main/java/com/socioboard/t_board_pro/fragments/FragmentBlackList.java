@@ -103,7 +103,7 @@ public class FragmentBlackList extends Fragment {
         {
 
             ImageView profile_pic;
-            TextView followerName;
+            TextView followerName,textRemove;
             Button buttonRemove;
         }
         @Override
@@ -116,11 +116,12 @@ public class FragmentBlackList extends Fragment {
             holder.followerName=(TextView) convertView.findViewById(R.id.followerName);
             holder.profile_pic=(ImageView)convertView.findViewById(R.id.profile_pic);
             holder.buttonRemove=(Button) convertView.findViewById(R.id.buttonRemove);
+            holder.textRemove = (TextView)convertView.findViewById(R.id.textRemove);
             final String ac[]= MainSingleTon.BlackListdatas.get(position).split(" ");
             System.out.println("FragmentWhiteList   "+ac+" "+MainSingleTon.BlackListdatas.get(position));
             holder.followerName.setText(ac[0]);
             imageLoader.DisplayImage(ac[1],   holder.profile_pic);
-            holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
+            holder.textRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     reloutProgress1.setVisibility(View.VISIBLE);

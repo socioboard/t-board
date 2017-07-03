@@ -1,0 +1,80 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.socioboard.t_board_pro.fragments.FragmentKeywordLocation">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="10dp"
+            android:id="@+id/cancelbtn"
+            android:background="@drawable/close_default"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/location_fetch"
+            android:background="@drawable/background_relative_xml"
+            android:layout_alignParentRight="true"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary"
+                android:text=" Global "
+                android:id="@+id/location"/>
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@+id/location"
+                android:background="@drawable/arrow"/>
+
+        </RelativeLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_toLeftOf="@+id/save"
+            android:textColor="@color/black"
+            android:layout_below="@+id/cancelbtn"
+            android:inputType="textMultiLine"
+            android:id="@+id/editText1"
+            android:hint="Type keyword and choose location"
+            android:textSize="17dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cancelbtn"
+            android:background="@drawable/background_button_xml"
+            android:textColor="@color/white"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="7dp"
+            android:padding="8dp"
+            android:id="@+id/save"
+            android:text="Save"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/keyword_list"
+            android:layout_below="@+id/save"
+            android:layout_margin="10dp"/>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:id="@+id/progressBar1"/>
+    </RelativeLayout>
+
+</FrameLayout>

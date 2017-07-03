@@ -1,0 +1,77 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.socioboard.t_board_pro.fragments.LocationFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="8dp"
+            android:id="@+id/cancelbtn"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/cancel"/>
+        <RelativeLayout
+            android:id="@+id/rel"
+            android:layout_below="@+id/cancelbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_white_xml">
+
+            <EditText
+                android:id="@+id/edsearchView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/button1Search"
+                android:background="@null"
+                android:hint="Enter Location.."
+                android:lines="1"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:textColor="@color/black" >
+            </EditText>
+
+            <ImageView
+                android:id="@+id/button1Search"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/tc_bg_paper"
+                android:src="@drawable/ic_search_category_default" />
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel"
+            android:layout_centerHorizontal="true"
+            android:padding="6dp"
+            android:textColor="@color/White"
+            android:text=" Current Location "
+            android:id="@+id/current_location"
+            android:background="@drawable/background_button_xml"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel"
+            android:layout_centerHorizontal="true"
+            android:padding="3dp"
+            android:id="@+id/location_list"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+</FrameLayout>

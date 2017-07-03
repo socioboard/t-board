@@ -1,20 +1,343 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.socioboard.t_board_pro.fragments.FragmentCompareList">
 
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-       <Button
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_centerVertical="true"
-           android:layout_centerHorizontal="true"
-           android:text=" Click Me! "
-           android:id="@+id/compare_list"/>
 
-   </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/fieldlayout">
 
-</FrameLayout>
+        <RelativeLayout
+            android:id="@+id/headingRTL"
+            android:background="@drawable/card_frame_normal"
+            android:gravity="center|center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:gravity="center_horizontal"
+                android:text="Cheack the relationship between two accounts"
+                android:textStyle="normal"
+                android:textColor="#808080"
+                android:fontFamily="sans-serif-condensed"
+                android:id="@+id/headingTXtViw"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/viewIdBelowHeadningTxt"
+
+            android:layout_below="@+id/headingRTL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/viewIdBelowHeadningTxt"
+            android:background="@drawable/card_frame_normal"
+            android:id="@+id/sourceRLT">
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Source User Name"
+                android:id="@+id/source_name"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/Gray"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_frame_normal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/sourceRLT"
+            android:id="@+id/targetRTL">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Target User Name"
+                android:id="@+id/target_name"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/Gray"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/relativeLayout1"
+            android:layout_alignRight="@+id/relativeLayout1"
+            android:layout_below="@+id/targetRTL"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_frame_normal" >
+
+            <Button
+                android:id="@+id/compare_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/myBlue"
+                android:gravity="center"
+                android:text="GetFriendship"
+                android:textColor="@color/White" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/compare_list"
+                android:layout_marginTop="8dp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/viewRTL"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/fieldlayout"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@+id/compare_list"
+            android:layout_marginTop="8dp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/userstatusRTL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/AliceBlue"
+        android:layout_below="@+id/viewRTL">
+
+
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="250dp"
+            android:id="@+id/sourceImgRlt">
+
+
+            <ImageView
+                android:id="@+id/sourceImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/photo_frame"
+                android:paddingBottom="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp" />
+
+            <TextView
+                android:id="@+id/sourceUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sourceImg"
+                android:gravity="bottom"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/directonRLT"
+            android:layout_width="100dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="120dp"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/sourceImgRlt">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/following"
+                android:id="@+id/sourcefollowtext"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/notfollowing"
+                android:visibility="gone"
+                android:id="@+id/sourcenotfollowtext"/>
+
+            <ImageView
+                android:id="@+id/sourcefollowimg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/arrow_right"
+                android:layout_below="@+id/sourcefollowtext"/>
+
+
+            <ImageView
+                android:id="@+id/sourcefollowimgcross"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/not_right_side"
+                android:visibility="gone"
+                android:layout_below="@+id/sourcefollowtext"/>
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/following"
+                android:layout_below="@+id/sourcefollowimg"
+                android:id="@+id/targetfollowtext"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/notfollowing"
+                android:layout_below="@+id/sourcefollowimg"
+                android:visibility="gone"
+                android:id="@+id/targetnotfollowtext"/>
+
+
+            <ImageView
+                android:id="@+id/targetfollowing"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/targetfollowtext"
+                android:src="@drawable/arrow_left"/>
+
+            <ImageView
+                android:id="@+id/targetfollowimgcross"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="gone"
+                android:src="@drawable/not_left_side"
+                android:layout_below="@+id/targetfollowtext"/>
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="300dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/targetRTL"
+            android:layout_toRightOf="@+id/directonRLT">
+
+
+            <ImageView
+                android:id="@+id/targetImg"
+                android:background="@drawable/photo_frame"
+                android:paddingBottom="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:layout_below="@+id/targetImg"
+                android:id="@+id/targerUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"/>
+
+            <!--<ImageButton-->
+                <!--android:id="@+id/followimgbtnplus"-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:visibility="gone"-->
+                <!--android:src="@drawable/plus_sign"-->
+                <!--android:layout_below="@+id/targerUsername"/>-->
+
+            <!--<ImageButton-->
+                <!--android:id="@+id/unfollowimgbtnminus"-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:visibility="gone"-->
+                <!--android:src="@drawable/minus_sign"-->
+                <!--android:layout_below="@+id/targerUsername"/>-->
+
+            <Button
+                android:id="@+id/followimgbtnplus"
+                android:layout_width="65dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_blue_matte"
+                android:text=" +Follow   "
+                android:textColor="@color/White"
+                android:layout_below="@+id/targerUsername"
+                android:visibility="gone"
+                android:textSize="10sp" />
+
+
+            <Button
+                android:id="@+id/unfollowimgbtnminus"
+                android:layout_width="65dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_blue_matte"
+                android:text=" Unfollow   "
+                android:textColor="@color/White"
+                android:layout_below="@+id/targerUsername"
+                android:visibility="gone"
+                android:textSize="10sp" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

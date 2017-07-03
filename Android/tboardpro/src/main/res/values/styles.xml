@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/primary_color_dark</item>
         <item name="colorAccent">@color/accent_color</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <!-- <item name="windowNoTitle">true</item> -->
+         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>

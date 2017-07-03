@@ -1,13 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,8 +11,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
@@ -41,6 +33,14 @@ import com.socioboard.t_board_pro.util.FullUserDetailModel;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentOverlappingFollowings extends Fragment implements
 		OnScrollListener {

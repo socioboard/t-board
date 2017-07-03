@@ -1,9 +1,5 @@
 package com.socioboard.t_board_pro.adapters;
 
-import java.util.ArrayList;
-
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -16,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +28,10 @@ import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ToFollowingAdapter extends BaseAdapter {
 
@@ -160,24 +159,44 @@ public class ToFollowingAdapter extends BaseAdapter {
 
 		noOfFollowers.setText(toFollowingModel.getNoFollowers());
 
-		final Button buttonFollow = (Button) convertView
-				.findViewById(R.id.buttonFollow);
+//		Button buttonWhiteList=(Button)convertView.findViewById(R.id.buttonFollow1);
+//
+//		final Button buttonFollow = (Button) convertView
+//				.findViewById(R.id.buttonFollow);
+//
+//		final Button buttonUnfollow = (Button) convertView
+//				.findViewById(R.id.buttonUnfollow);
+//		final Button buttonBlackList = (Button) convertView
+//				.findViewById(R.id.buttonBlackList);
 
-		final Button buttonUnfollow = (Button) convertView
-				.findViewById(R.id.buttonUnfollow);
-		final Button buttonBlackList = (Button) convertView
-				.findViewById(R.id.buttonBlackList);
+		final TextView textViewFollow = (TextView)convertView.findViewById(R.id.textFollow);
+
+		final TextView textViewUnfollow = (TextView)convertView.findViewById(R.id.textUnfollow);
+
+		final TextView textViewBlacklist = (TextView)convertView.findViewById(R.id.textBlacklist);
+
+		TextView textViewWhitelist = (TextView)convertView.findViewById(R.id.textWhitelist);
 
 
-		Button buttonWhiteList=(Button)convertView.findViewById(R.id.buttonFollow1);
-		if(MainSingleTon.fragment_no==3)
-		buttonWhiteList.setVisibility(View.VISIBLE);
-		if (MainSingleTon.fragment_no==4)
-			buttonBlackList.setVisibility(View.VISIBLE);
-		buttonWhiteList.setOnClickListener(new OnClickListener() {
+
+		if(MainSingleTon.fragment_no==3) {
+//			buttonWhiteList.setVisibility(View.VISIBLE);
+
+			textViewWhitelist.setVisibility(View.VISIBLE);
+		}
+		if (MainSingleTon.fragment_no==4) {
+//			buttonBlackList.setVisibility(View.VISIBLE);
+
+			textViewBlacklist.setVisibility(View.VISIBLE);
+		}
+
+
+
+		textViewWhitelist.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View view) {
-              tboardproLocalData=new TboardproLocalData(context);
+			public void onClick(View v) {
+
+				tboardproLocalData=new TboardproLocalData(context);
 				tboardproLocalData.addWhatiList(MainSingleTon.currentUserModel.getUserid(),toFollowingModel.getUserName(),toFollowingModel.getUserImagerUrl());
 				FragmentIAMFollowingTo.reloutProgress.setVisibility(View.VISIBLE);
 				new Handler().postDelayed(new Runnable() {
@@ -189,13 +208,16 @@ public class ToFollowingAdapter extends BaseAdapter {
 					}
 				}, 500);
 
-
 			}
 		});
 
-		buttonBlackList.setOnClickListener(new OnClickListener() {
+
+
+
+
+		textViewBlacklist.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View view) {
+			public void onClick(View v) {
 				tboardproLocalData=new TboardproLocalData(context);
 				tboardproLocalData.addBlackList(MainSingleTon.currentUserModel.getUserid(),toFollowingModel.getUserName(),toFollowingModel.getUserImagerUrl());
 				FragmentUsersFollowingToMe.reloutProgress.setVisibility(View.VISIBLE);
@@ -209,31 +231,47 @@ public class ToFollowingAdapter extends BaseAdapter {
 				}, 500);
 			}
 		});
+
+
+
 		if (toFollowingModel.isFollowingStatus()) {
 
-			buttonFollow.setVisibility(View.INVISIBLE);
+//			buttonFollow.setVisibility(View.INVISIBLE);
 
-			buttonUnfollow.setVisibility(View.VISIBLE);
+			textViewFollow.setVisibility(View.INVISIBLE);
+
+//			buttonUnfollow.setVisibility(View.VISIBLE);
+
+			textViewUnfollow.setVisibility(View.VISIBLE);
 
 		} else {
 
-			buttonFollow.setVisibility(View.VISIBLE);
+//			buttonFollow.setVisibility(View.VISIBLE);
 
-			buttonUnfollow.setVisibility(View.INVISIBLE);
+			textViewFollow.setVisibility(View.VISIBLE);
+
+
+//			buttonUnfollow.setVisibility(View.INVISIBLE);
+			textViewUnfollow.setVisibility(View.INVISIBLE);
 
 		}
 
 		if (MainSingleTon.currentUserModel.getUserid().contains(
 				toFollowingModel.getId())) {
 
-			buttonUnfollow.setVisibility(View.INVISIBLE);
-			buttonFollow.setVisibility(View.INVISIBLE);
+//			buttonUnfollow.setVisibility(View.INVISIBLE);
+
+			textViewUnfollow.setVisibility(View.INVISIBLE);
+
+//			buttonFollow.setVisibility(View.INVISIBLE);
+
+			textViewFollow.setVisibility(View.INVISIBLE);
 
 		}
 
 		final int pos = position;
 
-		buttonFollow.setOnClickListener(new OnClickListener() {
+		textViewFollow.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -290,7 +328,7 @@ public class ToFollowingAdapter extends BaseAdapter {
 			}
 		});
 
-		buttonUnfollow.setOnClickListener(new OnClickListener() {
+		textViewUnfollow.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 

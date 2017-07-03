@@ -15,6 +15,7 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -124,6 +125,7 @@ public class SplashActivity extends Activity {
 					System.out.println(MainSingleTon.currentUserModel + " currentUserModel");
 					twiterManyLocalData.getWhiteList(MainSingleTon.currentUserModel.getUserid());
 					twiterManyLocalData.getBlackList(MainSingleTon.currentUserModel.getUserid());
+					twiterManyLocalData.getKeywordsList(MainSingleTon.currentUserModel.getUserid());
 					Intent in = new Intent(SplashActivity.this, MainActivity.class);
 					startActivity(in);
 					SplashActivity.this.finish();
@@ -398,6 +400,7 @@ public class SplashActivity extends Activity {
 
 				}
 
+				// editTextCallbcak.setText("http://www.himanshumori.com/");
 
 			}
 		});
@@ -463,17 +466,48 @@ public class SplashActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				new android.app.AlertDialog.Builder(SplashActivity.this).setTitle("Warning!")
-						.setMessage(
+//				new android.app.AlertDialog.Builder(SplashActivity.this).setTitle("Warning!")
+//						.setMessage(
+//								"If you are using default keys, Sometimes you may get problem in getting Data from Twitter.")
+//						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//					public void onClick(DialogInterface dialog, int which) {
+//
+//						editor.putBoolean(MainSingleTon.isTwitterKeyAssigned, true);
+//
+//						editor.putString(MainSingleTon.T_KEY, "4iRakzuGt9VUHCK3YwDAUxIz4");
+//
+//						editor.putString(MainSingleTon.T_SECRET, "iVLXFUOTzRPTtwe0VnGpxalddVyUdOyiPLuoLVPkbbl9hkJhUY");
+//
+//						editor.putString(MainSingleTon.T_oauth_callbackURL, "https://www.socioboard.com");
+//
+//						editor.commit();
+//
+//						startActivity(new Intent(getApplicationContext(), SplashActivity.class));
+//
+//						finish();
+//
+//					}
+//				}).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+//					public void onClick(DialogInterface dialog, int which) {
+//						// do nothing
+//					}
+//				}).setIcon(R.drawable.ic_dialog_alert_holo_light).show();
+
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					System.out.println("Build Version is Lollipop or above");
+
+					new android.app.AlertDialog.Builder (SplashActivity.this, android.R.style.Theme_Material_Light_Dialog_Alert).setTitle("Warning")
+											.setMessage(
 								"If you are using default keys, Sometimes you may get problem in getting Data from Twitter.")
 						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 
-						editor.putBoolean(MainSingleTon.isTwitterKeyAssigned, true);
+					editor.putBoolean(MainSingleTon.isTwitterKeyAssigned, true);
 
-						editor.putString(MainSingleTon.T_KEY, "xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+						editor.putString(MainSingleTon.T_KEY, "4iRakzuGt9VUHCK3YwDAUxIz4");
 
-						editor.putString(MainSingleTon.T_SECRET, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+						editor.putString(MainSingleTon.T_SECRET, "iVLXFUOTzRPTtwe0VnGpxalddVyUdOyiPLuoLVPkbbl9hkJhUY");
 
 						editor.putString(MainSingleTon.T_oauth_callbackURL, "https://www.socioboard.com");
 
@@ -489,6 +523,39 @@ public class SplashActivity extends Activity {
 						// do nothing
 					}
 				}).setIcon(R.drawable.ic_dialog_alert_holo_light).show();
+
+				}
+				else
+				{
+					System.out.println("Build Version is lower than Lollipop");
+									new android.app.AlertDialog.Builder(SplashActivity.this).setTitle("Warning!")
+						.setMessage(
+								"If you are using default keys, Sometimes you may get problem in getting Data from Twitter.")
+						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+
+						editor.putBoolean(MainSingleTon.isTwitterKeyAssigned, true);
+
+						editor.putString(MainSingleTon.T_KEY, "xxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+						editor.putString(MainSingleTon.T_SECRET, "xxxxxxxxxxxxx");
+
+						editor.putString(MainSingleTon.T_oauth_callbackURL, "https://www.socioboard.com");
+
+						editor.commit();
+
+						startActivity(new Intent(getApplicationContext(), SplashActivity.class));
+
+						finish();
+
+					}
+				}).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						// do nothing
+					}
+				}).setIcon(R.drawable.ic_dialog_alert_holo_light).show();
+
+				}
 
 			}
 		});
@@ -547,8 +614,8 @@ public class SplashActivity extends Activity {
 //		MainSingleTon.currentUserModel.setUserAcessToken("3902001134-0KHlNVQscxYxkgCSey5d5l0OzPnuqwvVDpnknDY");
 //		MainSingleTon.currentUserModel.setUsersecretKey("278jYQWvgD4dfzVNMcOes9l9y403A3fBl97usgLNrcpIe");
 
-		MainSingleTon.currentUserModel.setUserAcessToken("xxxxxxxxxx");
-		MainSingleTon.currentUserModel.setUsersecretKey("xxxxxxxxxxxxx
+		MainSingleTon.currentUserModel.setUserAcessToken("xxxxxxxxxxxxxxxx");
+		MainSingleTon.currentUserModel.setUsersecretKey("xxxxxxxxxxxxxxxxxxx");
 
 
 		MainSingleTon.TWITTER_KEY = apiKey;

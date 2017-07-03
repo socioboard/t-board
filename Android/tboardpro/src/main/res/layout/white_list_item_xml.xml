@@ -8,6 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/background_white_xml" >
 
     <com.socioboard.t_board_pro.ui.AccountImageView
@@ -15,8 +16,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="7dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
         android:src="@drawable/account_image"
         app:maskDrawable="@drawable/circle_mask" />
 
@@ -42,7 +41,23 @@
             android:text=" Remove   "
             android:layout_centerVertical="true"
             android:textColor="@color/White"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/textRemove"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Remove"
+            android:layout_centerVertical="true"
+            android:textColor="@color/myBlue"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="12sp" />
+
     </RelativeLayout>
 
 </LinearLayout>

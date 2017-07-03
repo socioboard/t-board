@@ -80,11 +80,11 @@
 
         <ImageView
             android:id="@+id/notificationIcon"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingLeft="25dp"
-            android:src="@drawable/notification4" />
+            android:src="@drawable/notification_new"/>
 
         <TextView
             android:id="@+id/notificationText"
@@ -101,9 +101,10 @@
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switchButton1"
-            android:layout_width="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginLeft="65dp"
+            android:layout_marginLeft="70dp"
+            android:gravity="right"
             android:layout_toRightOf="@+id/notificationText"
             android:textColor="@color/white"
             android:ellipsize="end"

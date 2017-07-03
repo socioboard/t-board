@@ -298,18 +298,22 @@ public class DrawerAdapter extends BaseAdapter {
                 }
                 break;
             case 19:
-                /*if (MainSingleTon.BlackListdatas.size()>0) {
-					progressBar.setVisibility(View.INVISIBLE);
-					item_count.setVisibility(View.VISIBLE);
-					item_count.setText("" + MainSingleTon.BlackListdatas.size());
 
-
-				} else {*/
                 progressBar.setVisibility(View.INVISIBLE);
                 item_count.setVisibility(View.INVISIBLE);
-                //}
-                break;
 
+                break;
+            case 20:
+                if (MainSingleTon.KeywordsDatas.size() > 0) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    item_count.setVisibility(View.VISIBLE);
+                    item_count.setText("" + MainSingleTon.KeywordsDatas.size());
+
+
+                } else {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    item_count.setVisibility(View.INVISIBLE);
+                }
             default:
 
         }

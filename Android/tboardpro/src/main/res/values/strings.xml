@@ -20,6 +20,8 @@
     <string name="adaccount" translatable="true">AddAccount</string>
     <string name="Schedulle" translatable="true">Schedule</string>
     <string name="twitter_text" translatable="true">We do not post without your permission</string>
+    <string name="notfollowing" translatable="false">NotFollowing</string>
+    <string name="twitter_keyword_title" translatable="false">Showing accounts for your keywords/location</string>
 
     <plurals name="numberOfNewArticles">
         <item quantity="one">%d new</item>
@@ -38,14 +40,16 @@
         <item>Favourite</item>
         <item>Search Users/Tweets</item>
         <item>Fans</item>
-        <item>MutualFollowers</item>
-        <item>NonFollowers</item>
+        <item>Mutual Followers</item>
+        <item>Non Followers</item>
         <item>Overlapping Users</item>
         <item>Schedule</item>
         <item>Statistics</item>
-        <item>Recenct UnFollowers</item>
+        <item>Recent UnFollowers</item>
         <item>White List</item>
         <item>Black List</item>
+        <item>Get Friendship</item>
+        <item>Hash Keywords</item>
     </string-array>
 
     <array name="drawer_icons">
@@ -65,10 +69,11 @@
         <item>@drawable/overlappingfollowers</item>
         <item>@drawable/schedule_icon</item>
         <item>@drawable/statistics</item>
-        <item>@drawable/non_followers</item>
-        <item>@drawable/friends_icon</item>
-        <item>@drawable/non_followers</item>
-
+        <item>@drawable/getfriend</item>
+        <item>@drawable/whitelist</item>
+        <item>@drawable/blacklist</item>
+        <item>@drawable/getfriend</item>
+        <item>@drawable/hashtag</item>
     </array>
 
     <string-array name="footer_titles" translatable="false">

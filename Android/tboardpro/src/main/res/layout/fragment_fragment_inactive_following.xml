@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.socioboard.t_board_pro.fragments.FragmentInactiveFollowing">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/dataRTL"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="#bdbdbd"
+            android:gravity="bottom"
+            android:layout_height="25dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inactive from last 1 month"
+                android:textSize="15sp"
+                android:gravity="center_vertical" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/view1RTL"
+            android:layout_below="@+id/dataRTL"
+            android:layout_width="match_parent"
+            android:layout_height="10dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </View>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/listViewRTL"
+            android:layout_below="@+id/view1RTL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ListView
+                android:id="@+id/listviewinactivefollowing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ListView>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

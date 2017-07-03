@@ -1,0 +1,90 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.socioboard.t_board_pro.fragments.FragmentHashKeywords">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/Header_bar"
+            android:text="Keyword Fellow "/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_query"
+            android:layout_below="@+id/title">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:id="@+id/title_desc"
+                android:textSize="14sp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/secondary"
+                android:text="@string/twitter_keyword_title"/>
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edit_default_black"
+                android:id="@+id/edit"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_title"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:background="@color/Header_bar"
+            android:padding="8dp"
+            android:text="Keyword Fellow User List "
+            android:layout_below="@+id/edit_query"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/list_title"
+            android:layout_marginTop="5dp"
+            android:id="@+id/list_user"
+            android:padding="5dp"
+            android:visibility="gone"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/list_title"
+            android:layout_marginTop="150dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/Header_bar"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:text="Add Keyword"
+            android:id="@+id/save"
+            android:padding="5dp"/>
+
+        <RelativeLayout
+            android:id="@+id/reloutProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</FrameLayout>

@@ -6,16 +6,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#2d94c0"
-            android:text="Black-List Data"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:id="@+id/headerbar"
-            android:padding="10dp"/>
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="#2d94c0"-->
+            <!--android:text="Black-List Data"-->
+            <!--android:gravity="center"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="18sp"-->
+            <!--android:id="@+id/headerbar"-->
+            <!--android:padding="10dp"/>-->
         <ListView
             android:id="@+id/listViewToFollowing"
             android:layout_width="match_parent"

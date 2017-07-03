@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Handler;
 
 public class TboardproLocalData extends SQLiteOpenHelper {
 
@@ -75,7 +76,13 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 	public static final String table_Unfollowers = "table_unfollowers";
 	public static final String KEY_unfollowers_ids = "recent_unfollow_ids";
 	// ////////////////////////////////////////////////////////
+	public static final String  Keywords_List_Table= "keywords_list_table";//15/06/2017
+	public static final String Keywords = "kewwords";
+	private static final String Keyword_location="location";
+	private static final String Keyword_lati="lat";
+	private static final String Keyword_lang="lan";
 
+	/////////////////////////////////////////////////////////////////////
 	public TboardproLocalData(Context context) {
 
 		super(context, db_name, null, 1);
@@ -138,6 +145,14 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 		String querry10 = "CREATE TABLE IF NOT EXISTS " + table_followers_temp + "("
 				+ KEY_followers_ids + " TEXT," + KEY_UserID + " TEXT)";//13/06/17
 
+		String querry11 = "CREATE TABLE IF NOT EXISTS " +
+				Keywords_List_Table + "("				+
+				KEY_UserID + " TEXT , "+
+				Keyword_location + " TEXT , "+
+				Keyword_lati + " TEXT , "+
+				Keyword_lang + " TEXT , "+
+				Keywords+" TEXT)";//15/06/2017
+
 		SQLiteDatabase database = this.getWritableDatabase();
 
 		database.execSQL(querry);
@@ -159,7 +174,7 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 		database.execSQL(querry9);
 
 		database.execSQL(querry10);
-
+		database.execSQL(querry11);
 		System.out.println("CreateTable " + querry);
 
 		System.out.println("CreateTable2 " + querry2);
@@ -176,6 +191,7 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 		System.out.println("querry9 " + querry9);
 		System.out.println("querry10 " + querry10);
+		System.out.println("querry11 " + querry11);
 	}
 
 	public void addNewUserAccount(ModelUserDatas modelUserDatas) {
@@ -945,4 +961,65 @@ public class TboardproLocalData extends SQLiteOpenHelper {
 
 
 	//////////////////////////////////////////////////////////////////////
+
+	public void addKeywordsList(final LocationModel locationModel) {
+
+		SQLiteDatabase database = this.getWritableDatabase();
+
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(KEY_UserID, locationModel.getUserId());
+		contentValues.put(Keywords, locationModel.getKeyword());
+		contentValues.put(Keyword_location, locationModel.getFormatted_address());
+		contentValues.put(Keyword_lati, locationModel.getLat());
+		contentValues.put(Keyword_lang, locationModel.getLng());
+		database.insert(Keywords_List_Table, null, contentValues);
+
+		System.out.println("addKeywordsList " + contentValues);
+
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getKeywordsList(locationModel.getUserId());
+			}
+		},250);
+
+	}
+
+	public boolean getKeywordsList(String userId) {
+		MainSingleTon.KeywordsDatas.clear();
+		boolean status=false;
+		String query = "SELECT * FROM " + Keywords_List_Table  + " WHERE " + KEY_UserID
+				+ " = '" + userId + "'";
+
+		SQLiteDatabase database = this.getReadableDatabase();
+
+		Cursor cursor = database.rawQuery(query, null);
+
+		if (cursor!=null) {
+			status=true;
+			while (cursor.moveToNext()) {
+				LocationModel locationModel=new LocationModel();
+				locationModel.setUserId(cursor.getString(0));
+				locationModel.setFormatted_address(cursor.getString(1));
+				locationModel.setLat(Double.parseDouble(cursor.getString(2)));
+				locationModel.setLng(Double.parseDouble(cursor.getString(3)));
+				locationModel.setKeyword(cursor.getString(4));
+				MainSingleTon.KeywordsDatas.add(locationModel);
+			}
+		}
+		System.out.println("MainSingleTon.KeywordListdatas  "+MainSingleTon.KeywordsDatas);
+		return status;
+	}
+	public boolean deleteKeywordsListData(String userName,String user_id)
+	{
+		boolean status=false;
+		SQLiteDatabase database = this.getReadableDatabase();
+		if(userName!=null) {
+			database.delete(Keywords_List_Table, Keywords + "='" + userName +"' and "+KEY_UserID+" ='"+user_id+ "' ;", null);
+			status=true;
+		}
+		database.close();
+		return status;
+	}
+
 }

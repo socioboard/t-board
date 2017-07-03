@@ -76,6 +76,7 @@ import com.socioboard.t_board_pro.fragments.FragmentCompareList;
 import com.socioboard.t_board_pro.fragments.FragmentCopyFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentFans;
 import com.socioboard.t_board_pro.fragments.FragmentFavourites;
+import com.socioboard.t_board_pro.fragments.FragmentHashKeywords;
 import com.socioboard.t_board_pro.fragments.FragmentIAMFollowingTo;
 import com.socioboard.t_board_pro.fragments.FragmentMutualFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentNonFollowers;
@@ -129,7 +130,7 @@ import java.util.TimerTask;
 //import com.google.android.gms.appindexing.Thing;
 //import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
 	FirebaseDatabase mFirebaseInstance;
 
@@ -576,6 +577,18 @@ public class MainActivity extends ActionBarActivity {
 				fragment = new FragmentCompareList();
 				myprint("FragmentCompareList");
 				break;
+			case 20:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				fragment = new FragmentHashKeywords();
+				myprint("FragmentCompareList");
+				break;
+//			case 21:
+//				MainSingleTon.fragment_no=position;
+//				System.out.println("......"+position);
+//				fragment = new FragmentInactiveFollowing();
+//				myprint("Fragment Inactive Following");
+//				break;
 			default:
 				myprint("default: ");
 				break;
@@ -2079,7 +2092,6 @@ public class MainActivity extends ActionBarActivity {
 					e.printStackTrace();
 
 				}
-
 			}
 
 			@Override
@@ -2292,13 +2304,13 @@ public class MainActivity extends ActionBarActivity {
 				e.printStackTrace();
 			}
 		}
-		else if(data.length()==2)
-		{
-			System.out.println("unfollow user is empty");
-			MainSingleTon.recentsUnFollowersCount = 0;
-		}
+//		else if(data.length()==2)
+//		{
+//			System.out.println("unfollow user is empty");
+//			MainSingleTon.recentsUnFollowersCount = 0;
+//		}
 		else {
-
+			Toast.makeText(getApplicationContext(),"No Recent UnFollower",Toast.LENGTH_SHORT).show();
 			System.out.println("unfollow user is null==");
 			MainSingleTon.recentsUnFollowersCount = 0;
 		}

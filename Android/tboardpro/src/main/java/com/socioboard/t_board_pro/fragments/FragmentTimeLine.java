@@ -1,18 +1,7 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -35,6 +24,16 @@ import com.socioboard.t_board_pro.util.Const;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TweetModel;
 import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FragmentTimeLine extends Fragment implements OnScrollListener {
 

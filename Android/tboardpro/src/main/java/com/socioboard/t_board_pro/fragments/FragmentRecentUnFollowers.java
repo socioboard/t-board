@@ -52,6 +52,7 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
+
         aActivity = getActivity();
         rootView = inflater.inflate(R.layout.fragment_fragment_recent_un_followers, container, false);
 
@@ -72,54 +73,6 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
         viewGroup.setVisibility(View.INVISIBLE);
 
         showProgress();
-
-
-        // * * * * * * * * * * * * * * Recent
-
-//        ArrayList<String> unfollowerIds = new ArrayList<String>();
-//
-//        String unfollowerlist = tboardproLocalData.getUnFollowersIDs(MainSingleTon.currentUserModel.getUserid());
-//        if (unfollowerlist != null) {
-//            try {
-//
-//                JSONArray jsonArrayTmp = new JSONArray(tboardproLocalData.getUnFollowersIDs(MainSingleTon.currentUserModel
-//                        .getUserid()));
-//
-//
-//                for (int i = 0; i < jsonArrayTmp.length(); i++) {
-//
-//                    unfollowerIds.add(jsonArrayTmp.getString(i));
-//
-//                }
-//                System.out.println("unfollowerIds==" + unfollowerIds);
-//
-//
-//            } catch (JSONException e) {
-//
-//                e.printStackTrace();
-//            }
-//
-//            rescentsIds = unfollowerIds;
-//
-//            MainSingleTon.recentsUnFollowersCount = unfollowerIds.size();
-//
-//            if (rescentsIds.size() == 0) {
-//
-//                System.out.println("No Recent Unfollower");
-//
-//                cancelProgres();
-//
-//            } else {
-//
-//                System.out.println("MainSingleTon.recentsUnFollowersCount==" + rescentsIds.size());
-//
-//                rescentUnFollowers();
-//            }
-//        } else {
-//            System.out.println("Unfollower list is empty");
-//            cancelProgres();
-//        }
-
 
         return rootView;
     }
@@ -177,7 +130,8 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
     }
 
 
-    public void rescentUnFollowers() {
+    public void rescentUnFollowers()
+    {
         System.out.println("inside rescenUnfollowers");
         TwitterUserGETRequest twitterUserGETRequest = new TwitterUserGETRequest(MainSingleTon.currentUserModel, new TwitterRequestCallBack() {
             @Override
@@ -233,7 +187,6 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
         System.out.println("Const.Unfollowuser_id" + Const.Unfollowuser_id);
         System.out.println("Const.unfollowinclude_entities" + Const.unfollowinclude_entities);
 
-        //}
     }
 
     @Override
@@ -276,7 +229,8 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
 
     }
 
-    protected void parseJsonResult(String jsonResult) {
+    protected void parseJsonResult(String jsonResult)
+    {
 
         myprint("parseJsonResult==  " + jsonResult);
 

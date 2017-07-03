@@ -1,34 +1,10 @@
 [
     {
-        "merged": "D:\\TboardproNew4.2\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__dark_theme.xml",
-        "source": "D:\\TboardproNew4.2\\t-boardpro\\library\\src\\main\\res\\color\\vpi__dark_theme.xml"
+        "merged": "D:\\Tboardproappnew4.3\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__light_theme.xml",
+        "source": "D:\\Tboardproappnew4.3\\t-boardpro\\library\\src\\main\\res\\color\\vpi__light_theme.xml"
     },
     {
-        "merged": "D:\\TboardproDurgesh\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__dark_theme.xml",
-        "source": "D:\\TboardproDurgesh\\t-boardpro\\library\\src\\main\\res\\color\\vpi__dark_theme.xml"
-    },
-    {
-        "merged": "D:\\TboardproApp4.0 Android Studio\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__dark_theme.xml",
-        "source": "D:\\TboardproApp4.0 Android Studio\\t-boardpro\\library\\src\\main\\res\\color\\vpi__dark_theme.xml"
-    },
-    {
-        "merged": "D:\\TboardproNew4.2\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__light_theme.xml",
-        "source": "D:\\TboardproNew4.2\\t-boardpro\\library\\src\\main\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "D:\\t-board workapace\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__dark_theme.xml",
-        "source": "D:\\t-board workapace\\t-boardpro\\library\\src\\main\\res\\color\\vpi__dark_theme.xml"
-    },
-    {
-        "merged": "D:\\TboardproDurgesh\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__light_theme.xml",
-        "source": "D:\\TboardproDurgesh\\t-boardpro\\library\\src\\main\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "D:\\TboardproApp4.0 Android Studio\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__light_theme.xml",
-        "source": "D:\\TboardproApp4.0 Android Studio\\t-boardpro\\library\\src\\main\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "D:\\t-board workapace\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__light_theme.xml",
-        "source": "D:\\t-board workapace\\t-boardpro\\library\\src\\main\\res\\color\\vpi__light_theme.xml"
+        "merged": "D:\\Tboardproappnew4.3\\t-boardpro\\library\\build\\intermediates\\res\\merged\\release\\color\\vpi__dark_theme.xml",
+        "source": "D:\\Tboardproappnew4.3\\t-boardpro\\library\\src\\main\\res\\color\\vpi__dark_theme.xml"
     }
 ]
