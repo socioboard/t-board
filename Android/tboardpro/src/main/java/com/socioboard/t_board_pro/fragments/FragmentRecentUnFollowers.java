@@ -11,7 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.adapters.ToUnFollowingAdapter;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
@@ -51,10 +55,12 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
+        MainSingleTon.mixpanelAPI.track("Fragment RecentUnfollowers oncreate called");
 
         aActivity = getActivity();
         rootView = inflater.inflate(R.layout.fragment_fragment_recent_un_followers, container, false);
+
+        LoadAd();
 
         tboardproLocalData = new TboardproLocalData(getActivity());
 
@@ -75,6 +81,15 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
         showProgress();
 
         return rootView;
+    }
+
+    void LoadAd()
+    {
+        MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
     }
 
 
@@ -944,7 +959,16 @@ public class FragmentRecentUnFollowers extends Fragment implements AbsListView.O
         } else {
             System.out.println("Unfollower list is empty");
             cancelProgres();
+            ((Activity)getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(),"There is no Recent Unfollower",Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
+
+
 
     }
 

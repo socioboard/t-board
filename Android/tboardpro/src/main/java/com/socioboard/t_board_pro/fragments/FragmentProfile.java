@@ -1,12 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.dialog.ShowTweetComposeDialog;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterUserShowRequest;
@@ -33,6 +29,13 @@ import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.Utils;
 import com.socioboard.tboardpro.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class FragmentProfile extends Fragment {
 
@@ -64,6 +67,8 @@ public class FragmentProfile extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment Profile oncreate called");
+
 		myprint("onCreateView  FragmentProfile");
 
 		aActivity = getActivity();
@@ -71,6 +76,8 @@ public class FragmentProfile extends Fragment {
 		localData = new TboardproLocalData(FragmentProfile.this.getActivity().getApplicationContext());
 
 		rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+		LoadAd();
 
 		textView1Name = (TextView) rootView.findViewById(R.id.textView1Name);
 
@@ -151,6 +158,15 @@ public class FragmentProfile extends Fragment {
 		userShowRequest.executeThisRequest(MainSingleTon.currentUserModel.getUsername());
 
 		return rootView;
+	}
+
+	void LoadAd()
+	{
+		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
+
 	}
 
 	void myToastS(final String toastMsg) {

@@ -1,8 +1,5 @@
 package com.socioboard.t_board_pro;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -41,6 +38,9 @@ import com.socioboard.t_board_pro.util.SchTweetModel;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.TweetSchedullerReceiver;
 import com.socioboard.tboardpro.R;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SchedulleComposeActivity extends ActionBarActivity {
 
@@ -415,7 +415,7 @@ public class SchedulleComposeActivity extends ActionBarActivity {
 
 		} else {
 
-			if (tweetString.length() == 0) {
+			if (tweetString.length() == 0 || tweetString.trim().length()==0) {
 
 				myToastS("Text can Not be Empty");
 
@@ -497,7 +497,7 @@ public class SchedulleComposeActivity extends ActionBarActivity {
 
 			} else {
 
-				myToastS("picked time should be more than current time");
+				myToastS("picked date should be more than current date");
 
 			}
 

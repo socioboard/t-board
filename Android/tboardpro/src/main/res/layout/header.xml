@@ -11,7 +11,7 @@
         android:adjustViewBounds="true"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        android:src="@drawable/whitebg_logo" />
+        />
 
     <ImageView
         android:layout_width="match_parent"

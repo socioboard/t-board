@@ -1,18 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import org.achartengine.ChartFactory;
-import org.achartengine.chart.PointStyle;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
-import org.achartengine.renderer.BasicStroke;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
-
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
@@ -27,6 +14,19 @@ import com.socioboard.t_board_pro.util.EntityModel;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.tboardpro.R;
+
+import org.achartengine.ChartFactory;
+import org.achartengine.chart.PointStyle;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.BasicStroke;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class FragmentsStatistics extends Fragment {
 
@@ -45,8 +45,11 @@ public class FragmentsStatistics extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		MainSingleTon.mixpanelAPI.track("Fragment Statics oncreate called");
 
 		rootview = inflater.inflate(R.layout.fragment_stats, container, false);
+
+		//LoadAd();
 
 		tboardproLocalData = new TboardproLocalData(getActivity());
 
@@ -63,6 +66,15 @@ public class FragmentsStatistics extends Fragment {
 
 		return rootview;
  	}
+
+//	void LoadAd()
+//	{
+//		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+//		AdView mAdView = (AdView) rootview.findViewById(R.id.adView);
+//		AdRequest adRequest = new AdRequest.Builder().build();
+//		mAdView.loadAd(adRequest);
+//
+//	}
 
 	private void openChart2() {
 
@@ -190,7 +202,7 @@ public class FragmentsStatistics extends Fragment {
 		XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
 		multiRenderer.setXLabels(0);
 		multiRenderer.setChartTitle("Followers Analysis");
-		multiRenderer.setXTitle("Year 2015");
+		multiRenderer.setXTitle("Year 2017");
 		multiRenderer.setYTitle("Followers List");
 
 		/***

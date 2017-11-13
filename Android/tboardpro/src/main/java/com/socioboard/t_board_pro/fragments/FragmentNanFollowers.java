@@ -1,23 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.socioboard.t_board_pro.adapters.ToFollowingAdapter;
-import com.socioboard.t_board_pro.fragments.FragmentFans.FanFollowing;
-import com.socioboard.t_board_pro.fragments.FragmentFans.FetchReqPaged;
-import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
-import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
-import com.socioboard.t_board_pro.util.Const;
-import com.socioboard.t_board_pro.util.MainSingleTon;
-import com.socioboard.t_board_pro.util.ToFollowingModel;
-import com.socioboard.tboardpro.R;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -28,10 +10,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
+
+import com.socioboard.t_board_pro.adapters.ToFollowingAdapter;
+import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
+import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
+import com.socioboard.t_board_pro.util.Const;
+import com.socioboard.t_board_pro.util.MainSingleTon;
+import com.socioboard.t_board_pro.util.ToFollowingModel;
+import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentNanFollowers extends Fragment implements OnScrollListener {
  
@@ -52,6 +50,8 @@ public class FragmentNanFollowers extends Fragment implements OnScrollListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+		MainSingleTon.mixpanelAPI.track("Fragment NanFollowers oncreate called");
 
 		aActivity = getActivity();
 

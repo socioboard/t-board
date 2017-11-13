@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ab_solid_light_holo" >
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/ab_solid_light_holo">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -237,13 +238,14 @@
     </ListView>
 
     <RelativeLayout
+        android:layout_above="@+id/adView"
         android:id="@+id/reloutNbottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="1dp"
+
         android:layout_marginLeft="1dp"
         android:layout_marginRight="1dp"
         android:background="@drawable/ab_share_pack_holo_light"
@@ -284,6 +286,17 @@
             android:textSize="10sp" >
         </TextView>
     </RelativeLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+
 
     <RelativeLayout
         android:id="@+id/reloutProgress"

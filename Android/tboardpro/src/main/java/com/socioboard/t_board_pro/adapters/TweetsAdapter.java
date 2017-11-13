@@ -1,35 +1,5 @@
 package com.socioboard.t_board_pro.adapters;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import com.socioboard.t_board_pro.AnyUserProfileDialog;
-import com.socioboard.t_board_pro.MainActivity;
-import com.socioboard.t_board_pro.SchedulleComposeActivity;
-import com.socioboard.t_board_pro.dialog.ShowTweetComposeDialog;
-import com.socioboard.t_board_pro.lazylist.ImageLoader;
-import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestFollow;
-import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestPerams;
-import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestUnFollow;
-import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
-import com.socioboard.t_board_pro.util.Const;
-import com.socioboard.t_board_pro.util.MainSingleTon;
-import com.socioboard.t_board_pro.util.ModelUserDatas;
-import com.socioboard.t_board_pro.util.TboardproLocalData;
-import com.socioboard.t_board_pro.util.TmpCallback;
-import com.socioboard.t_board_pro.util.TweetModel;
-import com.socioboard.tboardpro.R;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -55,6 +25,37 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.socioboard.t_board_pro.AnyUserProfileDialog;
+import com.socioboard.t_board_pro.MainActivity;
+import com.socioboard.t_board_pro.SchedulleComposeActivity;
+import com.socioboard.t_board_pro.dialog.ShowTweetComposeDialog;
+import com.socioboard.t_board_pro.lazylist.ImageLoader;
+import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestFollow;
+import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestPerams;
+import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestUnFollow;
+import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
+import com.socioboard.t_board_pro.util.Const;
+import com.socioboard.t_board_pro.util.MainSingleTon;
+import com.socioboard.t_board_pro.util.ModelUserDatas;
+import com.socioboard.t_board_pro.util.TboardproLocalData;
+import com.socioboard.t_board_pro.util.TmpCallback;
+import com.socioboard.t_board_pro.util.TweetModel;
+import com.socioboard.tboardpro.R;
+import com.squareup.picasso.Picasso;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TweetsAdapter extends BaseAdapter {
 
@@ -166,7 +167,8 @@ public class TweetsAdapter extends BaseAdapter {
 
 			ImageView imageView1Tweet = (ImageView) convertView.findViewById(R.id.imageView1Tweet);
 
-			imageLoader.DisplayImage(tweetModel.getMediaImagerUrl(), imageView1Tweet);
+			Picasso.with(context).load(tweetModel.getMediaImagerUrl()).into(imageView1Tweet);
+			//imageLoader.DisplayImage(tweetModel.getMediaImagerUrl(), imageView1Tweet);
 
 		}
 
@@ -449,6 +451,15 @@ public class TweetsAdapter extends BaseAdapter {
 		tweettime.setText(dateAndTime);
 
 		imageLoader.DisplayImage(tweetModel.getUserImagerUrl(), profilePic);
+
+//		if (tweetModel.getMediaImagerUrl().isEmpty())
+//		{
+////				profilePic.setVisibility(View.GONE);
+//		}else {
+//
+//			//Picasso.with(context).load(tweetModel.getUserImagerUrl()).noPlaceholder().into(profilePic);
+//
+//		}
 
 		tweetView.setMovementMethod(LinkMovementMethod.getInstance());
 

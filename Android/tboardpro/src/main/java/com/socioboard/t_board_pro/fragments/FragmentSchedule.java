@@ -1,10 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,13 +11,22 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.SchedulleComposeActivity;
 import com.socioboard.t_board_pro.adapters.SchTweetsAdapter;
+import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.ModelUserDatas;
 import com.socioboard.t_board_pro.util.SchTweetModel;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.tboardpro.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FragmentSchedule extends Fragment {
 
@@ -48,10 +52,14 @@ public class FragmentSchedule extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment Schedule oncreate called");
+
 		tboardproLocalData = new TboardproLocalData(getActivity());
 
 		rootView = inflater.inflate(R.layout.tweetschedulle_table, container,
 				false);
+
+		LoadAd();
 
 		listview = (ListView) rootView.findViewById(R.id.listView1);
 
@@ -118,6 +126,15 @@ public class FragmentSchedule extends Fragment {
 		}, 1000, 500);
 
 		return rootView;
+	}
+
+	void LoadAd()
+	{
+		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
+
 	}
 
 	@Override

@@ -19,21 +19,23 @@
             android:src="@drawable/account_image"
             app:maskDrawable="@drawable/circle_mask" />
 
-        <Button
-            android:id="@+id/buttonUnfollow"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/btn_blue_matte"
-            android:text="UnFollow"
-            android:textColor="@color/White"
-            android:textSize="10sp"
-            android:visibility="invisible"/>
+        <!--<Button-->
+            <!--android:id="@+id/buttonUnfollow"-->
+            <!--android:layout_width="65dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@drawable/btn_blue_matte"-->
+            <!--android:text="UnFollow"-->
+            <!--android:textColor="@color/White"-->
+            <!--android:textSize="10sp"-->
+            <!--android:visibility="invisible"/>-->
 
         <TextView
             android:id="@+id/textUnfollow"
+            android:background="@drawable/textview_background"
+            android:focusable="true"
             android:layout_width="65dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
@@ -47,6 +49,8 @@
 
         <TextView
             android:id="@+id/textFollow"
+            android:background="@drawable/textview_background"
+            android:focusable="true"
             android:layout_width="65dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
@@ -59,34 +63,36 @@
             android:textStyle="bold"
             android:visibility="invisible"/>
 
-        <Button
-            android:id="@+id/buttonFollow"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/btn_blue_matte"
-            android:text=" +Follow   "
-            android:textColor="@color/White"
-            android:textSize="10sp"
-            android:visibility="invisible"/>
-        <Button
-            android:id="@+id/buttonFollow1"
-            android:layout_below="@+id/buttonFollow"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/background_skyblue_xml"
-            android:text="+White List"
-            android:textColor="@color/White"
-            android:textSize="10sp"
-            android:visibility="gone"/>
+        <!--<Button-->
+            <!--android:id="@+id/buttonFollow"-->
+            <!--android:layout_width="65dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@drawable/btn_blue_matte"-->
+            <!--android:text=" +Follow   "-->
+            <!--android:textColor="@color/White"-->
+            <!--android:textSize="10sp"-->
+            <!--android:visibility="invisible"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/buttonFollow1"-->
+            <!--android:layout_below="@+id/buttonFollow"-->
+            <!--android:layout_width="65dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:background="@drawable/background_skyblue_xml"-->
+            <!--android:text="+White List"-->
+            <!--android:textColor="@color/White"-->
+            <!--android:textSize="10sp"-->
+            <!--android:visibility="gone"/>-->
 
         <TextView
             android:id="@+id/textWhitelist"
+            android:background="@drawable/textview_background"
+            android:focusable="true"
             android:layout_below="@+id/textUnfollow"
             android:layout_width="65dp"
             android:gravity="center"
@@ -103,6 +109,8 @@
 
         <TextView
             android:id="@+id/textBlacklist"
+            android:background="@drawable/textview_background"
+            android:focusable="true"
             android:layout_below="@+id/textUnfollow"
             android:layout_width="65dp"
             android:gravity="center"
@@ -117,19 +125,19 @@
             android:visibility="gone" />
 
 
-        <Button
-            android:id="@+id/buttonBlackList"
-            android:layout_below="@+id/buttonFollow"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/background_skyblue_xml"
-            android:text="+Black List"
-            android:textColor="@color/White"
-            android:textSize="10sp"
-            android:visibility="gone"/>
+        <!--<Button-->
+            <!--android:id="@+id/buttonBlackList"-->
+            <!--android:layout_below="@+id/buttonFollow"-->
+            <!--android:layout_width="65dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:background="@drawable/background_skyblue_xml"-->
+            <!--android:text="+Black List"-->
+            <!--android:textColor="@color/White"-->
+            <!--android:textSize="10sp"-->
+            <!--android:visibility="gone"/>-->
 
 
         <TextView

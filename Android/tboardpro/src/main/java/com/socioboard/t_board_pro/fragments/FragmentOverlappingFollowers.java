@@ -90,6 +90,8 @@ public class FragmentOverlappingFollowers extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment OverLappingFollower oncreate called");
+
 		aActivity = getActivity();
 
 		imageLoader = new ImageLoader(getActivity());

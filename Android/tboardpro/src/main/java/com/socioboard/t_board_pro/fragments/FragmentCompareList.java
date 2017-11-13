@@ -16,6 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestFollow;
 import com.socioboard.t_board_pro.twitterapi.TwitterPostRequestUnFollow;
@@ -73,10 +76,12 @@ public class FragmentCompareList extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-
+        MainSingleTon.mixpanelAPI.track("Fragment CompareList oncreate called");
 
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_fragment_compare_list, container, false);
+
+        LoadAd();
 
         button=(Button)view.findViewById(R.id.compare_list);
 
@@ -260,6 +265,16 @@ public class FragmentCompareList extends Fragment
         });
 
         return  view;
+    }
+
+
+    void LoadAd()
+    {
+        MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+        AdView mAdView = (AdView) view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
     }
 
 

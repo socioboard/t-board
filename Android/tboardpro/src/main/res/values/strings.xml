@@ -8,6 +8,7 @@
     <string name="drawer_close" translatable="true">close</string>
     <string name="settings" translatable="true">Settings</string>
     <string name="feedback" translatable="true">Feedback</string>
+    <string name="abouttboard" translatable="true">AboutTboard</string>
     <string name="loading" translatable="true">Loading</string>
     <string name="tweethint" translatable="true">  Maximum 140 characters</string>
     <string name="tweet" translatable="true">tweet</string>
@@ -22,6 +23,10 @@
     <string name="twitter_text" translatable="true">We do not post without your permission</string>
     <string name="notfollowing" translatable="false">NotFollowing</string>
     <string name="twitter_keyword_title" translatable="false">Showing accounts for your keywords/location</string>
+    <string name="facebook_app_id">243174239518232</string>
+    <string name="adMob_app_id">ca-app-pub-4051522440712965/7486892736</string>
+    <string name="banner_ad_unit_id">ca-app-pub-4051522440712965/7486892736</string>
+    <string name="mixpannel_api_id">fc28b6e83b375883e59bb433296f1c05</string>
 
     <plurals name="numberOfNewArticles">
         <item quantity="one">%d new</item>
@@ -35,21 +40,21 @@
         <item>Following</item>
         <item>Followed By</item>
         <item>Recent Followers</item>
+        <item>Recent UnFollowers</item>
         <item>Copy Followers</item>
-        <item>Unfollow</item>
-        <item>Favourite</item>
-        <item>Search Users/Tweets</item>
+        <item>Non Followers</item>
         <item>Fans</item>
         <item>Mutual Followers</item>
-        <item>Non Followers</item>
+        <item>Search Users/Tweets</item>
         <item>Overlapping Users</item>
         <item>Schedule</item>
-        <item>Statistics</item>
-        <item>Recent UnFollowers</item>
         <item>White List</item>
         <item>Black List</item>
         <item>Get Friendship</item>
         <item>Hash Keywords</item>
+        <item>Favourite</item>
+        <item>Inactive Following</item>
+        <item>Statistics</item>
     </string-array>
 
     <array name="drawer_icons">
@@ -59,32 +64,34 @@
         <item>@drawable/friends_icon</item>
         <item>@drawable/group</item>
         <item>@drawable/recent_follower</item>
+        <item>@drawable/getfriend</item>
         <item>@drawable/copy_follower</item>
         <item>@drawable/non_followers</item>
-        <item>@drawable/favorite_icon</item>
-        <item>@drawable/tagsearch</item>
         <item>@drawable/fans</item>
         <item>@drawable/mutualfollwers</item>
-        <item>@drawable/non_followers</item>
+        <item>@drawable/tagsearch</item>
         <item>@drawable/overlappingfollowers</item>
         <item>@drawable/schedule_icon</item>
-        <item>@drawable/statistics</item>
-        <item>@drawable/getfriend</item>
         <item>@drawable/whitelist</item>
         <item>@drawable/blacklist</item>
         <item>@drawable/getfriend</item>
         <item>@drawable/hashtag</item>
+        <item>@drawable/favorite_icon</item>
+        <item>@drawable/non_followers</item>
+        <item>@drawable/statistics</item>
     </array>
 
     <string-array name="footer_titles" translatable="false">
         <item>Notification</item>
         <item>Settings</item>
         <item>Feedback</item>
+        <item>AboutTboardpro</item>
     </string-array>
 
     <array name="footer_icons">
         <item>@drawable/notification</item>
         <item>@drawable/settings_icon</item>
+        <item>@drawable/feed_back_icon</item>
         <item>@drawable/feed_back_icon</item>
     </array>
 

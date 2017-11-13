@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context="com.socioboard.t_board_pro.fragments.FragmentWhiteList">
 <RelativeLayout
     android:layout_width="match_parent"
@@ -17,15 +18,27 @@
         <!--android:id="@+id/headerbar"-->
         <!--android:padding="10dp"/>-->
     <ListView
+        android:layout_above="@+id/adView"
         android:id="@+id/listViewToFollowing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/headerbar"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:divider="@android:color/transparent"
         android:dividerHeight="3dp"
         android:padding="5dp" >
     </ListView>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 
     <RelativeLayout
         android:id="@+id/reloutProgress"

@@ -12,17 +12,27 @@
         <RelativeLayout
             android:id="@+id/dataRTL"
             android:layout_width="match_parent"
-            android:layout_gravity="center_vertical"
-            android:background="#bdbdbd"
-            android:gravity="bottom"
-            android:layout_height="25dp">
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="#f1f1f1"
+            android:layout_height="40dp">
+
+            <Button
+                android:id="@+id/buttonSelectMonth"
+                android:layout_marginLeft="5dp"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_toc_black_24dp" />
 
             <TextView
+                android:id="@+id/countTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inactive from last 1 month"
+                android:text="Select Month"
                 android:textSize="15sp"
-                android:gravity="center_vertical" />
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal" />
 
         </RelativeLayout>
 
@@ -31,7 +41,7 @@
             android:id="@+id/view1RTL"
             android:layout_below="@+id/dataRTL"
             android:layout_width="match_parent"
-            android:layout_height="10dp">
+            android:layout_height="30dp">
 
             <View
                 android:layout_width="match_parent"
@@ -56,7 +66,22 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/reloutProgress"
+            android:layout_below="@+id/view1RTL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible" >
 
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

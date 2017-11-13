@@ -45,6 +45,8 @@ public class FragmentSettingsRight extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment SettingRight oncreate called");
+
 		rootView = inflater.inflate(R.layout.fragment_settings_right, container, false);
 
 		prefs = getActivity().getSharedPreferences("twtboardpro", Context.MODE_PRIVATE);

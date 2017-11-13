@@ -113,5 +113,5 @@ public class ToFollowingModel {
 				+ followingStatus + "]";
 	}
 
-	 
+
 }

@@ -1,15 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,9 +14,9 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -39,6 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.adapters.ToFollowingAdapter;
 import com.socioboard.t_board_pro.lazylist.ImageLoader;
@@ -52,6 +45,16 @@ import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class FragmentCopyFollowers extends Fragment implements OnScrollListener {
 
@@ -108,6 +111,8 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment CopyFollowers oncreate called");
+
 		aActivity = getActivity();
 
 		tboardproLocalData = new TboardproLocalData(aActivity);
@@ -122,6 +127,8 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 
 		rootView = inflater.inflate(R.layout.fragment_copyfollowers, container,
 				false);
+
+		LoadAd();
 
 		reloutProgress = (RelativeLayout) rootView
 				.findViewById(R.id.reloutProgress);
@@ -476,6 +483,15 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 		initDialog();
 
 		return rootView;
+	}
+
+	void LoadAd()
+	{
+		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
+
 	}
 
 	void LoadthisUserData() {
@@ -1029,7 +1045,6 @@ public class FragmentCopyFollowers extends Fragment implements OnScrollListener 
 		} catch (JSONException e) {
 
 			e.printStackTrace();
-
 		}
 
 		cancelProgres();

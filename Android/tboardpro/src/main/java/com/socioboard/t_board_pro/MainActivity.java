@@ -66,6 +66,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.socioboard.t_board_pro.adapters.AccountAdapter;
 import com.socioboard.t_board_pro.adapters.DrawerAdapter;
 import com.socioboard.t_board_pro.fragments.FragmentBlackList;
@@ -78,6 +79,7 @@ import com.socioboard.t_board_pro.fragments.FragmentFans;
 import com.socioboard.t_board_pro.fragments.FragmentFavourites;
 import com.socioboard.t_board_pro.fragments.FragmentHashKeywords;
 import com.socioboard.t_board_pro.fragments.FragmentIAMFollowingTo;
+import com.socioboard.t_board_pro.fragments.FragmentInactiveFollowing;
 import com.socioboard.t_board_pro.fragments.FragmentMutualFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentNonFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentProfile;
@@ -86,7 +88,6 @@ import com.socioboard.t_board_pro.fragments.FragmentRecentUnFollowers;
 import com.socioboard.t_board_pro.fragments.FragmentSchedule;
 import com.socioboard.t_board_pro.fragments.FragmentSettingsRight;
 import com.socioboard.t_board_pro.fragments.FragmentTweet;
-import com.socioboard.t_board_pro.fragments.FragmentUnfollowUsers;
 import com.socioboard.t_board_pro.fragments.FragmentUsersFollowingToMe;
 import com.socioboard.t_board_pro.fragments.FragmentWhiteList;
 import com.socioboard.t_board_pro.fragments.FragmentsStatistics;
@@ -125,10 +126,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//import com.google.android.gms.appindexing.Action;
-//import com.google.android.gms.appindexing.AppIndex;
-//import com.google.android.gms.appindexing.Thing;
-//import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends ActionBarActivity{
 
@@ -195,7 +192,7 @@ public class MainActivity extends ActionBarActivity{
 	ImageView imageViewProfileImage, imageviewCoverTimeline;
 
 	RelativeLayout relOutAdAccount, relOutSettingsRight, relOutFeedbackLeft,
-			relOutHeader;
+			relOutHeader, relOutAboutTboardpro;
 
 	Toolbar toolbar;
 
@@ -216,6 +213,7 @@ public class MainActivity extends ActionBarActivity{
 	long followingCount, myfollowersCount;
 
 	String userID, message;
+
 	String username;
 
 	String Title = "Notification";
@@ -226,10 +224,12 @@ public class MainActivity extends ActionBarActivity{
 
 		super.onCreate(savedInstanceState);
 
+		MainSingleTon.mixpanelAPI = MixpanelAPI.getInstance(this, "fc28b6e83b375883e59bb433296f1c05");//mixpanelAPI
+
+		MainSingleTon.mixpanelAPI.track("MainActivity oncreate called");
+
 		mFirebaseInstance = FirebaseDatabase.getInstance();
 		mFirebaseDatabase = mFirebaseInstance.getReferenceFromUrl("https://tboardpro-4a5f9.firebaseio.com/");
-
-
 		myprint("onCreateMainActivity");
 
 
@@ -248,7 +248,6 @@ public class MainActivity extends ActionBarActivity{
 			return;
 
 		}
-
 
 		progressDialog = new ProgressDialog(MainActivity.this);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -306,10 +305,6 @@ public class MainActivity extends ActionBarActivity{
 
 			MainActivity.this.registerReceiver(myReceiver, intentFilter);
 		}
-
-
-
-
 
 	}
 
@@ -380,7 +375,8 @@ public class MainActivity extends ActionBarActivity{
 
 	// SELECT
 
-	private void selectItemLeft(int position, View view) {
+	private void selectItemLeft(int position, View view)
+	{
 
 		myprint("selectItemLeft position " + position);
 
@@ -436,6 +432,12 @@ public class MainActivity extends ActionBarActivity{
 				break;
 
 			case 6:
+				fragment = new FragmentRecentUnFollowers();
+				myprint("FragmentRecentFollowers");
+				break;
+
+
+			case 7:
 				MainSingleTon.fragment_no=position;
 				System.out.println("....."+position);
 				if (!MainSingleTon.secondaryCountLoaded) {
@@ -446,69 +448,9 @@ public class MainActivity extends ActionBarActivity{
 					myprint("FragmentCopyFollowers");
 				}
 				break;
-			case 7:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				if (!MainSingleTon.secondaryCountLoaded) {
-					myToastS("Please wait");
-					return;
-				} else {
-					fragment = new FragmentUnfollowUsers();
-					myprint("FragmentUnfollowUsers");
-				}
-				break;
+
 
 			case 8:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				fragment = new FragmentFavourites();
-				myprint("FragmentFavourites");
-				break;
-
-			case 9:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				fragment = new FragmentCombinedSearch();
-				myprint("FragmentCombinedSearch");
-				break;
-
-			case 10:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				if (!MainSingleTon.secondaryCountLoaded) {
-
-					myToastS("Please wait");
-
-					return;
-
-				} else {
-
-					fragment = new FragmentFans();
-
-					myprint("FragmentFans");
-				}
-
-				break;
-
-			case 11:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				if (!MainSingleTon.secondaryCountLoaded) {
-
-					myToastS("Please wait");
-
-					return;
-
-				} else {
-
-					fragment = new FragmentMutualFollowers();
-
-					myprint("FragmentMutualFans");
-				}
-
-				break;
-
-			case 12:
 				MainSingleTon.fragment_no=position;
 				System.out.println("....."+position);
 				if (!MainSingleTon.secondaryCountLoaded) {
@@ -527,7 +469,64 @@ public class MainActivity extends ActionBarActivity{
 
 				break;
 
-			case 13:
+
+			case 9:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				if (!MainSingleTon.secondaryCountLoaded) {
+
+					myToastS("Please wait");
+
+					return;
+
+				} else {
+
+					fragment = new FragmentFans();
+
+					myprint("FragmentFans");
+				}
+
+				break;
+
+			case 10:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				if (!MainSingleTon.secondaryCountLoaded) {
+
+					myToastS("Please wait");
+
+					return;
+
+				} else {
+
+					fragment = new FragmentMutualFollowers();
+
+					myprint("FragmentMutualFans");
+				}
+
+				break;
+
+//			case 7:
+//				MainSingleTon.fragment_no=position;
+//				System.out.println("....."+position);
+//				if (!MainSingleTon.secondaryCountLoaded) {
+//					myToastS("Please wait");
+//					return;
+//				} else {
+//					fragment = new FragmentUnfollowUsers();
+//					myprint("FragmentUnfollowUsers");
+//				}
+//				break;
+
+
+			case 11:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				fragment = new FragmentCombinedSearch();
+				myprint("FragmentCombinedSearch");
+				break;
+
+			case 12:
 				MainSingleTon.fragment_no=position;
 				System.out.println("....."+position);
 				if (!MainSingleTon.secondaryCountLoaded) {
@@ -537,58 +536,64 @@ public class MainActivity extends ActionBarActivity{
 					fragment = new FragmentCombinedOverlappings();
 					myprint("FragmentCombinedOverlappings");
 				}
-
 				break;
 
-			case 14:
+			case 13:
 				MainSingleTon.fragment_no=position;
 				System.out.println("....."+position);
 				fragment = new FragmentSchedule();
 				myprint("FragmentSchedule");
 				break;
 
+			case 14:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				fragment = new FragmentWhiteList();
+				myprint("FragmentsWhiteList");
+				break;
+
 			case 15:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				fragment = new FragmentBlackList();
+				myprint("FragmentsBlclList");
+				break;
+
+			case 16:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				fragment = new FragmentCompareList();
+				myprint("FragmentCompareList");
+				break;
+
+			case 17:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				fragment = new FragmentHashKeywords();
+				myprint("FragmentCompareList");
+				break;
+
+			case 18:
+				MainSingleTon.fragment_no=position;
+				System.out.println("....."+position);
+				fragment = new FragmentFavourites();
+				myprint("FragmentFavourites");
+				break;
+
+			case 19:
+				MainSingleTon.fragment_no=position;
+				System.out.println("......"+position);
+				fragment = new FragmentInactiveFollowing();
+				myprint("Fragment Inactive Following");
+				break;
+
+			case 20:
 				MainSingleTon.fragment_no=position;
 				System.out.println("....."+position);
 				fragment = new FragmentsStatistics();
 				myprint("FragmentsStatistics");
 				break;
 
-
-			case 16:
-				fragment = new FragmentRecentUnFollowers();
-				myprint("FragmentRecentFollowers");
-				break;
-			case 17:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				fragment = new FragmentWhiteList();
-				myprint("FragmentsWhiteList");
-				break;
-			case 18:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				fragment = new FragmentBlackList();
-				myprint("FragmentsBlclList");
-				break;
-			case 19:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				fragment = new FragmentCompareList();
-				myprint("FragmentCompareList");
-				break;
-			case 20:
-				MainSingleTon.fragment_no=position;
-				System.out.println("....."+position);
-				fragment = new FragmentHashKeywords();
-				myprint("FragmentCompareList");
-				break;
-//			case 21:
-//				MainSingleTon.fragment_no=position;
-//				System.out.println("......"+position);
-//				fragment = new FragmentInactiveFollowing();
-//				myprint("Fragment Inactive Following");
-//				break;
 			default:
 				myprint("default: ");
 				break;
@@ -827,6 +832,7 @@ public class MainActivity extends ActionBarActivity{
 	{
 
 		SharedPreferences sharedPreferences = getSharedPreferences("data1",Context.MODE_PRIVATE);
+
 		final Editor editor = sharedPreferences.edit();
 
 		mManager = getSupportFragmentManager();
@@ -915,6 +921,8 @@ public class MainActivity extends ActionBarActivity{
 		relOutFeedbackLeft = (RelativeLayout) footerR
 				.findViewById(R.id.relFeddBack);
 
+		relOutAboutTboardpro = (RelativeLayout)footerR.findViewById(R.id.relAboutTboard);
+
 		mDrawerList_Left.addFooterView(footer, null, true); // true = clickable
 
 		mDrawerList_Right.addHeaderView(headerR, null, true);
@@ -945,11 +953,9 @@ public class MainActivity extends ActionBarActivity{
 
 		// Set the list's click listener
 
-		mDrawerList_Left
-				.setOnItemClickListener(new DrawerItemClickListenerLeft());
+		mDrawerList_Left.setOnItemClickListener(new DrawerItemClickListenerLeft());
 
-		mDrawerList_Right
-				.setOnItemClickListener(new DrawerItemClickListenerRight());
+		mDrawerList_Right.setOnItemClickListener(new DrawerItemClickListenerRight());
 
 		relOutAdAccount.setOnClickListener(new OnClickListener() {
 
@@ -978,7 +984,28 @@ public class MainActivity extends ActionBarActivity{
 			@Override
 			public void onClick(View v) {
 
-				myprint("relOutFeedback");
+
+				Intent i = new Intent(Intent.ACTION_SEND);
+				i.setType("message/rfc822");
+				i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"support@socioboard.com"});
+				i.putExtra(Intent.EXTRA_SUBJECT, "");
+				i.putExtra(Intent.EXTRA_TEXT   , "");
+				try {
+					startActivity(Intent.createChooser(i, "Send mail..."));
+				} catch (android.content.ActivityNotFoundException ex) {
+					Toast.makeText(MainActivity.this, "Please install any mail app to contineu mail service.", Toast.LENGTH_SHORT).show();
+				}
+
+			}
+		});
+
+
+		relOutAboutTboardpro.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				myprint("relOutAboutTboardpro");
+
 
 				String url = "http://www.twtboardpro.com/";
 				Intent i = new Intent(Intent.ACTION_VIEW);
@@ -1113,7 +1140,8 @@ public class MainActivity extends ActionBarActivity{
 
 	// class GetReqToken
 
-	public class GetReqToken extends AsyncTask<Void, Void, String> {
+	public class GetReqToken extends AsyncTask<Void, Void, String>
+	{
 
 		@Override
 		protected String doInBackground(Void... params) {
@@ -1215,16 +1243,13 @@ public class MainActivity extends ActionBarActivity{
 
 				webDialog.setCancelable(true);
 
-				String webLoadSignInUrl = MainSingleTon.signInRequestURL
-						+ requestAccessToken;
+				String webLoadSignInUrl = MainSingleTon.signInRequestURL + requestAccessToken;
 
 				myprint("webLoadSignInUrl = " + webLoadSignInUrl);
 
-				webViewProgress = (ProgressBar) webDialog
-						.findViewById(R.id.progressBar1);
+				webViewProgress = (ProgressBar) webDialog.findViewById(R.id.progressBar1);
 
-				webView = (WebView) webDialog
-						.findViewById(R.id.dialogue_web_view);
+				webView = (WebView) webDialog.findViewById(R.id.dialogue_web_view);
 
 				// webview listener.
 
@@ -1544,7 +1569,8 @@ public class MainActivity extends ActionBarActivity{
 
 	}
 
-	public void setRightSideDrawer() {
+	public void setRightSideDrawer()
+	{
 
 		MainSingleTon.allUserdetails = twiterManyLocalData.getAllUsersData();
 
@@ -1552,11 +1578,9 @@ public class MainActivity extends ActionBarActivity{
 
 		// Now remove it from here
 
-		MainSingleTon.allUserdetails.remove(MainSingleTon.currentUserModel
-				.getUserid());
+		MainSingleTon.allUserdetails.remove(MainSingleTon.currentUserModel.getUserid());
 
-		MainSingleTon.allUserIDs.remove(MainSingleTon.currentUserModel
-				.getUserid());
+		MainSingleTon.allUserIDs.remove(MainSingleTon.currentUserModel.getUserid());
 
 		accountList = new ArrayList<ModelUserDatas>();
 
@@ -1577,8 +1601,7 @@ public class MainActivity extends ActionBarActivity{
 
 		}
 
-		AccountAdapter temAadapter = new AccountAdapter(accountList,
-				MainActivity.this);
+		AccountAdapter temAadapter = new AccountAdapter(accountList, MainActivity.this);
 
 		myprint("accountList " + accountList);
 
@@ -1593,8 +1616,8 @@ public class MainActivity extends ActionBarActivity{
 
 		myprint(MainSingleTon.currentUserModel);
 
-		//
 
+		//
 		Editor editor = getSharedPreferences("twtboardpro",
 				Context.MODE_PRIVATE).edit();
 
@@ -2310,7 +2333,7 @@ public class MainActivity extends ActionBarActivity{
 //			MainSingleTon.recentsUnFollowersCount = 0;
 //		}
 		else {
-			Toast.makeText(getApplicationContext(),"No Recent UnFollower",Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(),"No Recent UnFollower",Toast.LENGTH_SHORT).show();
 			System.out.println("unfollow user is null==");
 			MainSingleTon.recentsUnFollowersCount = 0;
 		}
@@ -2659,6 +2682,7 @@ public class MainActivity extends ActionBarActivity{
 	}
 
 	void savingStringImage(final Bitmap userBitImage) {
+
 
 		String stringBitpmap = Utils.encodeTobase64(userBitImage);
 

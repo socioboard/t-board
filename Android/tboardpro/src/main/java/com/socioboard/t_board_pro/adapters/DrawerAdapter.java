@@ -176,37 +176,49 @@ public class DrawerAdapter extends BaseAdapter {
 
             case 6:
 
-                progressBar.setVisibility(View.INVISIBLE);
-                item_count.setVisibility(View.INVISIBLE);
-                item_count.setText("");
+                if (MainSingleTon.recentsUnFollowersCount > 0) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    item_count.setVisibility(View.VISIBLE);
+                    item_count.setText("" + MainSingleTon.recentsUnFollowersCount);
+                }else {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    item_count.setVisibility(View.INVISIBLE);
+                }
                 break;
+
+
+
+//            case 7:
+//
+//                progressBar.setVisibility(View.INVISIBLE);
+//                item_count.setVisibility(View.INVISIBLE);
+//                item_count.setText("");
+//                break;
+
             case 7:
+
 
                 progressBar.setVisibility(View.INVISIBLE);
                 item_count.setVisibility(View.INVISIBLE);
-                item_count.setText("");
+
                 break;
+
 
             case 8:
 
-                if (MainSingleTon.favoritesCount == -1) {
+                if (!MainSingleTon.secondaryCountLoaded) {
                     progressBar.setVisibility(View.VISIBLE);
                     item_count.setVisibility(View.INVISIBLE);
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
                     item_count.setVisibility(View.VISIBLE);
-                    item_count.setText("" + MainSingleTon.favoritesCount);
+                    item_count.setText("" + MainSingleTon.nonFollowersIds.size());
                 }
                 break;
 
+
+
             case 9:
-
-                progressBar.setVisibility(View.INVISIBLE);
-                item_count.setVisibility(View.INVISIBLE);
-                item_count.setText("");
-                break;
-
-            case 10:
 
                 if (!MainSingleTon.secondaryCountLoaded) {
                     progressBar.setVisibility(View.VISIBLE);
@@ -219,7 +231,7 @@ public class DrawerAdapter extends BaseAdapter {
 
                 break;
 
-            case 11:
+            case 10:
                 if (!MainSingleTon.secondaryCountLoaded) {
                     progressBar.setVisibility(View.VISIBLE);
                     item_count.setVisibility(View.INVISIBLE);
@@ -230,24 +242,19 @@ public class DrawerAdapter extends BaseAdapter {
                 }
                 break;
 
-            case 12:
-                if (!MainSingleTon.secondaryCountLoaded) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    item_count.setVisibility(View.INVISIBLE);
-                } else {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    item_count.setVisibility(View.VISIBLE);
-                    item_count.setText("" + MainSingleTon.nonFollowersIds.size());
-                }
-                break;
-
-            case 13:
+            case 11:
                 progressBar.setVisibility(View.INVISIBLE);
                 item_count.setVisibility(View.INVISIBLE);
                 item_count.setText("");
                 break;
 
-            case 14:
+            case 12:
+                progressBar.setVisibility(View.INVISIBLE);
+                item_count.setVisibility(View.INVISIBLE);
+                item_count.setText("");
+                break;
+
+            case 13:
                 progressBar.setVisibility(View.INVISIBLE);
                 item_count.setVisibility(View.VISIBLE);
                 item_count.setText(""
@@ -255,25 +262,8 @@ public class DrawerAdapter extends BaseAdapter {
 
                 break;
 
-            case 15:
-                progressBar.setVisibility(View.INVISIBLE);
-                item_count.setVisibility(View.INVISIBLE);
-                item_count.setText("");
+            case 14:
 
-                break;
-
-            case 16:
-                if (MainSingleTon.recentsUnFollowersCount > 0) {
-                      progressBar.setVisibility(View.INVISIBLE);
-                    item_count.setVisibility(View.VISIBLE);
-                    item_count.setText("" + MainSingleTon.recentsUnFollowersCount);
-                }else {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    item_count.setVisibility(View.INVISIBLE);
-                }
-                break;
-
-            case 17:
                 if (MainSingleTon.WhiteListdatas.size() > 0) {
                     progressBar.setVisibility(View.INVISIBLE);
                     item_count.setVisibility(View.VISIBLE);
@@ -285,7 +275,10 @@ public class DrawerAdapter extends BaseAdapter {
                     item_count.setVisibility(View.INVISIBLE);
                 }
                 break;
-            case 18:
+
+
+
+            case 15:
                 if (MainSingleTon.BlackListdatas.size() > 0) {
                     progressBar.setVisibility(View.INVISIBLE);
                     item_count.setVisibility(View.VISIBLE);
@@ -297,13 +290,17 @@ public class DrawerAdapter extends BaseAdapter {
                     item_count.setVisibility(View.INVISIBLE);
                 }
                 break;
-            case 19:
+
+            case 16:
 
                 progressBar.setVisibility(View.INVISIBLE);
                 item_count.setVisibility(View.INVISIBLE);
+                item_count.setText("");
 
                 break;
-            case 20:
+
+            case 17:
+
                 if (MainSingleTon.KeywordsDatas.size() > 0) {
                     progressBar.setVisibility(View.INVISIBLE);
                     item_count.setVisibility(View.VISIBLE);
@@ -314,6 +311,31 @@ public class DrawerAdapter extends BaseAdapter {
                     progressBar.setVisibility(View.INVISIBLE);
                     item_count.setVisibility(View.INVISIBLE);
                 }
+                break;
+
+
+            case 18:
+
+            if (MainSingleTon.favoritesCount == -1) {
+                progressBar.setVisibility(View.VISIBLE);
+                item_count.setVisibility(View.INVISIBLE);
+            } else {
+                progressBar.setVisibility(View.INVISIBLE);
+                item_count.setVisibility(View.VISIBLE);
+                item_count.setText("" + MainSingleTon.favoritesCount);
+            }
+            break;
+
+            case 19:
+                progressBar.setVisibility(View.INVISIBLE);
+                item_count.setVisibility(View.INVISIBLE);
+                item_count.setText("");
+                break;
+
+            case 20:
+                progressBar.setVisibility(View.INVISIBLE);
+                item_count.setVisibility(View.INVISIBLE);
+                break;
             default:
 
         }

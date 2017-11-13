@@ -50,6 +50,8 @@ public class FragmentKeywordLocation extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainSingleTon.mixpanelAPI.track("Fragment KeywordLocation oncreate called");
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_fragment_keyword_location, container, false);
         ctx = getActivity();

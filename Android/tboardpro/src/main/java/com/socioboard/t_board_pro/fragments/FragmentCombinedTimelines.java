@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.socioboard.t_board_pro.adapters.FeedsPagerAdapter;
+import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.tboardpro.R;
 import com.viewpagerindicator.TabPageIndicator;
 
 public class FragmentCombinedTimelines extends Fragment {
 
 	ViewPager viewPager;
+	View rootView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -21,7 +23,9 @@ public class FragmentCombinedTimelines extends Fragment {
 
 		System.out.println("***************************onCreateView");
 
-		View rootView = inflater.inflate(R.layout.fragment_combined_search,
+		MainSingleTon.mixpanelAPI.track("Fragment CombineTimelines oncreate called");
+
+		rootView = inflater.inflate(R.layout.fragment_combined_search,
 				container, false);
 
 		viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
@@ -35,6 +39,7 @@ public class FragmentCombinedTimelines extends Fragment {
 
 		return rootView;
 	}
+
 
 	@Override
 	public void onStop() {

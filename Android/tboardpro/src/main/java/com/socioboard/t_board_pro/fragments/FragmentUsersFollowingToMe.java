@@ -1,13 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -23,6 +15,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.adapters.ToFollowingAdapter;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterTimeLineRequest2;
@@ -32,6 +27,14 @@ import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
 import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentUsersFollowingToMe extends Fragment implements
 		OnScrollListener {
@@ -50,10 +53,13 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment UserFollowingToMe oncreate called");
+
 		rootView = inflater.inflate(R.layout.fragment_my_followers, container,false);
 		aActivity = getActivity();
 		reloutProgress = (RelativeLayout) rootView.findViewById(R.id.reloutProgress);
 
+		LoadAd();
 		listView = (ListView) rootView.findViewById(R.id.listViewMyfolowers);
 		listView.setOnScrollListener(this);
 
@@ -87,7 +93,17 @@ public class FragmentUsersFollowingToMe extends Fragment implements
 		return rootView;
 	}
 
-	protected void parseJsonResultPaged(String jsonResult) {
+	void LoadAd()
+	{
+		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
+
+	}
+
+	protected void parseJsonResultPaged(String jsonResult)
+	{
 
 		myprint("parseResult  ");
 

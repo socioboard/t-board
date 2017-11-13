@@ -1,5 +1,12 @@
 package com.socioboard.t_board_pro.twitterapi;
 
+import android.os.AsyncTask;
+
+import com.socioboard.t_board_pro.util.MainSingleTon;
+import com.socioboard.t_board_pro.util.ModelUserDatas;
+
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,13 +17,6 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.http.message.BasicNameValuePair;
-
-import android.os.AsyncTask;
-
-import com.socioboard.t_board_pro.util.MainSingleTon;
-import com.socioboard.t_board_pro.util.ModelUserDatas;
 
 public class TwitterPostRequestPerams {
 
@@ -169,7 +169,8 @@ public class TwitterPostRequestPerams {
 
 	// Reads a response for a given connection and returns it as a string.
 	
-	public String readResponse(HttpsURLConnection connection) {
+	public String readResponse(HttpsURLConnection connection)
+	{
 
 		try {
 

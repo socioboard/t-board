@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/container_down_full_dark" >
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/container_down_full_dark">
 
     <RelativeLayout
         android:id="@+id/reltop"
@@ -47,6 +48,7 @@
     </RelativeLayout>
 
     <ListView
+        android:layout_above="@+id/adView"
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,5 +57,16 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="5dp" >
     </ListView>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+
 
 </RelativeLayout>

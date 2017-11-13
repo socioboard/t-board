@@ -24,39 +24,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
     DatabaseReference mFirebaseDatabase;
     private static final String TAG = "MyFirebaseMsgService";
     int not = 0;
-    String a;
-    boolean  alert;
+    String message;
     Handler handler = new Handler();
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(RemoteMessage remoteMessage)
+    {
         super.onMessageReceived(remoteMessage);
+
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-        a=remoteMessage.getNotification().getBody();
 
+        message = remoteMessage.getNotification().getBody();
 
-
-
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                //ChatWindowActivity.arrayList.notifyDataSetChange();
-            }
-        });
-
-
-        sendNotification(a);
+        sendNotification(message);
 
     }
 
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this,MainActivity.class);
+    private void sendNotification(String messageBody)
+    {
+        Intent intent = new Intent(this,SplashActivity.class);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.home_feeds_icon)
                 .setContentTitle("Firebase Push Notification")

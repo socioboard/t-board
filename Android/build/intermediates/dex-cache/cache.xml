@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.android.gms\play-services-clearcut\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="1172091167cff5873cbcccad4c0e08ec9e3240de">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-clearcut-10.2.6_098bb9f14e7f6b9e64adacb41886455cdd39e18f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.0.0_69892c76918d9328aa33ef8903ff0225df09b418.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\support-compat\25.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.2.0_de96038635e620fcebb83765e48e7548f9e9968a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads-lite\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="9024225796c3f11342ef6a4a99439f2f988bafb0">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-ads-lite-10.2.6_f7a8c040cac2a95868e33d89b7633e01d0e84cab.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\libs\achartengine-1.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="9932e3fb9fbe54e80873e77f72a99f79e33b3250">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\achartengine-1.1.0_06d71c6651eef27edfa59c7653c96964cb1a6aea.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\customtabs\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="94ba691efc31bf53264db0716d9c9ec03843ea31">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-customtabs-25.0.0_0a42ec76221c0734b1cc5b6d2ac3292e1e2ca998.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="4d7184a651c5975b49928ce7c76175d491ee7a5e">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-ads-10.2.6_229a199932ff2ef966cfd6ab8d8438e3e17d41ff.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-storage\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="ba4defc8cb4ed5b90b8ef71602722cdeebe507cd">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-storage-10.2.6_1f60aee47aaafcd5594e05523ff0a5921b19b892.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\libs\FlurryAnalytics-5.5.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="0b458e548cb3a6196b60181134f975116b2ac040">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\FlurryAnalytics-5.5.0_bf9f270c66fda9da24efe11cff3818a78cec702f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.2.2\d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b\jackson-core-2.2.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\jackson-core-2.2.2_2dd3f127825dbe83c05a07549fec0dd3b1b56aee.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="900a290779cdb4eb2e63b6f7806fd9f30ce4f60d">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-basement-10.2.6_64948f26779a638f3bd046d7f89b8e607a53017f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\cardview-v7\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8a372c4191f80489770a231f7be4820b204b886a">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-25.0.0_73284be233a0ed1ad1f6826106b2d6adef240a9f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-common\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="0a534044236cf81b002604643d23e7ca56bd1ee0">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-common-10.2.6_efaf05d22e8538f43a387dc422c24ded491ce0a6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-messaging\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="9ff5114aff3bfb387577ba92a11408dcf0441c24">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-messaging-10.2.6_285b67b801817d6eb507704af9c0b93d126e9692.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.2.2\3c8f6018eaa72d43b261181e801e6f8676c16ef6\jackson-databind-2.2.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3c8f6018eaa72d43b261181e801e6f8676c16ef6">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\jackson-databind-2.2.2_43ee0fc81d3543cc64fb8d6ee7e13caaefb01fd2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.firebase\tubesock\0.0.12\6ec0bbd3e161a73ed672284b587fd32309a86d7a\tubesock-0.0.12.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="6ec0bbd3e161a73ed672284b587fd32309a86d7a">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\tubesock-0.0.12_12f67806f93896398c98c58699b13265b469bff9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\libs\httpmime-4.3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="5b0002c5fb66867ca919be0fbd86de1cfaf76da7">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\httpmime-4.3_5fac2f857c1c5c2874567e62f78d7b13ec8fc321.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\libs\httpcore-4.3.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\httpcore-4.3.2_e8de69db171139bfcc3bc47756a0a770dbb81bc8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-applinks\1.4.0\8ad21bf21784dacce5f2043afb97218cc377e835\bolts-applinks-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\bolts-applinks-1.4.0_5fc8d6c9d528f9b62559c88efc16ee4d3ac7db31.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.4.0\f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2\picasso-2.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\picasso-2.4.0_2fc97cba2472d93876eb670c7bace21d2f05a3e7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.firebase\firebase-client-jvm\2.4.0\558e074f136fee609b8758480ecd00e286595137\firebase-client-jvm-2.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="558e074f136fee609b8758480ecd00e286595137">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\firebase-client-jvm-2.4.0_a19b2af2c2a7842f2547ab92cec6205d8348038f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0_0ef837a97b66c8f9e8b0ec67cd6da41131fefc07.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.2.0_a3ab1c5de2704614d2fb152720201023d2ff6209.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.22.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d5cbc9214ee567ea6ef56fb2707d48e58d240fc2">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.facebook.android-facebook-android-sdk-4.22.1_ddad62a6fa7771869ecdb41a7d21e3dd0c471b84.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\support-v4\25.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.2.0_74bebcd64945e2b1aa6236fd257ab3d09104b646.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="da832806828ba407284c0c4b1d87b8f9ed9f2520">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-analytics-impl-10.2.6_7ba772e053967272dbd28974328e8684edc59236.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.2.0_5b01c35be902f4dc56c53f37e7a36c6a7f3717e9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.volley\volley\1.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.volley-volley-1.0.0_ec41771384bc8c8b4c23fa2eb16d3e9dc503f3ab.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.android.gms\play-services-gass\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="9b775d7b643397da3ab57e62ae8abb74a9cc9a83">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-gass-10.2.6_c01e9bb563e87c5a17149457dd10d0fef0c9d04d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="69e74a8b1cbf5b8ee0fc0cca6bab1ac6c45efef8">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-tasks-10.2.6_aa5da77333160d8a63b67d6b7bfcb2103781451a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d79c575e1d97b0298746a4c032a0c1dc201c2f82">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-analytics-10.2.6_8bdbe867d87b01d5f25d56adb708482f59c56d4b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-database\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="de24d8023e8da79f30bee46b298f606e5e758432">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-database-10.2.6_fdcef11ab5ba51ae4b1642f0f07941a301f3f437.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\libs\appnextTrackingSDK.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="457e8862e0187bcff3f8b8bb67d60a5b5eaba045">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\appnextTrackingSDK_e3db2f90bf2be375b4fdfdc8941375003c2229a3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-storage-common\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3dbaff65d26258306561d545f88d6712ac41dd46">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-storage-common-10.2.6_ffae703e5e1557de7d795975ca93a59a2173f7de.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.2.0_fc80c6d9a2047808888c6403d6c4773306f3d094.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-database-connection\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="5c1f80f62ccad560edcd6609fc75f385cf7cb45a">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-database-connection-10.2.6_20423c32cb8c2cdfe1da255ff9cac508ad26bc88.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\support-fragment\25.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.2.0_fe45d3a5cb4dd64e1bb79c4804b8b59d0a3f9a5c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\t-boardpro\library\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8efe89bc9d9d7b7970369dd59dea3343462acab9">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\t-boardpro-library-unspecified_1f227fe2f6933357128e6042ac9ef793dff9a902.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.mixpanel.android\mixpanel-android\5.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="6b47e3911b1aad275ef353124379b7cec821302a">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.mixpanel.android-mixpanel-android-5.2.1_e2a48b1dcfaf6cf4e02f4330afdb8c627cf63c13.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3f0a85e6000998ac322ddd50750e8cf91601a84b">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-base-10.2.6_4afde4a4b2d03f98fc1f61a59c36ebf625bde7fd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.0.0_c95f9f1d07b07d5bdf15ae0619478ef0c700cfe4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.2.0\support-annotations-25.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\support-annotations-25.2.0_42c87bc019efcd21013c4750f8e8344493b39602.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\10.2.6\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8f83a631abfdb790591a720e0cfb5f41329831c3">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-iid-10.2.6_55242c7f7a6aab357d69bfa0a32efcd8e6eb8919.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.firebase\firebase-client-android\2.4.0\f00bc767918ad9c89e5c13e25706d033a58e13c2\firebase-client-android-2.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="f00bc767918ad9c89e5c13e25706d033a58e13c2">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\firebase-client-android-2.4.0_2a4776650e62c172c30093feb8a2e9b28859189b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.0.0_7e7bd9764f1bdda0457f0d0b62998f4128df459f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\GLB-122\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.2.2\285cb9c666f0f0f3dd8a1be04e1f457eb7b15113\jackson-annotations-2.2.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="285cb9c666f0f0f3dd8a1be04e1f457eb7b15113">
+        <dex dex="D:\Tboardproappnew4.3\t-boardpro\tboardpro\build\intermediates\pre-dexed\debug\jackson-annotations-2.2.2_0c773c1f629316f2a645dc536915ff8656a8ffaa.jar" />
+    </item>
+
+</items>

@@ -76,6 +76,8 @@ public class LocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainSingleTon.mixpanelAPI.track("Fragment LocationFragment oncreate called");
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_location, container, false);
         ctx=getActivity();

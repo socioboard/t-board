@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.socioboard.tboardpro"
-    android:versionCode="35"
-    android:versionName="4.4" >
+    android:versionCode="42"
+    android:versionName="5.1">
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -18,8 +18,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 
     <application
         android:name="com.socioboard.t_board_pro.Application"
@@ -29,11 +30,11 @@
         android:largeHeap="true"
         android:launchMode="singleTop"
         android:persistent="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.socioboard.t_board_pro.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,18 +43,15 @@
         </activity>
         <activity
             android:name="com.socioboard.t_board_pro.MainActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.socioboard.t_board_pro.WelcomeActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.socioboard.t_board_pro.SchedulleComposeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat" >
-        </activity>
-        
+            android:theme="@style/Theme.AppCompat"></activity>
+                
         <activity
             android:name="org.achartengine.GraphicalActivity"
             android:screenOrientation="portrait" />
@@ -63,7 +61,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name="com.socioboard.t_board_pro.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -72,22 +69,40 @@
 
         <receiver
             android:name="com.appnext.appnextsdk.ReferralReceiver"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.socioboard.t_board_pro.util.FollowersNotificationReceiver" />
         <receiver android:name="com.socioboard.t_board_pro.util.TweetSchedullerReceiver" />
-        <receiver android:name="com.socioboard.t_board_pro.util.TweetDMScheduller" >
+        <receiver android:name="com.socioboard.t_board_pro.util.TweetDMScheduller">
             <intent-filter>
                 <action android:name="com.socioboard.action" />
             </intent-filter>
-        </receiver><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        </receiver>
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="false" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider243174239518232"
+            android:exported="true" />
+
     </application>
 
 </manifest>

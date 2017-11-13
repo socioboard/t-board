@@ -29,6 +29,8 @@ public class KeywordsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainSingleTon.mixpanelAPI.track("Fragment KeywordsFragment oncreate called");
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_keywords, container, false);
         init();

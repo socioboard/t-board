@@ -1,5 +1,12 @@
 package com.socioboard.t_board_pro.twitterapi;
 
+import android.os.AsyncTask;
+
+import com.socioboard.t_board_pro.util.MainSingleTon;
+import com.socioboard.t_board_pro.util.ModelUserDatas;
+
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,13 +17,6 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.http.message.BasicNameValuePair;
-
-import android.os.AsyncTask;
-
-import com.socioboard.t_board_pro.util.MainSingleTon;
-import com.socioboard.t_board_pro.util.ModelUserDatas;
 
 public class TwitterUserGETRequest {
 
@@ -35,8 +35,8 @@ public class TwitterUserGETRequest {
 
 	}
 
-	public void executeThisRequest(String url,
-			List<BasicNameValuePair> peramPairs) {
+	public void executeThisRequest(String url, List<BasicNameValuePair> peramPairs)
+	{
 
 		new RequestAsync().execute(url, peramPairs);
 

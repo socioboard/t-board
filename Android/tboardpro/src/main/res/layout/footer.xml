@@ -141,4 +141,31 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/relAboutTboard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_item_height"
+        android:layout_marginTop="5dp" >
+
+        <ImageView
+            android:id="@+id/abouttboardimg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/drawer_left"
+            android:src="@drawable/feed_back_icon" />
+
+        <TextView
+            android:id="@+id/abouttboardtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/abouttboardimg"
+            android:ellipsize="end"
+            android:text="@string/abouttboard"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
 </LinearLayout>

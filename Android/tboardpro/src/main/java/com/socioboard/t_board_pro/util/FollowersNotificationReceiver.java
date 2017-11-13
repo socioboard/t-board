@@ -1,13 +1,5 @@
 package com.socioboard.t_board_pro.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,6 +16,14 @@ import com.socioboard.t_board_pro.SplashActivity;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
 import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FollowersNotificationReceiver extends BroadcastReceiver {
 
@@ -208,7 +208,8 @@ public class FollowersNotificationReceiver extends BroadcastReceiver {
 
 	}
 
-	void notifyIt(String notDetails, Context context) {
+	void notifyIt(String notDetails, Context context)
+    {
 
 		Intent intent1 = new Intent(context, SplashActivity.class);
 

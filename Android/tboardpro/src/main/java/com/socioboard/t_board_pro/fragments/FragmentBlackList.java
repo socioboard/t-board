@@ -16,6 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.lazylist.ImageLoader;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TboardproLocalData;
@@ -42,7 +45,10 @@ public class FragmentBlackList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainSingleTon.mixpanelAPI.track("FragmentBlackList oncreate called");
         view= inflater.inflate(R.layout.fragment_fragment_black_list, container, false);
+        LoadAd();
         MainSingleTon.BlackListdatas.clear();
         reloutProgress1 = (RelativeLayout) view.findViewById(R.id.reloutProgress);
         listView = (ListView) view.findViewById(R.id.listViewToFollowing);
@@ -72,6 +78,16 @@ public class FragmentBlackList extends Fragment {
 
         return view;
     }
+
+    void LoadAd()
+    {
+        MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+        AdView mAdView = (AdView) view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+    }
+
     public class ActiveMyOrdersAdopter extends BaseAdapter {
         Context context;
         LayoutInflater inflater;

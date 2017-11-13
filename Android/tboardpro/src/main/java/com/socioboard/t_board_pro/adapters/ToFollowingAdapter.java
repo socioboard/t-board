@@ -51,7 +51,8 @@ public class ToFollowingAdapter extends BaseAdapter {
 
 	ArrayList<String> sentIds;
 
-	public ToFollowingAdapter(Context context,ArrayList<ToFollowingModel> tweetModels, Activity activity) {
+	public ToFollowingAdapter(Context context,ArrayList<ToFollowingModel> tweetModels, Activity activity)
+    {
 
 		this.context = context;
 

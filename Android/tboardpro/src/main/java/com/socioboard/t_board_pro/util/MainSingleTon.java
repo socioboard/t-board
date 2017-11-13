@@ -2,10 +2,14 @@ package com.socioboard.t_board_pro.util;
 
 import android.graphics.Bitmap;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainSingleTon {
+
+	public static MixpanelAPI mixpanelAPI;
 
 	public static long myfollowersCount = -1;
 
@@ -91,19 +95,21 @@ public class MainSingleTon {
 
 	public static String keyHash, bearerToken;
 
-	public static String TWITTER_KEY = "4iRakzuGt9VUHCK3YwDAUxIz4";
+	public static String TWITTER_KEY = "eaSQfacnlwQ7UzZ4YddfE9FCd";
 
-	public static String TWITTER_SECRET = "iVLXFUOTzRPTtwe0VnGpxalddVyUdOyiPLuoLVPkbbl9hkJhUY";
+	public static String TWITTER_SECRET = "1ReTO5LzlrmiR2aJas26YSLChTVLHk4USIBEmf3z9yVXJgZE19";
 
-	public static String oauth_callbackURL = "http://www.twtboardpro.com/";
+	//public static String oauth_callbackURL = "https://www.socioboard.com";
+
+	public static String oauth_callbackURL = "http://www.logintwitterapp.com";
 
 	public static String reqTokenResourceURL = "https://api.twitter.com/oauth/request_token";
 
-	public static String T_KEY = "4iRakzuGt9VUHCK3YwDAUxIz4";
+	public static String T_KEY = "eaSQfacnlwQ7UzZ4YddfE9FCd";
 
-	public static String T_SECRET = "iVLXFUOTzRPTtwe0VnGpxalddVyUdOyiPLuoLVPkbbl9hkJhUY";
+	public static String T_SECRET = "1ReTO5LzlrmiR2aJas26YSLChTVLHk4USIBEmf3z9yVXJgZE19";
 
-	public static String T_oauth_callbackURL = "T_oauth_callbackURL";
+	public static String T_oauth_callbackURL = "http://www.logintwitterapp.com";
 
 	public static String oauthResourceURL = "https://api.twitter.com/oauth/authenticate";
 

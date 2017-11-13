@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.adapters.TweetsAdapter;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
@@ -57,11 +60,23 @@ public class FragmentHashKeywords extends Fragment implements TwitterRequestCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_fragment_hash_keywords, container, false);
-        init();
+        MainSingleTon.mixpanelAPI.track("Fragment HashKeywords oncreate called");
 
+        view= inflater.inflate(R.layout.fragment_fragment_hash_keywords, container, false);
+        LoadAd();
+        init();
         return view;
     }
+
+    void LoadAd()
+    {
+        MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+        AdView mAdView = (AdView) view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+    }
+
     void init()
     {
         listTaggedTweets.clear();

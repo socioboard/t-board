@@ -63,8 +63,12 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment TimeLine oncreate called");
+
 		rootView = inflater.inflate(R.layout.fragment_timelineview, container,
 				false);
+
+		//LoadAd();
 
 		aActivity = FragmentTimeLine.this.getActivity();
 
@@ -173,6 +177,15 @@ public class FragmentTimeLine extends Fragment implements OnScrollListener {
 
 		return rootView;
 	}
+
+//	void LoadAd()
+//	{
+//		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+//		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+//		AdRequest adRequest = new AdRequest.Builder().build();
+//		mAdView.loadAd(adRequest);
+//
+//	}
 
 	private void addFooterView() {
 

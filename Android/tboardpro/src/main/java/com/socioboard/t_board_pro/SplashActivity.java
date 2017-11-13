@@ -460,7 +460,7 @@ public class SplashActivity extends Activity {
 
 		});
 
-		reloutbottom2UseDefaults.setOnClickListener(new OnClickListener() 
+		reloutbottom2UseDefaults.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
@@ -505,11 +505,11 @@ public class SplashActivity extends Activity {
 
 					editor.putBoolean(MainSingleTon.isTwitterKeyAssigned, true);
 
-						editor.putString(MainSingleTon.T_KEY, "4iRakzuGt9VUHCK3YwDAUxIz4");
+						editor.putString(MainSingleTon.T_KEY, "eaSQfacnlwQ7UzZ4YddfE9FCd");
 
-						editor.putString(MainSingleTon.T_SECRET, "iVLXFUOTzRPTtwe0VnGpxalddVyUdOyiPLuoLVPkbbl9hkJhUY");
+						editor.putString(MainSingleTon.T_SECRET, "1ReTO5LzlrmiR2aJas26YSLChTVLHk4USIBEmf3z9yVXJgZE19");
 
-						editor.putString(MainSingleTon.T_oauth_callbackURL, "https://www.socioboard.com");
+						editor.putString(MainSingleTon.T_oauth_callbackURL, "http://www.logintwitterapp.com");
 
 						editor.commit();
 
@@ -536,11 +536,11 @@ public class SplashActivity extends Activity {
 
 						editor.putBoolean(MainSingleTon.isTwitterKeyAssigned, true);
 
-						editor.putString(MainSingleTon.T_KEY, "xxxxxxxxxxxxxxxxxxxxxxxxxx");
+						editor.putString(MainSingleTon.T_KEY, "eaSQfacnlwQ7UzZ4YddfE9FCd");
 
-						editor.putString(MainSingleTon.T_SECRET, "xxxxxxxxxxxxx");
+						editor.putString(MainSingleTon.T_SECRET, "1ReTO5LzlrmiR2aJas26YSLChTVLHk4USIBEmf3z9yVXJgZE19");
 
-						editor.putString(MainSingleTon.T_oauth_callbackURL, "https://www.socioboard.com");
+						editor.putString(MainSingleTon.T_oauth_callbackURL, "http://www.logintwitterapp.com");
 
 						editor.commit();
 
@@ -575,7 +575,8 @@ public class SplashActivity extends Activity {
 		Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
 	}
 
-	public boolean isNetworkAvailable(Context activity) {
+	public boolean isNetworkAvailable(Context activity)
+	{
 
 		ConnectivityManager connectivity = (ConnectivityManager) activity
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -614,8 +615,8 @@ public class SplashActivity extends Activity {
 //		MainSingleTon.currentUserModel.setUserAcessToken("3902001134-0KHlNVQscxYxkgCSey5d5l0OzPnuqwvVDpnknDY");
 //		MainSingleTon.currentUserModel.setUsersecretKey("278jYQWvgD4dfzVNMcOes9l9y403A3fBl97usgLNrcpIe");
 
-		MainSingleTon.currentUserModel.setUserAcessToken("xxxxxxxxxxxxxxxx");
-		MainSingleTon.currentUserModel.setUsersecretKey("xxxxxxxxxxxxxxxxxxx");
+		MainSingleTon.currentUserModel.setUserAcessToken("852025974887636993-2GrMoRo6D780OcCgKwj6cF1s2RjbM04");
+		MainSingleTon.currentUserModel.setUsersecretKey("Xh6CmMbhBxohmWonDW8YakNaQbOgua5PGl90i3tfzTsH1");
 
 
 		MainSingleTon.TWITTER_KEY = apiKey;

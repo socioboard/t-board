@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:id="@+id/title_desc"
+                android:layout_marginRight="30dp"
                 android:textSize="17sp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/white"

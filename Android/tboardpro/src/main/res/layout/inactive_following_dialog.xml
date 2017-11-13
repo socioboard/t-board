@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RadioGroup
+    android:id="@+id/radiogrp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <RadioButton
+        android:id="@+id/onemonthradio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inactive From 1 Month" />
+
+    <RadioButton
+        android:id="@+id/threemonthradio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/onemonthradio"
+        android:text="Inactive From 3 Month" />
+
+    <RadioButton
+        android:id="@+id/sixmonthradio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/threemonthradio"
+        android:text="Inactive From 6 Month" />
+
+    </RadioGroup>
+    <Button
+        android:id="@+id/applybutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radiogrp"
+        android:layout_centerInParent="true"
+        android:text="Apply" />
+
+</RelativeLayout>

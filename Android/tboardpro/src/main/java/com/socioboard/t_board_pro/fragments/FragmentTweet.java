@@ -17,6 +17,9 @@ import java.util.List;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.MainActivity;
 import com.socioboard.t_board_pro.adapters.SelectAccountAdapter;
 import com.socioboard.t_board_pro.twitterapi.OAuthSignaturesGeneratorPostReq;
@@ -61,7 +64,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FragmentTweet extends Fragment {
+public class FragmentTweet extends Fragment
+{
 
 	View rootView;
 
@@ -99,8 +103,12 @@ public class FragmentTweet extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment Tweet oncreate called");
+
 		rootView = inflater.inflate(R.layout.fragment_tweetcompose, container,
 				false);
+
+		LoadAd();
 
 		chkBox = (CheckBox) rootView.findViewById(R.id.checkBox1);
 
@@ -199,6 +207,15 @@ public class FragmentTweet extends Fragment {
 		});
 
 		return rootView;
+	}
+
+	void LoadAd()
+	{
+		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
+
 	}
 
 	private String filename;

@@ -46,6 +46,7 @@
 
         <TextView
             android:id="@+id/textRemove"
+            android:background="@drawable/textview_background"
             android:layout_width="65dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"

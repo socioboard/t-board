@@ -1,13 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -16,8 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.EditText;
@@ -27,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.socioboard.t_board_pro.adapters.SearchAdapter;
 import com.socioboard.t_board_pro.twitterapi.TwitterRequestCallBack;
 import com.socioboard.t_board_pro.twitterapi.TwitterUserGETRequest;
@@ -36,6 +31,14 @@ import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.SearchDetailModel;
 import com.socioboard.t_board_pro.util.ToFollowingModel;
 import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentSearch extends Fragment implements OnScrollListener {
 
@@ -83,7 +86,10 @@ public class FragmentSearch extends Fragment implements OnScrollListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment Search oncreate called");
 		rootView = inflater.inflate(R.layout.fragment_search, container, false);
+
+		LoadAd();
 
 		aActivity = getActivity();
 
@@ -148,7 +154,7 @@ public class FragmentSearch extends Fragment implements OnScrollListener {
 
 				searchText = editText.getText().toString();
 
-				if (searchText.length() == 0) {
+				if (searchText.trim().length() == 0) {
 
 					myprint("Empty");
 
@@ -189,6 +195,15 @@ public class FragmentSearch extends Fragment implements OnScrollListener {
 		initView();
 
 		return rootView;
+	}
+
+	void LoadAd()
+	{
+		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
+
 	}
 
 	private void initView() {

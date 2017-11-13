@@ -192,7 +192,8 @@ public class WelcomeActivity extends Activity {
 
 	}
 
-	public class GetReqToken extends AsyncTask<Void, Void, String> {
+	public class GetReqToken extends AsyncTask<Void, Void, String>
+	{
 
 		@Override
 		protected String doInBackground(Void... params) {
@@ -376,8 +377,6 @@ public class WelcomeActivity extends Activity {
 				webView.getSettings().setJavaScriptEnabled(true);
 				webView.loadUrl(webLoadSignInUrl);
 				webDialog.show();
-
-
 
 			}
 		});

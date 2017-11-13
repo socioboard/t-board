@@ -1,35 +1,51 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeContainer"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/container_down_full_dark" >
+    android:background="@drawable/container_down_full_dark">
 
-    <ListView
-        android:id="@+id/timelineListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="3dp"
-        android:paddingTop="5dp" />
 
-    <RelativeLayout
-        android:id="@+id/reloutProgress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="visible" >
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ListView
+            android:id="@+id/timelineListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-    </RelativeLayout>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="3dp"
+            android:paddingTop="5dp" />
+
+    <!--<com.google.android.gms.ads.AdView-->
+    <!--android:id="@+id/adView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--ads:adSize="BANNER"-->
+    <!--ads:adUnitId="@string/banner_ad_unit_id">-->
+    <!--</com.google.android.gms.ads.AdView>-->
+
+
+        <RelativeLayout
+            android:id="@+id/reloutProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible" >
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+
+
 
 </android.support.v4.widget.SwipeRefreshLayout>

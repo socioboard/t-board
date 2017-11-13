@@ -1,15 +1,5 @@
 package com.socioboard.t_board_pro.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -34,6 +24,16 @@ import com.socioboard.t_board_pro.util.Const;
 import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.t_board_pro.util.TweetModel;
 import com.socioboard.tboardpro.R;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FragmentTimeLineMentions extends Fragment implements
 		OnScrollListener {
@@ -66,8 +66,12 @@ public class FragmentTimeLineMentions extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		MainSingleTon.mixpanelAPI.track("Fragment TimeLineMention oncreate called");
+
 		rootView = inflater.inflate(R.layout.fragment_timelineview, container,
 				false);
+
+		//LoadAd();
 
 		aActivity = FragmentTimeLineMentions.this.getActivity();
 
@@ -152,6 +156,15 @@ public class FragmentTimeLineMentions extends Fragment implements
 
 		return rootView;
 	}
+
+//	void LoadAd()
+//	{
+//		MobileAds.initialize(getActivity(), getString(R.string.adMob_app_id));
+//		AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+//		AdRequest adRequest = new AdRequest.Builder().build();
+//		mAdView.loadAd(adRequest);
+//
+//	}
 
 	private void addFooterView() {
 

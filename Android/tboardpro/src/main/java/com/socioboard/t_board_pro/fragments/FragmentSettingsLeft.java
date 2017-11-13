@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.tboardpro.R;
 
 
@@ -17,6 +18,8 @@ public class FragmentSettingsLeft extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+		MainSingleTon.mixpanelAPI.track("Fragment SettingLeft oncreate called");
 		
  		rootView = inflater.inflate(R.layout.fragment_settings_left, container, false);
 

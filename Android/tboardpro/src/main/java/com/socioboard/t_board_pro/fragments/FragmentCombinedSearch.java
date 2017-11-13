@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.socioboard.t_board_pro.adapters.SearchPageAdapter;
+import com.socioboard.t_board_pro.util.MainSingleTon;
 import com.socioboard.tboardpro.R;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -16,15 +17,20 @@ public class FragmentCombinedSearch extends Fragment {
 	SearchPageAdapter searchPageAdapter;
 	
 	ViewPager viewPager;
-	
+	View rootView;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
 		System.out.println("***************************onCreateView");
 
-		View rootView = inflater.inflate(R.layout.fragment_combined_search,
+		MainSingleTon.mixpanelAPI.track("Fragment CombinedSearch oncreate called");
+
+		 rootView = inflater.inflate(R.layout.fragment_combined_search,
 				container, false);
+
+		//LoadAd();
 
  		viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
 
@@ -36,6 +42,7 @@ public class FragmentCombinedSearch extends Fragment {
 
 		return rootView;
 	}
+
 
 	@Override
 	public void onStop() {
